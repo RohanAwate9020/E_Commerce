@@ -75,7 +75,7 @@ export default function Navbar({children}) {
                     <span className="sr-only">View notifications</span>
                     <ShoppingCartIcon aria-hidden="true" className="size-6" />
                   </button>
-                  <span class="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">3</span>
+                  <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">3</span>
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
@@ -149,7 +149,7 @@ export default function Navbar({children}) {
                   <span className="sr-only">View notifications</span>
                   <ShoppingCartIcon aria-hidden="true" className="size-6" />
                 </button>
-                <span class="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">3</span>
+                <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">3</span>
 
               </div>
               <div className="mt-3 space-y-1 px-2">
