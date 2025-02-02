@@ -128,7 +128,7 @@ export default function ProductList() {
   return (
     <div>
       {/* Catagory template code below  */}
-      <div className="bg-white">
+      <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
         <div>
           {/* Mobile filter dialog */}
           <Dialog
@@ -236,6 +236,7 @@ export default function ProductList() {
               </DialogPanel>
             </div>
           </Dialog>
+
 
           <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
@@ -378,6 +379,7 @@ export default function ProductList() {
 
                 {/* Product grid */}
                 <div className="lg:col-span-3">
+                  
                   {/* from here below is Products list code  */}
                   <div className="bg-white">
                     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
@@ -416,6 +418,7 @@ export default function ProductList() {
                 </div>
               </div>
             </section>
+            
             {/* pagination code below */}
             <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
               <div className="flex flex-1 justify-between sm:hidden">
