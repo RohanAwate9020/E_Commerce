@@ -13,6 +13,7 @@ import {
   ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const user = {
   name: "Tom Cook",
@@ -87,6 +88,7 @@ export default function Navbar({ children }) {
               </div>
             </div>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <Link to="/cart">
               <button
                 type="button"
                 className="relative rounded-full p-1 text-gray-400 hover:text-white focus:ring-1 focus:ring-white"
@@ -95,9 +97,13 @@ export default function Navbar({ children }) {
                 <span className="sr-only">View notifications</span>
                 <ShoppingCartIcon aria-hidden="true" className="size-6" />
               </button>
+              </Link>
+              <Link to="cart">
               <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
                 3
               </span>
+              </Link>
+              
               {/* Profile dropdown */}
               <Menu as="div" className="relative ml-3">
                 <div>
