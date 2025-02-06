@@ -59,7 +59,7 @@ function Checkout() {
           <form>
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
-                <h2 className="text-base/7 font-semibold text-gray-900">
+                <h2 className="text-2xl font-semibold text-gray-900">
                   Personal Information
                 </h2>
                 <p className="mt-1 text-sm/6 text-gray-600">
@@ -219,7 +219,20 @@ function Checkout() {
                   </div>
                 </div>
               </div>
-
+              <div className="mt-6 flex items-center justify-end gap-x-6">
+              <button
+                type="button"
+                className="text-sm/6 font-semibold text-gray-900"
+              >
+                Reset
+              </button>
+              <button
+                type="submit"
+                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Add Address
+              </button>
+            </div>
               <div className="border-b border-gray-900/10 pb-12">
                 <h2 className="text-base/7 font-semibold text-gray-900">
                   Address
@@ -227,7 +240,7 @@ function Checkout() {
                 <p className="mt-1 text-sm/6 text-gray-600">
                   Choose from exixting addresses
                 </p>
-                <ul role="list" className="divide-y divide-gray-100">
+                <ul role="list" className="divide-y divide-gray-200">
                   {addresses.map((address) => (
                     <li
                       key={address.name}
@@ -305,26 +318,13 @@ function Checkout() {
               </div>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-x-6">
-              <button
-                type="button"
-                className="text-sm/6 font-semibold text-gray-900"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Save
-              </button>
-            </div>
+           
           </form>
         </div>
 
         {/* cart summary code */}
         <div className="lg:col-span-2 ">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-0 sm:px-0 lg:px-0">
             <div className=" px-4 py-6 sm:px-6">
               <h1 className="text-4xl mb-5 font-bold tracking-tight text-gray-900">
                 Cart
@@ -332,7 +332,7 @@ function Checkout() {
               <div className="flow-root">
                 <ul role="list" className="-my-6 divide-y divide-gray-200">
                   {products.map((product) => (
-                    <li key={product.id} className="flex py-6">
+                    <li key={product.id} className="flex py-6 ">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                         <img
                           src={product.imageSrc}
@@ -395,12 +395,12 @@ function Checkout() {
                 Shipping and taxes calculated at checkout.
               </p>
               <div className="mt-6">
-                <a
-                  href="#"
+                <Link
+                  to="/payment"
                   className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                 >
-                  Checkout
-                </a>
+                  Pay and Order
+                </Link>
               </div>
               <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                 <p>
@@ -411,7 +411,7 @@ function Checkout() {
                       className="font-medium text-indigo-600 hover:text-indigo-500"
                       onClick={() => setOpen(false)}
                     >
-                      Continue Shopping
+                     Continue Shopping
                       <span aria-hidden="true"> &rarr;</span>
                     </button>
                   </Link>

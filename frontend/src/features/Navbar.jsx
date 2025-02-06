@@ -14,6 +14,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import logo from "../assets/cmpLogo.png";
 
 const user = {
   name: "Tom Cook",
@@ -41,7 +42,7 @@ function classNames(...classes) {
 export default function Navbar({ children }) {
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-800">
+      <Disclosure as="nav" className="bg-gray-800 fixed w-full z-10">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -63,8 +64,8 @@ export default function Navbar({ children }) {
               <div className="flex shrink-0 items-center">
                 <img
                   alt="Your Company"
-                  src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                  className="h-8 w-auto"
+                  src={logo}
+                  className="h-10 w-auto"
                 />
               </div>
               <div className="hidden sm:ml-6 sm:block">
@@ -151,11 +152,11 @@ export default function Navbar({ children }) {
           </div>
         </div>
         <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          {/* <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              E-Commerce
+            Wear Kart
             </h1>
-          </div>
+          </div> */}
         </header>
         <DisclosurePanel className="sm:hidden">
           <div className="space-y-1 px-2 pt-2 pb-3">
