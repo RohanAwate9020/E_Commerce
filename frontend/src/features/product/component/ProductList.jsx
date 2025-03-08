@@ -190,15 +190,20 @@ function classNames(...classes) {
 }
 
 export default function ProductList() {
-  const products = useSelector(selectAllProducts);
   const dispatch = useDispatch();
+  const products = useSelector(selectAllProducts);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filter, setFilter] = useState({});
 
   const handleFilter = (e, section, option) => {
-    const newFilter = { ...filter, [section.id]: option.value };
+    const newFilter = { ...filter };
+    if (e.target.checked) {
+      newFilter[section.id] = option.value;
+    } else {
+      delete newFilter[section.id];
+    }
+
     setFilter(newFilter);
-    dispatch(fetchProductsByFiltersAsync(filter));
     console.log(section.id);
   };
 
@@ -209,8 +214,8 @@ export default function ProductList() {
   };
 
   useEffect(() => {
-    dispatch(fetchAllProductsAsync());
-  }, [dispatch]);
+    dispatch(fetchProductsByFiltersAsync(filter));
+  }, [dispatch,filter]);
 
   return (
     <div>

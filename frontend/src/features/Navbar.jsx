@@ -14,7 +14,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import logo from "../assets/cmpLogo.png";
+import logo from "../assets/cmpLogoRed.png";
 
 const user = {
   name: "Tom Cook",
@@ -65,7 +65,7 @@ export default function Navbar({ children }) {
                 <img
                   alt="Your Company"
                   src={logo}
-                  className="h-10 w-auto"
+                  className="h-10 w-35"
                 />
               </div>
               <div className="hidden sm:ml-6 sm:block">
@@ -113,7 +113,7 @@ export default function Navbar({ children }) {
                     <span className="sr-only">Open user menu</span>
                     <img
                       alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src="./src/assets/NeonLogo.jpeg"
                       className="size-8 rounded-full"
                     />
                   </MenuButton>
