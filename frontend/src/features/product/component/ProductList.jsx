@@ -4,6 +4,7 @@ import {
   selectAllProducts,
   fetchAllProductsAsync,
   fetchProductsByFiltersAsync,
+  selectTotalItems,
 } from "../productSlice";
 import {
   Dialog,
@@ -27,6 +28,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../../../app/constant";
 
 // Product data
 
@@ -42,77 +44,77 @@ const filters = [
     id: "brand",
     name: "Brands",
     options: [
-      { value: "amazon", label: "Amazon", checked: false },
-      { value: "annibale_colombo", label: "Annibale Colombo", checked: false },
-      { value: "apple", label: "Apple", checked: false },
-      { value: "asus", label: "Asus", checked: false },
-      { value: "attitude", label: "Attitude", checked: false },
-      { value: "bath_trends", label: "Bath Trends", checked: false },
-      { value: "beats", label: "Beats", checked: false },
-      { value: "calvin_klein", label: "Calvin Klein", checked: false },
-      { value: "casual_comfort", label: "Casual Comfort", checked: false },
-      { value: "chanel", label: "Chanel", checked: false },
-      { value: "chic_cosmetics", label: "Chic Cosmetics", checked: false },
-      { value: "chrysler", label: "Chrysler", checked: false },
-      { value: "classic_wear", label: "Classic Wear", checked: false },
-      { value: "comfort_trends", label: "Comfort Trends", checked: false },
-      { value: "dell", label: "Dell", checked: false },
-      { value: "dior", label: "Dior", checked: false },
-      { value: "dodge", label: "Dodge", checked: false },
-      { value: "dolce_&_gabbana", label: "Dolce & Gabbana", checked: false },
+      { value: "Amazon", label: "Amazon", checked: false },
+      { value: "Annibale Colombo", label: "Annibale Colombo", checked: false },
+      { value: "Apple", label: "Apple", checked: false },
+      { value: "Asus", label: "Asus", checked: false },
+      { value: "Attitude", label: "Attitude", checked: false },
+      { value: "Bath Trends", label: "Bath Trends", checked: false },
+      { value: "Beats", label: "Beats", checked: false },
+      { value: "Calvin Klein", label: "Calvin Klein", checked: false },
+      { value: "Casual Comfort", label: "Casual Comfort", checked: false },
+      { value: "Chanel", label: "Chanel", checked: false },
+      { value: "Chic Cosmetics", label: "Chic Cosmetics", checked: false },
+      { value: "Chrysler", label: "Chrysler", checked: false },
+      { value: "Classic Wear", label: "Classic Wear", checked: false },
+      { value: "Comfort Trends", label: "Comfort Trends", checked: false },
+      { value: "Dell", label: "Dell", checked: false },
+      { value: "Dior", label: "Dior", checked: false },
+      { value: "Dodge", label: "Dodge", checked: false },
+      { value: "Dolce & Gabbana", label: "Dolce & Gabbana", checked: false },
       {
-        value: "elegance_collection",
+        value: "Elegance Collection",
         label: "Elegance Collection",
         checked: false,
       },
-      { value: "essence", label: "Essence", checked: false },
-      { value: "fashion_co", label: "Fashion Co.", checked: false },
-      { value: "fashion_diva", label: "Fashion Diva", checked: false },
-      { value: "fashion_express", label: "Fashion Express", checked: false },
-      { value: "fashion_fun", label: "Fashion Fun", checked: false },
-      { value: "fashion_gold", label: "Fashion Gold", checked: false },
-      { value: "fashion_shades", label: "Fashion Shades", checked: false },
+      { value: "Essence", label: "Essence", checked: false },
+      { value: "Fashion Co.", label: "Fashion Co.", checked: false },
+      { value: "Fashion Diva", label: "Fashion Diva", checked: false },
+      { value: "Fashion Express", label: "Fashion Express", checked: false },
+      { value: "Fashion Fun", label: "Fashion Fun", checked: false },
+      { value: "Fashion Gold", label: "Fashion Gold", checked: false },
+      { value: "Fashion Shades", label: "Fashion Shades", checked: false },
       {
-        value: "fashion_timepieces",
+        value: "Fashion Timepieces",
         label: "Fashion Timepieces",
         checked: false,
       },
-      { value: "fashion_trends", label: "Fashion Trends", checked: false },
-      { value: "fashionista", label: "Fashionista", checked: false },
-      { value: "furniture_co", label: "Furniture Co.", checked: false },
-      { value: "gadgetmaster", label: "GadgetMaster", checked: false },
-      { value: "generic_motors", label: "Generic Motors", checked: false },
-      { value: "gigabyte", label: "Gigabyte", checked: false },
-      { value: "glamour_beauty", label: "Glamour Beauty", checked: false },
-      { value: "gucci", label: "Gucci", checked: false },
-      { value: "heshe", label: "Heshe", checked: false },
-      { value: "huawei", label: "Huawei", checked: false },
-      { value: "iwc", label: "IWC", checked: false },
-      { value: "kawasaki", label: "Kawasaki", checked: false },
-      { value: "knoll", label: "Knoll", checked: false },
-      { value: "lenovo", label: "Lenovo", checked: false },
-      { value: "longines", label: "Longines", checked: false },
-      { value: "motogp", label: "MotoGP", checked: false },
-      { value: "nail_couture", label: "Nail Couture", checked: false },
-      { value: "nike", label: "Nike", checked: false },
-      { value: "off_white", label: "Off White", checked: false },
-      { value: "olay", label: "Olay", checked: false },
-      { value: "oppo", label: "Oppo", checked: false },
-      { value: "pampi", label: "Pampi", checked: false },
-      { value: "prada", label: "Prada", checked: false },
-      { value: "provision", label: "ProVision", checked: false },
-      { value: "puma", label: "Puma", checked: false },
-      { value: "realme", label: "Realme", checked: false },
-      { value: "rolex", label: "Rolex", checked: false },
-      { value: "samsung", label: "Samsung", checked: false },
-      { value: "scootmaster", label: "ScootMaster", checked: false },
-      { value: "snaptech", label: "SnapTech", checked: false },
-      { value: "speedmaster", label: "SpeedMaster", checked: false },
-      { value: "techgear", label: "TechGear", checked: false },
-      { value: "urban_chic", label: "Urban Chic", checked: false },
-      { value: "vaseline", label: "Vaseline", checked: false },
-      { value: "velvet_touch", label: "Velvet Touch", checked: false },
-      { value: "vivo", label: "Vivo", checked: false },
+      { value: "Fashion Trends", label: "Fashion Trends", checked: false },
+      { value: "Fashionista", label: "Fashionista", checked: false },
+      { value: "Furniture Co.", label: "Furniture Co.", checked: false },
+      { value: "GadgetMaster", label: "GadgetMaster", checked: false },
+      { value: "Generic Motors", label: "Generic Motors", checked: false },
+      { value: "Gigabyte", label: "Gigabyte", checked: false },
+      { value: "Glamour Beauty", label: "Glamour Beauty", checked: false },
+      { value: "Gucci", label: "Gucci", checked: false },
+      { value: "Heshe", label: "Heshe", checked: false },
+      { value: "Huawei", label: "Huawei", checked: false },
+      { value: "IWC", label: "IWC", checked: false },
+      { value: "Kawasaki", label: "Kawasaki", checked: false },
+      { value: "Knoll", label: "Knoll", checked: false },
+      { value: "Lenovo", label: "Lenovo", checked: false },
+      { value: "Longines", label: "Longines", checked: false },
+      { value: "MotoGP", label: "MotoGP", checked: false },
+      { value: "Nail Couture", label: "Nail Couture", checked: false },
+      { value: "Nike", label: "Nike", checked: false },
+      { value: "Off White", label: "Off White", checked: false },
+      { value: "Olay", label: "Olay", checked: false },
+      { value: "Oppo", label: "Oppo", checked: false },
+      { value: "Pampi", label: "Pampi", checked: false },
+      { value: "Prada", label: "Prada", checked: false },
+      { value: "ProVision", label: "ProVision", checked: false },
+      { value: "Puma", label: "Puma", checked: false },
+      { value: "Realme", label: "Realme", checked: false },
+      { value: "Rolex", label: "Rolex", checked: false },
+      { value: "Samsung", label: "Samsung", checked: false },
+      { value: "ScootMaster", label: "ScootMaster", checked: false },
+      { value: "SnapTech", label: "SnapTech", checked: false },
+      { value: "SpeedMaster", label: "SpeedMaster", checked: false },
+      { value: "TechGear", label: "TechGear", checked: false },
+      { value: "Urban Chic", label: "Urban Chic", checked: false },
+      { value: "Vaseline", label: "Vaseline", checked: false },
+      { value: "Velvet Touch", label: "Velvet Touch", checked: false },
+      { value: "Vivo", label: "Vivo", checked: false },
     ],
   },
 
@@ -192,36 +194,49 @@ function classNames(...classes) {
 export default function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts);
+  const totalItems = useSelector(selectTotalItems);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
+  const [page, setPage] = useState(1);
+  console.log("pro" + totalItems);
 
   const handleFilter = (e, section, option) => {
     const newFilter = { ...filter };
     if (e.target.checked) {
       if (newFilter[section.id]) {
-      newFilter[section.id].push(option.value);
-      }
-      else{
+        newFilter[section.id].push(option.value);
+      } else {
         newFilter[section.id] = [option.value];
       }
     } else {
-      const index= newFilter[section.id].findIndex(el => el ===option.value);
-      newFilter[section.id].splice(index,1)
+      const index = newFilter[section.id].findIndex(
+        (el) => el === option.value
+      );
+      newFilter[section.id].splice(index, 1);
     }
-
     console.log(newFilter);
     setFilter(newFilter);
   };
 
   const handleSort = (e, option) => {
-    const newSort = {_sort: option.sort, _order: option.order };
+    const newSort = { _sort: option.sort, _order: option.order };
     setSort(newSort); // Update state
   };
 
+  const handlePage = (page) => {
+    console.log(page);
+    setPage(page); // Update state
+  };
+
   useEffect(() => {
-    dispatch(fetchProductsByFiltersAsync({filter, sort}));
-  }, [dispatch, filter ,sort]);
+    const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
+  }, [dispatch, filter, sort, page]);
+
+  useEffect(() => {
+    setPage(1);
+  },[totalItems,sort])
 
   return (
     <div>
@@ -306,7 +321,12 @@ export default function ProductList() {
             </section>
 
             {/* pagination code below */}
-            <Pagination></Pagination>
+            <Pagination
+              page={page}
+              setPage={setPage}
+              handlePage={handlePage}
+              totalItems={totalItems}
+            ></Pagination>
           </main>
         </div>
       </div>
@@ -507,7 +527,7 @@ function DesktopFilter({ handleFilter }) {
     </form>
   );
 }
-function Pagination() {
+function Pagination({ handlePage, page, setPage, totalItems }) {
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
@@ -527,9 +547,10 @@ function Pagination() {
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">1</span> to{" "}
-            <span className="font-medium">10</span> of{" "}
-            <span className="font-medium">97</span> results
+            Showing{" "}
+            <span className="font-medium">{(page - 1) * ITEMS_PER_PAGE}</span>{" "}
+            to <span className="font-medium">{page * ITEMS_PER_PAGE > totalItems ? totalItems : page * ITEMS_PER_PAGE}</span> of{" "}
+            <span className="font-medium">{totalItems}</span> results
           </p>
         </div>
         <div>
@@ -545,46 +566,22 @@ function Pagination() {
               <ChevronLeftIcon aria-hidden="true" className="size-5" />
             </a>
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-            <a
-              href="#"
-              aria-current="page"
-              className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              1
-            </a>
-            <a
-              href="#"
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              2
-            </a>
-            <a
-              href="#"
-              className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-            >
-              3
-            </a>
-            <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">
-              ...
-            </span>
-            <a
-              href="#"
-              className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-            >
-              8
-            </a>
-            <a
-              href="#"
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              9
-            </a>
-            <a
-              href="#"
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              10
-            </a>
+            {Array.from({ length: Math.ceil(totalItems / ITEMS_PER_PAGE) }).map(
+              (el, index) => (
+                <div
+                  onClick={() => handlePage(index + 1)}
+                  aria-current="page"
+                  className={`relative z-10 cursor-pointer inline-flex items-center ${
+                    index + 1 === page
+                      ? "bg-indigo-600 text-white"
+                      : "text-gray-400"
+                  } px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                >
+                  {index + 1}
+                </div>
+              )
+            )}
+
             <a
               href="#"
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
