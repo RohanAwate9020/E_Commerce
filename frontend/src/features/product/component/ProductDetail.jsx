@@ -1,79 +1,61 @@
 import React from "react";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Radio, RadioGroup } from "@headlessui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductsByIDAsync, selectProductById } from "../productSlice";
+import { useParams } from "react-router-dom";
 
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "$192",
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Men", href: "#" },
-    { id: 2, name: "Clothing", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "XXS", inStock: false },
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "2XL", inStock: true },
-    { name: "3XL", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
-const reviews = { href: "#", average: 4, totalCount: 117 };
+const colors= [
+  { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
+  { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
+  { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
+]
+const sizes= [
+  { name: "XXS", inStock: false },
+  { name: "XS", inStock: true },
+  { name: "S", inStock: true },
+  { name: "M", inStock: true },
+  { name: "L", inStock: true },
+  { name: "XL", inStock: true },
+  { name: "2XL", inStock: true },
+  { name: "3XL", inStock: true },
+]
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function ProductDetail() {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+  const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const [selectedSize, setSelectedSize] = useState(sizes[2]);
+  const product= useSelector(selectProductById);
+  // const product = useSelector((state) => state.product.selectedProduct);
+
+  const params = useParams();
+  const dispatch = useDispatch();
+console.log("test",params)
+
+  useEffect(() => {
+    console.log("ProductDetail useEffect triggered. ID:", params.id);
+    dispatch(fetchProductsByIDAsync(params.id));
+  }, [dispatch,params.id ]);
+  
+  
+  
+
   return (
+    
     <div className="bg-white">
-      <div className="pt-6">
+      {product && (<div className="pt-6">
         <nav aria-label="Breadcrumb">
           <ol
             role="list"
             className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
           >
-            {product.breadcrumbs.map((breadcrumb) => (
+            {/* {product.breadcrumbs && product.breadcrumbs.map((breadcrumb) => (
               <li key={breadcrumb.id}>
                 <div className="flex items-center">
                   <a
@@ -94,14 +76,14 @@ function ProductDetail() {
                   </svg>
                 </div>
               </li>
-            ))}
+            ))} */}
             <li className="text-sm">
               <a
-                href={product.href}
+                // href={product.href}
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
-                {product.name}
+                {product.title}
               </a>
             </li>
           </ol>
@@ -110,25 +92,22 @@ function ProductDetail() {
         {/* Image gallery */}
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <img
-            alt={product.images[0].alt}
-            src={product.images[0].src}
+        
+            src={product.images}
             className="hidden size-full rounded-lg object-cover lg:block"
           />
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <img
-              alt={product.images[1].alt}
-              src={product.images[1].src}
+             src={product.images}
               className="aspect-3/2 w-full rounded-lg object-cover"
             />
             <img
-              alt={product.images[2].alt}
-              src={product.images[2].src}
+              src={product.images}
               className="aspect-3/2 w-full rounded-lg object-cover"
             />
           </div>
           <img
-            alt={product.images[3].alt}
-            src={product.images[3].src}
+           src={product.images}
             className="aspect-4/5 size-full object-cover sm:rounded-lg lg:aspect-auto"
           />
         </div>
@@ -137,7 +116,7 @@ function ProductDetail() {
         <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              {product.name}
+              {product.title}
             </h1>
           </div>
 
@@ -145,7 +124,7 @@ function ProductDetail() {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
-              {product.price}
+              ${product.price}
             </p>
 
             {/* Reviews */}
@@ -158,7 +137,7 @@ function ProductDetail() {
                       key={rating}
                       aria-hidden="true"
                       className={classNames(
-                        reviews.average > rating
+                        product.rating > rating
                           ? "text-gray-900"
                           : "text-gray-200",
                         "size-5 shrink-0"
@@ -166,13 +145,8 @@ function ProductDetail() {
                     />
                   ))}
                 </div>
-                <p className="sr-only">{reviews.average} out of 5 stars</p>
-                <a
-                  href={reviews.href}
-                  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  {reviews.totalCount} reviews
-                </a>
+                <p className="sr-only text-gray-900">{product.rating} out of 5 stars</p>
+               
               </div>
             </div>
 
@@ -187,7 +161,7 @@ function ProductDetail() {
                     onChange={setSelectedColor}
                     className="flex items-center gap-x-3"
                   >
-                    {product.colors.map((color) => (
+                    {colors.map((color) => (
                       <Radio
                         key={color.name}
                         value={color}
@@ -228,7 +202,7 @@ function ProductDetail() {
                     onChange={setSelectedSize}
                     className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
                   >
-                    {product.sizes.map((size) => (
+                    {sizes.map((size) => (
                       <Radio
                         key={size.name}
                         value={size}
@@ -297,7 +271,7 @@ function ProductDetail() {
 
               <div className="mt-4">
                 <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                  {product.highlights.map((highlight) => (
+                  {product.highlights &&  product.highlights.map((highlight) => (
                     <li key={highlight} className="text-gray-400">
                       <span className="text-gray-600">{highlight}</span>
                     </li>
@@ -310,12 +284,12 @@ function ProductDetail() {
               <h2 className="text-sm font-medium text-gray-900">Details</h2>
 
               <div className="mt-4 space-y-6">
-                <p className="text-sm text-gray-600">{product.details}</p>
+                <p className="text-sm text-gray-600">{product.description}</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 }

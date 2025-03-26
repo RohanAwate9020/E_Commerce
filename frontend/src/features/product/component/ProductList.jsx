@@ -83,7 +83,7 @@ export default function ProductList() {
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
-  console.log("pro" + totalItems);
+ 
 
   const filters = [
     {
@@ -528,7 +528,7 @@ function ProductGrid({ products }) {
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {products.map((product) => (
-            <Link to="product-detail">
+            <Link to={`/product-detail/${product.id}`}>
               <div
                 key={product.id}
                 className="group relative p-2 border-solid border-2 border-gray-200 rounded-lg"
@@ -551,14 +551,14 @@ function ProductGrid({ products }) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      Rs.{" "}
+                      $ {" "}
                       {(
                         product.price *
                         (1 - product.discountPercentage / 100)
                       ).toFixed(2)}
                     </p>
                     <p className="text-sm font-medium text-gray-400 line-through">
-                      Rs. {product.price}
+                      $ {product.price}
                     </p>
                   </div>
                 </div>

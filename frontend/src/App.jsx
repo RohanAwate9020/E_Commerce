@@ -17,6 +17,8 @@ import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
+import ProductDetail from "./features/product/component/ProductDetail";
+import ProductDetailPage from "./pages/ProductDetailsPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -41,8 +43,8 @@ function App() {
       element: <Checkout />,
     },
     {
-      path: "/product-detail",
-      element: <ProductDetailsPage />,
+      path: "/product-detail/:id",
+      element: <ProductDetailPage />,
     },
   ]);
 
