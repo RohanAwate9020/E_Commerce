@@ -19,12 +19,13 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import ProductDetail from "./features/product/component/ProductDetail";
 import ProductDetailPage from "./pages/ProductDetailsPage";
+import Protected from "./features/auth/components/Protected";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <Protected><Home ></Home></Protected>,
     },
     {
       path: "/login",
@@ -36,15 +37,15 @@ function App() {
     },
     {
       path: "/cart",
-      element: <CartPage />,
+      element: <Protected><CartPage></CartPage></Protected>,
     },
     {
       path: "/checkout",
-      element: <Checkout />,
+      element: <Protected><Checkout ></Checkout ></Protected>,
     },
     {
       path: "/product-detail/:id",
-      element: <ProductDetailPage />,
+      element: <Protected><ProductDetailPage ></ProductDetailPage></Protected>,
     },
   ]);
 
