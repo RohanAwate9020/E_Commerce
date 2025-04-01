@@ -8,7 +8,6 @@ export function fetchAllProducts() {
 
 export function fetchProductsByID(id) {
   return new Promise(async (resolve) => {
-    console.log("API call")
     const response = await fetch("http://localhost:8080/products/"+id);
     const data = await response.json();
    

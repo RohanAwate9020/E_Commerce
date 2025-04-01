@@ -25,14 +25,12 @@ const user = {
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
+ 
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", link: "#" },
+  { name: "Settings", link: "#" },
+  { name: "Sign out", link: "#" },
 ];
 
 function classNames(...classes) {
@@ -123,28 +121,28 @@ export default function Navbar({ children }) {
                   className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
                 >
                   <MenuItem>
-                    <a
-                      href="#"
+                    <Link
+                      to={"/profile"}
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >
                       Your Profile
-                    </a>
+                    </Link>
                   </MenuItem>
                   <MenuItem>
-                    <a
-                      href="#"
+                    <Link
+                      to={"/settings"}
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >
                       Settings
-                    </a>
+                    </Link>
                   </MenuItem>
                   <MenuItem>
-                    <a
-                      href="#"
+                    <Link
+                      to={"/login"}
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >
                       Sign out
-                    </a>
+                    </Link>
                   </MenuItem>
                 </MenuItems>
               </Menu>

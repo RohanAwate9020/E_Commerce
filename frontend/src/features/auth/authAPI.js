@@ -23,11 +23,11 @@ export function checkUser(loginInfo) {
         if(data[0].password===password){
           resolve({data:data[0]});
         }else{
-          reject({message:"Password is incorrect"});
+          reject({message:"Password is incorrect."});
         }
       }
         else{
-          reject({message:"User not found"});
+          reject({message:"User not found."});
         }
    
  } );

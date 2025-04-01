@@ -14,10 +14,8 @@ const initialState = {
 export const fetchProductsByIDAsync = createAsyncThunk(
   'product/fetchProductsByID',
   async (id) => {
-    console.log("Slice id:",id)
     const response = await fetchProductsByID(id);
     // The value we return becomes the `fulfilled` action payload
-    console.log("Slice res:",response.data)
     return response.data;
   }
 );
@@ -104,12 +102,10 @@ export const productSlice = createSlice({
       })
       .addCase(fetchProductsByIDAsync.pending, (state) => {
         state.status = 'loading';
-        console.log("Slice pending")
       })
       .addCase(fetchProductsByIDAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.selectedProduct = action.payload;
-        console.log("Slice:",action.payload)
       })
   },
 });

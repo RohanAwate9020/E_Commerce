@@ -1,11 +1,17 @@
-export function fetchCount(amount = 1) {
-    return new Promise(async (resolve) =>{
-      const response = await fetch('http://localhost:8080') 
-      const data = await response.json()
-      resolve({data})
-    }
-    );
+export function addToCart(item) {
+  return new Promise(async (resolve) =>{
+    const response = await fetch('http://localhost:8080/carts' ,{
+    method:"POST",
+    body:JSON.stringify(item),
+    headers:{
+      'Content-Type': 'application/json'}
+    })
+    const data= await response.json()
+    resolve({data})
   }
+  );
+}
+
 
   // let addJob = () => {
   //   axios
