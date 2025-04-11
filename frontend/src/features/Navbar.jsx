@@ -15,6 +15,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import logo from "../assets/cmpLogoRed.png";
+import {selectItems} from "../features/cart/cartSlice";
+import { useSelector } from "react-redux";
 
 const user = {
   name: "Tom Cook",
@@ -38,6 +40,9 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ children }) {
+const items=useSelector(selectItems);
+// const items=[];
+
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800  w-full z-10">
@@ -98,9 +103,9 @@ export default function Navbar({ children }) {
               </button>
               </Link>
               <Link to="cart">
-              <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
-                3
-              </span>
+              {items.length>0 && <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+                {items?.length}
+              </span>}
               </Link>
               
               {/* Profile dropdown */}

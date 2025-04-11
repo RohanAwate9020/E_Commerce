@@ -8,6 +8,7 @@ import { fetchProductsByIDAsync, selectProductById } from "../productSlice";
 import { useParams } from "react-router-dom";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { addToCartAsync } from "../../cart/cartSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 const colors= [
   { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
@@ -39,7 +40,7 @@ function ProductDetail() {
   const params = useParams();
 
   const handleCart=(e)=>{
-    dispatch(addToCartAsync({...product,quantity:1,userId:user.id}));
+    dispatch(addToCartAsync({...product,quantity:1,userId:user.id,id:uuidv4()}));
     e.preventDefault();
   }
 
