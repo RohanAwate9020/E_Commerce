@@ -279,9 +279,9 @@ function MobileFilter({
           <form className="mt-4 border-t border-gray-200">
             <h3 className="sr-only">Categories</h3>
 
-            {filters.map((section) => (
+            {filters.map((section,index) => (
               <Disclosure
-                key={section.id}
+                key={index}
                 as="div"
                 className="border-t border-gray-200 px-4 py-6"
               >
