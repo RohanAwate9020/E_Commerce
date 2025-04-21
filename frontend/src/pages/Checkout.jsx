@@ -12,7 +12,7 @@ import {
   selectLoggedInUser,
   updateUserAsync,
 } from "../features/auth/authSlice";
-import { createOrderAsync } from "../features/orders/orderSlice";
+import { createOrderAsync, selectCurrentOrder } from "../features/orders/orderSlice";
 
 // cart summary data
 
@@ -31,6 +31,7 @@ function Checkout() {
   const user = useSelector(selectLoggedInUser);
   const [selectedAddress, setselectedAddress] = useState(null);
   const [paymentMethod, setpaymentMethod] = useState("card");
+  const currentOrder = useSelector(selectCurrentOrder);
 
   const {
     register,
@@ -68,12 +69,14 @@ function Checkout() {
       user,
       paymentMethod,
       selectedAddress,
+      status: "pending",
     };
     dispatch(createOrderAsync(order));
   };
   return (
     <>
       {!products.length && <Navigate to="/" replace="true" />}
+      {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace="true" />} ``
       <div className="mx-auto mt-12  max-w-7xl px-4 sm:px-6 lg:px-8  ">
         <div className="grid grid-cols-1 gap-y-10  lg:grid-cols-5 bg-white rounded-xl">
           {/* personal information form */}

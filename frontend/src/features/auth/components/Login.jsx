@@ -15,10 +15,13 @@ export default function Login() {
   } = useForm();
   const error = useSelector(selectError);
   const user= useSelector(selectLoggedInUser);
+  if (user) {
+    localStorage.setItem("user",user.email)
+  }
 
   return (
     <>
-    {user && <Navigate to="/" replace={true}/>}
+    {user && <Navigate to="/home" replace={true}/>}
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img

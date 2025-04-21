@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignupPage from "./pages/SignupPage";
 import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
@@ -14,11 +11,13 @@ import ProductDetailPage from "./pages/ProductDetailsPage";
 import Protected from "./features/auth/components/Protected";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import { selectLoggedInUser } from "./features/auth/authSlice"; // assuming this selector exists
+import PageNotFound from "./pages/404";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 // import { selectLoggedInUser } from "../authSlice";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/home",
     element: (
       <Protected>
         <Home />
@@ -56,6 +55,14 @@ const router = createBrowserRouter([
         <ProductDetailPage />
       </Protected>
     ),
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
+  },
+  {
+    path: "/order-success/:id",
+    element: <OrderSuccessPage />,
   },
 ]);
 

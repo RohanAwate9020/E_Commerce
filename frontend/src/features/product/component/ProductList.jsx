@@ -83,7 +83,6 @@ export default function ProductList() {
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
- 
 
   const filters = [
     {
@@ -279,7 +278,7 @@ function MobileFilter({
           <form className="mt-4 border-t border-gray-200">
             <h3 className="sr-only">Categories</h3>
 
-            {filters.map((section,index) => (
+            {filters.map((section, index) => (
               <Disclosure
                 key={index}
                 as="div"
@@ -465,7 +464,7 @@ function Pagination({ handlePage, page, setPage, totalItems }) {
           Next
         </div>
       </div>
-      
+
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
@@ -551,7 +550,7 @@ function ProductGrid({ products }) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      $ {" "}
+                      ${" "}
                       {(
                         product.price *
                         (1 - product.discountPercentage / 100)
