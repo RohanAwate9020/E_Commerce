@@ -31,7 +31,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: "Your Profile", link: "/profile" },
-  { name: "Settings", link: "#" },
+  { name: "My Orders", link: "/orders" },
   { name: "Sign out", link: "#" },
 ];
 
@@ -135,10 +135,10 @@ const items=useSelector(selectItems);
                   </MenuItem>
                   <MenuItem>
                     <Link
-                      to={"/settings"}
+                      to={"/orders"}
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >
-                      Settings
+                      My Orders
                     </Link>
                   </MenuItem>
                   <MenuItem>

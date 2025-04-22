@@ -299,7 +299,7 @@ function Checkout() {
                               {address.name}
                             </p>
                             <p className="mt-1 truncate text-xs/5 text-gray-500">
-                              {address.street}
+                              {address.streetName}
                             </p>
                             <p className="mt-1 truncate text-xs/5 text-gray-500">
                               {address.pinCode}
@@ -308,10 +308,10 @@ function Checkout() {
                         </div>
                         <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                           <p className="text-sm/6 text-gray-900">
-                            Phone: {address.phone}
+                            Phone: {address.mobile}
                           </p>
                           <p className="text-sm/6 text-gray-500">
-                            {address.pinCode}
+                            {address.City}
                           </p>
                         </div>
                       </li>
