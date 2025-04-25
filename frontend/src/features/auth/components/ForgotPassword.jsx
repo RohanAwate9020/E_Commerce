@@ -4,24 +4,17 @@ import { useForm } from "react-hook-form";
 import { checkUserAsync, selectError, selectLoggedInUser } from "../authSlice";
 import { Link, Navigate } from "react-router-dom";
 
-export default function Login() {
-  // const count = useSelector();
-  const dispatch = useDispatch();
+export default function ForgotPassword() {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const error = useSelector(selectError);
-  const user = useSelector(selectLoggedInUser);
-  if (user) {
-    localStorage.setItem("user", user.email);
-  }
+ 
 
   return (
     <>
-      {user && <Navigate to="/home" replace={true} />}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -30,7 +23,7 @@ export default function Login() {
             className="mx-auto h-10 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-            Login in to your account
+            Enter email to reset password
           </h2>
         </div>
 
@@ -71,58 +64,22 @@ export default function Login() {
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <Link
-                    to="/forgot-password"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  {...register("password", {
-                    required: "Please enter correct password",
-                    pattern: {
-                      value:
-                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-                      message:
-                        "Password must have at least 8 characters, one uppercase, one lowercase, and one number.",
-                    },
-                  })}
-                  type="password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-                {error && <p className="text-red-500 mt-1">{error.message}</p>}
-              </div>
-            </div>
-
-            <div>
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                Send reset link
               </button>
             </div>
           </form>
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Not a member?{" "}
+            Send me back to{" "}
             <Link
-              to="/signup"
+              to="/login"
               className="font-semibold text-indigo-600 hover:text-indigo-500"
             >
-              Create an account
+              Login
             </Link>
           </p>
         </div>

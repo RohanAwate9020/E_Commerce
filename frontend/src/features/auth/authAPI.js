@@ -31,6 +31,13 @@ export function checkUser(loginInfo) {
 }
 
 
+export function signOut(userId) {
+  return new Promise(async (resolve, reject) => {
+   resolve({ message: "User signed out." });
+  });
+}
+
+
 // let addJob = () => {
 //   axios
 //     .post(`${process.env.REACT_APP_CRUD_SINGLE_JOB_URL}`, newJob, config)

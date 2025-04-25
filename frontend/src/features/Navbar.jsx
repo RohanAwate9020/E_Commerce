@@ -13,10 +13,11 @@ import {
   ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "../assets/cmpLogoRed.png";
-import {selectItems} from "../features/cart/cartSlice";
-import { useSelector } from "react-redux";
+import { selectItems } from "../features/cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLoggedInUser, signOutAsync } from "./auth/authSlice";
 
 const user = {
   name: "Tom Cook",
@@ -27,7 +28,6 @@ const user = {
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Team", href: "#", current: false },
- 
 ];
 const userNavigation = [
   { name: "Your Profile", link: "/profile" },
@@ -40,8 +40,16 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ children }) {
-const items=useSelector(selectItems);
-// const items=[];
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  const user = useSelector(selectLoggedInUser);
+  
+  const handleSignOut = () => {
+    dispatch(signOutAsync(user.id));
+    Navigate("/login");
+  };
+  const items = useSelector(selectItems);
+  // const items=[];
 
   return (
     <>
@@ -65,11 +73,7 @@ const items=useSelector(selectItems);
             </div>
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex shrink-0 items-center">
-                <img
-                  alt="Your Company"
-                  src={logo}
-                  className="h-10 w-35"
-                />
+                <img alt="Your Company" src={logo} className="h-10 w-35" />
               </div>
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
@@ -93,21 +97,23 @@ const items=useSelector(selectItems);
             </div>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <Link to="/cart">
-              <button
-                type="button"
-                className="relative rounded-full p-1 text-gray-400 hover:text-white focus:ring-1 focus:ring-white"
-              >
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">View notifications</span>
-                <ShoppingCartIcon aria-hidden="true" className="size-6" />
-              </button>
+                <button
+                  type="button"
+                  className="relative rounded-full p-1 text-gray-400 hover:text-white focus:ring-1 focus:ring-white"
+                >
+                  <span className="absolute -inset-1.5" />
+                  <span className="sr-only">View notifications</span>
+                  <ShoppingCartIcon aria-hidden="true" className="size-6" />
+                </button>
               </Link>
               <Link to="cart">
-              {items.length>0 && <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
-                {items?.length}
-              </span>}
+                {items.length > 0 && (
+                  <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+                    {items?.length}
+                  </span>
+                )}
               </Link>
-              
+
               {/* Profile dropdown */}
               <Menu as="div" className="relative ml-3">
                 <div>
@@ -142,12 +148,12 @@ const items=useSelector(selectItems);
                     </Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link
-                      to={"/login"}
+                    <button
+                      onClick={handleSignOut}
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >
                       Sign out
-                    </Link>
+                    </button>
                   </MenuItem>
                 </MenuItems>
               </Menu>
