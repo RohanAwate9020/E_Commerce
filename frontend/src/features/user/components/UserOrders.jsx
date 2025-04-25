@@ -24,6 +24,7 @@ export default function UserOrders() {
               </h1>
               <h3 className="text-xl my-5 font-semibold tracking-tight text-red-900">
                 Order status : {order.status}
+                
               </h3>
               <div className="flow-root">
                 <ul role="list" className="-my-6 divide-y divide-gray-200">
@@ -101,6 +102,7 @@ export default function UserOrders() {
                             {order?.selectedAddress?.City}
                           </p>
                         </div>
+                        
                       </div>
                   </div>
                 </ul>

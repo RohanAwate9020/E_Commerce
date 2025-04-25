@@ -13,6 +13,7 @@ import {
   updateUserAsync,
 } from "../features/auth/authSlice";
 import { createOrderAsync, selectCurrentOrder } from "../features/orders/orderSlice";
+import { selectUserInfo } from "../features/user/userSlice";
 
 // cart summary data
 
@@ -28,7 +29,7 @@ function Checkout() {
     (amount, product) => amount + product.price * product.quantity,
     0
   );
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
   const [selectedAddress, setselectedAddress] = useState(null);
   const [paymentMethod, setpaymentMethod] = useState("card");
   const currentOrder = useSelector(selectCurrentOrder);
