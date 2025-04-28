@@ -19,15 +19,10 @@ import { selectItems } from "../features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser, signOutAsync } from "./auth/authSlice";
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Team", href: "#", current: false },
+  { name: "Dashboard", link: "/",user: true },
+  { name: "Home", link: "/home", user: true},
+  { name: "Admin", link: "/admin/home", admin: true },
 ];
 const userNavigation = [
   { name: "Your Profile", link: "/profile" },
@@ -78,9 +73,9 @@ export default function Navbar({ children }) {
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
                   {navigation.map((item) => (
-                    <Link
+                    item[user.role] ? <Link
                       key={item.name}
-                      to={item.href}
+                      to={item.link}
                       aria-current={item.current ? "page" : undefined}
                       className={classNames(
                         item.current
@@ -90,7 +85,7 @@ export default function Navbar({ children }) {
                       )}
                     >
                       {item.name}
-                    </Link>
+                    </Link>:null
                   ))}
                 </div>
               </div>
@@ -170,10 +165,10 @@ export default function Navbar({ children }) {
         <DisclosurePanel className="sm:hidden">
           <div className="space-y-1 px-2 pt-2 pb-3">
             {navigation.map((item) => (
-              <DisclosureButton
+              item[user.role] ? <DisclosureButton
                 key={item.name}
                 as="a"
-                href={item.href}
+                href={item.link}
                 aria-current={item.current ? "page" : undefined}
                 className={classNames(
                   item.current
@@ -183,7 +178,7 @@ export default function Navbar({ children }) {
                 )}
               >
                 {item.name}
-              </DisclosureButton>
+              </DisclosureButton>:null
             ))}
           </div>
         </DisclosurePanel>
