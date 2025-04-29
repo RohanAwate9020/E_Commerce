@@ -7,8 +7,11 @@ function Protected({ children }) {
     const user = localStorage.getItem("user") || useSelector(selectLoggedInUser);
 
     if (!user) {
-        return <Navigate to="/login" replace={true}/>;
-    }
+            return <Navigate to="/login" replace={true}/>;
+        }
+        if ( user !== "user") {
+            return <Navigate to="/admin/home" replace={true}/>;
+        }
     
     return children;
 }

@@ -54,6 +54,7 @@ export default function Login() {
               <div className="mt-2">
                 <input
                   id="email"
+                  
                   {...register("email", {
                     required: "Please enter valid email address.",
                     pattern: {

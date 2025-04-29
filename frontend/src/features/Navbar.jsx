@@ -73,7 +73,7 @@ export default function Navbar({ children }) {
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
                   {navigation.map((item) => (
-                    item[user.role] ? <Link
+                    item[user?.role] ? <Link
                       key={item.name}
                       to={item.link}
                       aria-current={item.current ? "page" : undefined}
@@ -165,10 +165,10 @@ export default function Navbar({ children }) {
         <DisclosurePanel className="sm:hidden">
           <div className="space-y-1 px-2 pt-2 pb-3">
             {navigation.map((item) => (
-              item[user.role] ? <DisclosureButton
+              item[user?.role] ? <DisclosureButton
                 key={item.name}
                 as="a"
-                href={item.link}
+                to={item.link}
                 aria-current={item.current ? "page" : undefined}
                 className={classNames(
                   item.current
