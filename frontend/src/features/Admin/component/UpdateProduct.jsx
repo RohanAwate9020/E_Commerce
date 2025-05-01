@@ -1,53 +1,67 @@
-import React, { useState } from "react";
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
-import { useDispatch, useSelector } from "react-redux";
-import { createProductAsync, selectBrands, selectCategories } from "../../product/productSlice";
-import { set, useForm } from "react-hook-form";
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
 
-export default function ProductForm() {
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createProductAsync,
+  fetchProductsByIDAsync,
+  selectBrands,
+  selectCategories,
+  selectProductById,
+  updateProductAsync,
+} from "../../product/productSlice";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+
+export default function UpdateProduct() {
   const categories = useSelector(selectCategories);
   const brandsList = useSelector(selectBrands);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const id = useParams().id;
 
   const {
     register,
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  // const [thumbnail, setThumbnail] = useState(null);
-  // const handleCoverImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file && file.type.startsWith("image/")) {
-  //     setThumbnail(file); // store actual File object
-  //   } else {
-  //     setThumbnail(null);
-  //   }
-  // };
-  // const [images, setImages] = useState([]);
+  useEffect(() => {
+    dispatch(fetchProductsByIDAsync(id));
+  }, [dispatch, id]);
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file && file.type.startsWith("image/")) {
-  //     const newImage = {
-  //       file,
-  //       preview: URL.createObjectURL(file),
-  //     };
-  //     setImages((prev) => [...prev, newImage]);
-  //   }
-  // };
+  const product = useSelector(selectProductById);
 
-  const handleCancel =()=>{
+
+  useEffect(() => {
+    if (product) {
+      setValue("id", product.id);
+      setValue("title", product.title);
+      setValue("description", product.description);
+      setValue("brand", product.brand);
+      setValue("category", product.category);
+      setValue("price", product.price);
+      setValue("discountPercentage", product.discountPercentage);
+      setValue("stock", product.stock);
+      setValue("minimumOrderQuantity", product.minimumOrderQuantity);
+      setValue("warrantyInformation", product.warrantyInformation);
+      setValue("shippingInformation", product.shippingInformation);
+      setValue("returnPolicy", product.returnPolicy);
+      setValue("thumbnail", product.thumbnail);
+      setValue("images", product.images || []);
+      setValue("rating", product.rating || 0);
+      setValue("reviews", product.reviews || []);
+    }
+  }, [selectProductById, setValue]);
+
+  const handleCancel = () => {
     reset();
-    setInputs([""]); // Reset inputs to one empty field
-    setImages([]); // Reset images to an empty array
+
     navigate("/admin/home"); // Redirect to the products page
-  }
+  };
 
   const [inputs, setInputs] = useState([""]); // Start with one input
   const [images, setImages] = useState([]);
@@ -58,16 +72,6 @@ export default function ProductForm() {
     setInputs(newInputs);
   };
 
-  const handleAddImage = (index) => {
-    const url = inputs[index].trim();
-    if (url !== "") {
-      setImages((prev) => [...prev, url]);
-
-      // Add another empty input field
-      setInputs((prev) => [...prev, ""]);
-    }
-  };
-
   return (
     <div className="mx-auto mt-12 bg-white max-w-7xl p-12 sm:px-6 lg:px-8">
       <form
@@ -75,17 +79,14 @@ export default function ProductForm() {
         onSubmit={handleSubmit((data) => {
           const product = {
             ...data,
-            images: [...images],
-            rating: 0,
-            reviews: [],
           };
+          console.log("Product data:", product);
+          dispatch(updateProductAsync(product));
+          reset();
+          // setInputs([""]); // Reset inputs to one empty field
+          // setImages([]); // Reset images to an empty array
+          console.error("Product created successfully");
 
-            dispatch(createProductAsync(product));
-            reset();
-            setInputs([""]); // Reset inputs to one empty field
-            setImages([]); // Reset images to an empty array
-            console.error("Product created successfully");
-            
           // checkUserAsync({ email: data.email, password: data.password })
         })}
       >
@@ -339,183 +340,26 @@ export default function ProductForm() {
                 </div>
               </div>
 
-              {/* <div className="sm:col-span-full">
-                <label
-                  htmlFor="images"
-                  className="block text-sm/6 font-medium text-gray-900"
-                >
-                  Images
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="images"
-                    name="images"
-                    type="text"
-                    
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
-                  <button
-                  className=""
-                  onClick={(e)=>handleImageChange(e.target.value)}>
-                    Add Image
-                  </button>
-                </div>
-              </div> */}
-
               <div className="sm:col-span-full">
                 <label className="block text-sm font-medium text-gray-900 mb-2">
                   Images
                 </label>
                 <div className="space-y-2">
-                  {inputs.map((input, index) => (
+                  {product?.images?.map((img, index) => (
                     <div key={index} className="flex gap-2">
                       <input
                         type="text"
-                        value={input}
-                        onChange={(e) =>
-                          handleInputChange(index, e.target.value)
-                        }
+                        defaultValue={img}
+                        {...register(`images.${index}`, {
+                          required: "Please enter link of image.",
+                        })}
                         className="flex-1 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
                         placeholder={`Image URL ${index + 1}`}
                       />
-                      <button
-                        type="button"
-                        onClick={() => handleAddImage(index)}
-                        className="px-3 py-1 bg-indigo-600 text-white rounded"
-                      >
-                        Add
-                      </button>
                     </div>
                   ))}
                 </div>
               </div>
-
-              {/* 
-              Dirrect Image Upload Code
-              <div className="col-span-full">
-                <label
-                  htmlFor="thumbnail"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  Thumbnail
-                </label>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 py-5">
-                  <div className="text-center">
-                    {thumbnail === null ? (
-                      <div>
-                        <svg
-                          className="mx-auto size-12 text-gray-300"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <div className="mt-4 flex text-sm text-gray-600">
-                          <label
-                            htmlFor="thumbnail"
-                            className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 hover:text-indigo-500"
-                          >
-                            <span>Upload a file</span>
-                            <input
-                              id="thumbnail"
-                              required="true"
-                              name="thumbnail"
-                              type="file"
-                              className="sr-only"
-                              accept="image/*"
-                              onChange={handleCoverImageChange}
-                            />
-                          </label>
-                          <p className="pl-1">or drag and drop</p>
-                        </div>
-                        <p className="text-xs text-gray-600">
-                          PNG, JPG, GIF up to 10MB
-                        </p>
-                      </div>
-                    ) : null}
-                    {thumbnail && (
-                      <div className="mt-4">
-                        <img
-                          src={thumbnail}
-                          alt="thumbnail"
-                          className="mx-auto max-h-48 rounded-md"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="col-span-full">
-                <label
-                  htmlFor="images"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  Images
-                </label>
-
-                <div className="mt-2 rounded-lg border border-dashed border-gray-900/25 py-5">
-                  <div className="text-center">
-                    {images.length === 0 && (
-                      <div>
-                        <svg
-                          className="mx-auto size-12 text-gray-300"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <p className="mt-2 text-sm text-gray-600">
-                          No images uploaded yet.
-                        </p>
-                      </div>
-                    )}
-
-                    <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {images.map((img, index) => (
-                        <img
-                          key={index}
-
-                          src={thumbnail}
-                          alt={`Uploaded preview ${index}`}
-                          className="mx-auto max-h-48 rounded-md"
-                        />
-                      ))}
-                    </div>
-
-                    <div className="mt-6 flex justify-center">
-                      <label
-                        htmlFor="file-upload"
-                        className="cursor-pointer rounded-md bg-white font-semibold text-indigo-600 hover:text-indigo-500"
-                      >
-                        <span>Add Image</span>
-                        <input
-                          id="file-upload"
-                          required="true"
-                          name="file-upload"
-                          type="file"
-                          className="sr-only"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                        />
-                      </label>
-                    </div>
-
-                    <p className="mt-2 text-xs text-gray-600">
-                      PNG, JPG, GIF up to 10MB each
-                    </p>
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
@@ -532,7 +376,7 @@ export default function ProductForm() {
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Save
+            Update
           </button>
         </div>
       </form>

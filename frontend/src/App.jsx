@@ -21,6 +21,7 @@ import AdminHome from "./pages/AdminHome";
 import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
 import AdminProductDetailPage from "./pages/AdminProductDetailsPage";
 import AdminProdcutFormPage from "./pages/AdminProdcutFormPage";
+import AdminUpdateProduct from "./pages/adminUpdateProduct";
 
 // import { selectLoggedInUser } from "../authSlice";
 
@@ -90,6 +91,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedAdmin>
         <AdminProdcutFormPage />
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: "/admin/update-product/:id",
+    element: (
+      <ProtectedAdmin>
+        <AdminUpdateProduct />
       </ProtectedAdmin>
     ),
   },

@@ -31,7 +31,7 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ITEMS_PER_PAGE } from "../../../app/constant";
 import { fetchBrands, fetchCategories } from "../../product/productAPI";
 
@@ -75,6 +75,7 @@ function classNames(...classes) {
 
 export default function AdminProductList() {
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const products = useSelector(selectAllProducts);
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
@@ -125,6 +126,11 @@ export default function AdminProductList() {
     console.log(page);
     setPage(page); // Update state
   };
+
+  
+  const handleEditProduct=(id)=>{
+    navigate(`/admin/update-product/${id}`);
+  }
 
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
@@ -226,7 +232,7 @@ export default function AdminProductList() {
                     + Add New Product
                  
                   </Link>
-                  <ProductGrid products={products}></ProductGrid>
+                  <ProductGrid products={products} handleEditProduct={handleEditProduct}></ProductGrid>
                 </div>
               </div>
             </section>
@@ -524,7 +530,7 @@ function Pagination({ handlePage, page, setPage, totalItems }) {
     </div>
   );
 }
-function ProductGrid({ products }) {
+function ProductGrid({ products,handleEditProduct  }) {
   return (
     //  from here below is Products list code
 
@@ -532,6 +538,7 @@ function ProductGrid({ products }) {
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {products.map((product) => (
+            <div>
             <Link to={`/admin/product-detail/${product.id}`}>
               <div
                 key={product.id}
@@ -566,13 +573,16 @@ function ProductGrid({ products }) {
                     </p>
                   </div>
                 </div>
-               <div>
-                <button className=" w-full mt-2 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+               
+              </div>
+            </Link>
+            <div>
+                <button className=" w-full mt-2 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={()=>handleEditProduct(product.id)}>
                   Edit Product
                 </button>
                </div>
-              </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
