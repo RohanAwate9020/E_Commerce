@@ -31,7 +31,7 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ITEMS_PER_PAGE } from "../../../app/constant";
 import { fetchBrands, fetchCategories } from "../../product/productAPI";
 
@@ -44,30 +44,7 @@ const sortOptions = [
   { name: "Price: High to Low", sort: "price", order: "desc", current: false },
 ];
 
-//pagination data
-const items = [
-  {
-    id: 1,
-    title: "Back End Developer",
-    department: "Engineering",
-    type: "Full-time",
-    location: "Remote",
-  },
-  {
-    id: 2,
-    title: "Front End Developer",
-    department: "Engineering",
-    type: "Full-time",
-    location: "Remote",
-  },
-  {
-    id: 3,
-    title: "User Interface Designer",
-    department: "Design",
-    type: "Full-time",
-    location: "Remote",
-  },
-];
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -146,10 +123,20 @@ export default function AdminProductList() {
     setPage(1);
   }, [totalItems, sort]);
 
+  //alert box code below
+  const location = useLocation();
+  const [message, setMessage] = useState("");
+
+ 
+
   return (
     <div>
+      {/* To display the alert box */}
+      
+
       {/* Catagory template code below  */}
       <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
+      
         <div>
           {/* Mobile filter dialog */}
           <MobileFilter

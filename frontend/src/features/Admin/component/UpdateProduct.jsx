@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearSelectedProduct,
   createProductAsync,
   fetchProductsByIDAsync,
   selectBrands,
@@ -15,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function UpdateProduct() {
   const categories = useSelector(selectCategories);
   const brandsList = useSelector(selectBrands);
+  const [showSuccess, setShowSuccess] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ export default function UpdateProduct() {
   }, [dispatch, id]);
 
   const product = useSelector(selectProductById);
-
+  const status = useSelector((state) => state.product.status);
 
   useEffect(() => {
     if (product) {
@@ -55,44 +57,70 @@ export default function UpdateProduct() {
       setValue("rating", product.rating || 0);
       setValue("reviews", product.reviews || []);
     }
-  }, [selectProductById, setValue]);
+  }, [product, setValue]);
 
   const handleCancel = () => {
     reset();
 
-    navigate("/admin/home"); // Redirect to the products page
+    navigate("/admin/home");
+    dispatch(clearSelectedProduct()); // Redirect to the products page
   };
 
-  const [inputs, setInputs] = useState([""]); // Start with one input
-  const [images, setImages] = useState([]);
+  // const [inputs, setInputs] = useState([""]); // Start with one input
 
-  const handleInputChange = (index, value) => {
-    const newInputs = [...inputs];
-    newInputs[index] = value;
-    setInputs(newInputs);
-  };
+  // const handleInputChange = (index, value) => {
+  //   const newInputs = [...inputs];
+  //   newInputs[index] = value;
+  //   setInputs(newInputs);
+  // };
+
+  if (status === "loading") {
+    return (
+      <div className="text-center text-lg mt-12">Loading product data...</div>
+    );
+  }
 
   return (
     <div className="mx-auto mt-12 bg-white max-w-7xl p-12 sm:px-6 lg:px-8">
       <form
         noValidate
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(async (data) => {
           const product = {
             ...data,
           };
-          console.log("Product data:", product);
-          dispatch(updateProductAsync(product));
-          reset();
-          // setInputs([""]); // Reset inputs to one empty field
-          // setImages([]); // Reset images to an empty array
-          console.error("Product created successfully");
 
-          // checkUserAsync({ email: data.email, password: data.password })
+          const resultAction = await dispatch(updateProductAsync(product));
+          if (updateProductAsync.fulfilled.match(resultAction)) {
+            setShowSuccess(true); // Show success alert
+
+            setTimeout(() => {
+              setShowSuccess(false); // Hide alert// Redirect to home
+            }, 2000); // 2 seconds de
+          } else {
+            console.error("❌ Product update failed.");
+          }
         })}
       >
         <div className="space-y-12">
           <div className="">
-            <h2 className="text-xl font-semibold text-gray-900">Add Product</h2>
+            {showSuccess && (
+              <div className="fixed top-5 right-5 z-50 rounded-md bg-green-600 px-4 py-2 text-white shadow-lg">
+                ✅ Product updated successfully!
+              </div>
+            )}
+
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-900 inline-block right-5 ">
+                Update Product
+              </h2>
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Back to Home Page
+              </button>
+            </div>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-full">
@@ -370,7 +398,7 @@ export default function UpdateProduct() {
             onClick={handleCancel}
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Cancel
+            Back to Home Page
           </button>
           <button
             type="submit"

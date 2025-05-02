@@ -20,6 +20,7 @@ export const fetchProductsByIDAsync = createAsyncThunk(
   }
 );
 
+
 export const createProductAsync = createAsyncThunk(
   'product/createProduct',
   async (product) => {
@@ -79,8 +80,8 @@ export const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    clearSelectedProduct: (state) => {
+      state.selectedProduct =null;
     },
   },
   extraReducers: (builder) => {
@@ -144,7 +145,7 @@ export const productSlice = createSlice({
   },
 });
 
-export const { increment } = productSlice.actions;
+export const { clearSelectedProduct } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.product.products;
 export const selectBrands = (state) => state.product.brands;
