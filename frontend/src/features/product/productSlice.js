@@ -38,6 +38,7 @@ export const updateProductAsync = createAsyncThunk(
   }
 );
 
+
 export const fetchAllProductsAsync = createAsyncThunk(
   'product/fetchAllProducts',
   async () => {
@@ -142,6 +143,7 @@ export const productSlice = createSlice({
         );
         state.products[index] = action.payload;
       })
+      
   },
 });
 

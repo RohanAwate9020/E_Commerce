@@ -560,7 +560,9 @@ function ProductGrid({ products,handleEditProduct  }) {
                     </p>
                   </div>
                 </div>
-               
+               {product.deleted &&
+                <div className="text-sm text-red-400">Product Removed</div>
+               }
               </div>
             </Link>
             <div>

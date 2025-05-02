@@ -23,6 +23,7 @@ const navigation = [
   { name: "Dashboard", link: "/",user: true },
   { name: "Home", link: "/home", user: true},
   { name: "Admin", link: "/admin/home", admin: true },
+  { name: "Orders", link: "/admin/orders", admin: true },
 ];
 const userNavigation = [
   { name: "Your Profile", link: "/profile" },

@@ -8,7 +8,7 @@ export function fetchAllProducts() {
 
 export function createProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products",{
+    const response = await fetch("http://localhost:8080/products", {
       method: "POST",
       body: JSON.stringify(product),
       headers: {
@@ -22,13 +22,16 @@ export function createProduct(product) {
 
 export function updateProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products/"+product.id, {
-      method: "PATCH",
-      body: JSON.stringify(product),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "http://localhost:8080/products/" + product.id,
+      {
+        method: "PATCH",
+        body: JSON.stringify(product),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -36,9 +39,9 @@ export function updateProduct(product) {
 
 export function fetchProductsByID(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products/"+id);
+    const response = await fetch("http://localhost:8080/products/" + id);
     const data = await response.json();
-   
+
     resolve({ data });
   });
 }
@@ -50,6 +53,9 @@ export function fetchProductsByFilters(filter, sort, pagination) {
     if (categoryValues.length > 0) {
       const lastCategoryValue = categoryValues[categoryValues.length - 1];
       querystring += `${key}=${lastCategoryValue}&`;
+      // categoryValues.forEach((value) => {
+      //   querystring += `${key}=${value}&`;
+      // });
     }
   }
   for (let key in sort) {
@@ -64,9 +70,9 @@ export function fetchProductsByFilters(filter, sort, pagination) {
       "http://localhost:8080/products?" + querystring
     );
     // console.log("http://localhost:8080/products?" + querystring);
-    const data = await response.json()
-    const totalItems =  response.headers.get('X-Total-Count') || 95
-    resolve({ data:{product:data, totalItems:+totalItems} });
+    const data = await response.json();
+    const totalItems = response.headers.get("X-Total-Count") || 95;
+    resolve({ data: { product: data, totalItems: +totalItems } });
   });
 }
 

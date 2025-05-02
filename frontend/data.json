@@ -5,10 +5,10 @@
       "title": "Essence Mascara Lash P",
       "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
       "category": "beauty",
-      "price": "25",
-      "discountPercentage": 7.17,
+      "price": 21,
+      "discountPercentage": 7,
       "rating": 4.94,
-      "stock": 5,
+      "stock": 10,
       "tags": [
         "beauty",
         "mascara"
@@ -48,7 +48,7 @@
         }
       ],
       "returnPolicy": "30 days return policy",
-      "minimumOrderQuantity": 24,
+      "minimumOrderQuantity": 1,
       "meta": {
         "createdAt": "2024-05-23T08:56:21.618Z",
         "updatedAt": "2024-05-23T08:56:21.618Z",
@@ -60,7 +60,8 @@
         "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/",
         "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/3.png"
       ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png"
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+      "deleted": true
     },
     {
       "id": "2",
@@ -120,7 +121,8 @@
       "images": [
         "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/1.png"
       ],
-      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/thumbnail.png"
+      "thumbnail": "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/thumbnail.png",
+      "deleted": true
     },
     {
       "id": "3",
@@ -940,6 +942,24 @@
         "Iphone 16",
         "Iphone 16"
       ],
+      "rating": 0,
+      "reviews": []
+    },
+    {
+      "id": "c7c5",
+      "title": "Mac book Air",
+      "description": "mac book air by Apple",
+      "brand": "Apple",
+      "category": "laptops",
+      "price": 999,
+      "discountPercentage": 2,
+      "stock": 5,
+      "minimumOrderQuantity": 1,
+      "warrantyInformation": "1 Year world wide warranty ",
+      "shippingInformation": "3 days",
+      "returnPolicy": "10 Days",
+      "thumbnail": "sdvsdv",
+      "images": [],
       "rating": 0,
       "reviews": []
     }

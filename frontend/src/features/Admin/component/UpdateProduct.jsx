@@ -17,6 +17,7 @@ export default function UpdateProduct() {
   const categories = useSelector(selectCategories);
   const brandsList = useSelector(selectBrands);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showRemoval, setshowRemoval] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -66,6 +67,22 @@ export default function UpdateProduct() {
     dispatch(clearSelectedProduct()); // Redirect to the products page
   };
 
+  const handleRemove = async () => {
+    const removingproduct = { ...product };
+    removingproduct.deleted = true;
+    dispatch(updateProductAsync(removingproduct)); // Redirect to the products page
+    const resultAction = await dispatch(updateProductAsync(product));
+    if (updateProductAsync.fulfilled.match(resultAction)) {
+      setshowRemoval(true); // Show success alert
+
+      setTimeout(() => {
+        setshowRemoval(false); // Hide alert// Redirect to home
+      }, 2000); // 2 seconds de
+    } else {
+      console.error("❌ Product Deletion failed.");
+    }
+  };
+
   // const [inputs, setInputs] = useState([""]); // Start with one input
 
   // const handleInputChange = (index, value) => {
@@ -88,6 +105,10 @@ export default function UpdateProduct() {
           const product = {
             ...data,
           };
+          (product.discountPercentage = +product.discountPercentage),
+            (product.stock = +product.stock),
+            (product.price = +product.price),
+            (product.minimumOrderQuantity = +product.minimumOrderQuantity);
 
           const resultAction = await dispatch(updateProductAsync(product));
           if (updateProductAsync.fulfilled.match(resultAction)) {
@@ -106,6 +127,11 @@ export default function UpdateProduct() {
             {showSuccess && (
               <div className="fixed top-5 right-5 z-50 rounded-md bg-green-600 px-4 py-2 text-white shadow-lg">
                 ✅ Product updated successfully!
+              </div>
+            )}
+            {showRemoval && (
+              <div className="fixed top-5 right-5 z-50 rounded-md bg-red-600 px-4 py-2 text-white shadow-lg">
+                ✅ Product Deleted successfully!
               </div>
             )}
 
@@ -393,16 +419,23 @@ export default function UpdateProduct() {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
+          {/* <button
             type="button"
             onClick={handleCancel}
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Back to Home Page
+          </button> */}
+          <button
+            type="button"
+            onClick={handleRemove}
+            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+          >
+            Remove Product
           </button>
           <button
             type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Update
           </button>

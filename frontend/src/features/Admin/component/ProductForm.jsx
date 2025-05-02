@@ -79,6 +79,10 @@ export default function ProductForm() {
             rating: 0,
             reviews: [],
           };
+          product.discountPercentage=+product.discountPercentage,
+          product.stock=+product.stock,
+          product.price=+product.price,
+          product.minimumOrderQuantity=+product.minimumOrderQuantity,
 
             dispatch(createProductAsync(product));
             reset();

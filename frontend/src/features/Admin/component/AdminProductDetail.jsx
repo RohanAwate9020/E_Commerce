@@ -5,7 +5,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { Radio, RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsByIDAsync, selectProductById } from "../../product/productSlice";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { addToCartAsync } from "../../cart/cartSlice";
 import { v4 as uuidv4 } from 'uuid';
@@ -252,13 +252,20 @@ function ProductDetail() {
                 </fieldset>
               </div>
 
-              <button
+              {/* <button
               onClick={handleCart}
                 type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
               >
                 Add to cart
-              </button>
+              </button> */}
+              <Link
+              to="/admin/home"
+                type="submit"
+                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
+              >
+                Go Back to Home Page
+              </Link>
             </form>
           </div>
 
