@@ -11,6 +11,24 @@ export function createOrder(order) {
   }
   );
 }
+
+export function fetchAllOrders({pagination}) {
+  let querystring = "";
+  for (let key in pagination) {
+    querystring += `${key}=${pagination[key]}&`;
+  }
+
+  return new Promise(async (resolve) => {
+    const response = await fetch(
+      "http://localhost:8080/orders?" + querystring
+    );
+    // console.log("http://localhost:8080/products?" + querystring);
+    const data = await response.json();
+    console.log("Data", data);
+    const totalOrders = response.headers.get("X-Total-Count") || 95;
+    resolve({ data: { orders: data, totalOrders: +totalOrders } });
+  });
+}
   // let addJob = () => {
   //   axios
   //     .post(`${process.env.REACT_APP_CRUD_SINGLE_JOB_URL}`, newJob, config)

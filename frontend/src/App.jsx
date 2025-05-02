@@ -22,6 +22,7 @@ import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
 import AdminProductDetailPage from "./pages/AdminProductDetailsPage";
 import AdminProdcutFormPage from "./pages/AdminProdcutFormPage";
 import AdminUpdateProduct from "./pages/adminUpdateProduct";
+import AdminOrdersPages from "./pages/AdminOrdersPages";
 
 // import { selectLoggedInUser } from "../authSlice";
 
@@ -39,6 +40,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedAdmin>
         <AdminHome />
+      </ProtectedAdmin>
+    ),
+  },
+  {
+    path: "/admin/orders",
+    element: (
+      <ProtectedAdmin>
+        <AdminOrdersPages/>
       </ProtectedAdmin>
     ),
   },
