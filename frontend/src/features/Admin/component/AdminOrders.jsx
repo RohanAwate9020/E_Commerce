@@ -5,6 +5,7 @@ import {
   fetchAllOrdersAsync,
   selectOrders,
   selectTotalOrders,
+  updateOrderAsync,
 } from "../../orders/orderSlice";
 import { EyeIcon, PencilIcon } from "@heroicons/react/24/solid";
 
@@ -13,6 +14,7 @@ export default function AdminOrders() {
   const dispatch = useDispatch();
   const orders = useSelector(selectOrders);
   const totalOrders = useSelector(selectTotalOrders);
+  const [edittableOrderId, setEdittableOrderId] = useState(-1);
 
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
@@ -20,11 +22,36 @@ export default function AdminOrders() {
   }, [dispatch, page]);
 
   const handleShow = (order) => {
-    console.log("Show Order", order);
-  }
-  const handleEdit = (order) => {
     console.log("Edit Order", order);
   };
+  const handleEdit = (order) => {
+    
+    setEdittableOrderId(order.id);
+  };
+
+  const handleUpdateStatus = (e, order) => {
+    const updatedOrder = {
+      ...order,
+      status: e.target.value,
+    };
+    dispatch(updateOrderAsync(updatedOrder));
+    setEdittableOrderId(-1);
+  };
+
+  const chooseColor = (status) => {
+    switch (status){
+      case "pending":
+        return 'bg-purple-200 text-purple-600';
+      case "shipped":
+        return 'bg-blue-200 text-blue-600';   
+      case "delivered":
+        return 'bg-green-200 text-green-600';
+      case "cancelled":
+        return 'bg-red-200 text-red-600';
+      case "returned":
+        return 'bg-yellow-200 text-yellow-600';
+    }
+  }
 
   return (
     <div className="">
@@ -97,18 +124,38 @@ export default function AdminOrders() {
                       </td>
 
                       <td className="py-3 px-6 text-center">
-                        <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">
-                          {order.status}
-                        </span>
+                        {edittableOrderId === order.id ? (
+                          <select
+                            onChange={(e) => handleUpdateStatus(e, order)}
+                            className="ml-2 border border-gray-300 rounded-md p-1 text-sm"
+                            select={order.status}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="returned">Returned</option>
+                          </select>
+                        ) : (
+                          <span className={` ${chooseColor(order.status)} py-1 px-3 rounded-full text-xs`}>
+                            {order.status}
+                          </span>
+                        )}
                       </td>
 
                       <td className="py-3 px-6 text-center">
                         <div className="flex item-center justify-center">
-                          <div className="w-4 mr-4 transform hover:text-purple-500 hover:scale-110" onClick={e=>handleShow(order)}>
+                          <div
+                            className="w-4 mr-4 transform hover:text-purple-500 hover:scale-110"
+                            onClick={(e) => handleShow(order)}
+                          >
                             <EyeIcon className="w-6 h-6 text-gray-500" />
                           </div>
 
-                          <div className="w-4 mr-2 mt-0.5 transform hover:text-purple-500 hover:scale-110" onClick={e=>handleEdit(order)}>
+                          <div
+                            className="w-4 mr-2 mt-0.5 transform hover:text-purple-500 hover:scale-110"
+                            onClick={(e) => handleEdit(order)}
+                          >
                             <PencilIcon className="w-5 h-5 text-gray-500" />
                           </div>
                         </div>

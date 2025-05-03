@@ -102,7 +102,7 @@ export default function Navbar({ children }) {
                   <ShoppingCartIcon aria-hidden="true" className="size-6" />
                 </button>
               </Link>
-              <Link to="cart">
+              <Link to="/cart">
                 {items.length > 0 && (
                   <span className="relative inline-flex items-center rounded-md mb-7 -ml-3 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
                     {items?.length}

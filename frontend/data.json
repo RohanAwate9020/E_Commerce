@@ -1632,7 +1632,7 @@
       },
       "paymentMethod": "card",
       "selectedAddress": null,
-      "status": "pending"
+      "status": "cancelled"
     },
     {
       "id": "8b85",
@@ -1799,7 +1799,7 @@
         "state": "Maharashtra",
         "pinCode": "410504"
       },
-      "status": "pending"
+      "status": "shipped"
     },
     {
       "id": "a684",
@@ -1966,7 +1966,7 @@
         "state": "Maharashtra",
         "pinCode": "410504"
       },
-      "status": "pending"
+      "status": "returned"
     },
     {
       "id": "e8d4",
