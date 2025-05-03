@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { fetchLoggedInUserOrdersAsync, selectUserOrders } from "../userSlice";
 import { Link } from "react-router-dom";
+import { discountPrice } from "../../../app/constant";
 
 export default function UserOrders() {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ export default function UserOrders() {
                             <h3>
                               <Link to="#">{item.title}</Link>
                             </h3>
-                            <p className="ml-4">$ {item.price}</p>
+                            <p className="ml-4">$ {discountPrice(item)}</p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
                             {item.category}

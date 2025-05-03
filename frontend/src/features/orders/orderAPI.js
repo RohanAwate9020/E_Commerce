@@ -24,7 +24,6 @@ export function fetchAllOrders({pagination}) {
     );
     // console.log("http://localhost:8080/products?" + querystring);
     const data = await response.json();
-    console.log("Data", data);
     const totalOrders = response.headers.get("X-Total-Count") || 95;
     resolve({ data: { orders: data, totalOrders: +totalOrders } });
   });

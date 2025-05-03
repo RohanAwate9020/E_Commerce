@@ -9,6 +9,7 @@ import { Link, useParams } from "react-router-dom";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { addToCartAsync } from "../../cart/cartSlice";
 import { v4 as uuidv4 } from 'uuid';
+import { discountPrice } from "../../../app/constant";
 
 const colors= [
   { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
@@ -129,6 +130,9 @@ function ProductDetail() {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
+              ${discountPrice(product)}
+            </p>
+            <p className="text-3xl line-through tracking-tight text-gray-400">
               ${product.price}
             </p>
 

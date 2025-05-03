@@ -32,7 +32,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-import { ITEMS_PER_PAGE } from "../../../app/constant";
+import { discountPrice, ITEMS_PER_PAGE } from "../../../app/constant";
 import { fetchBrands, fetchCategories } from "../productAPI";
 
 // Product data
@@ -552,10 +552,7 @@ function ProductGrid({ products }) {
                     <div>
                       <p className="text-sm font-medium text-gray-900">
                         ${" "}
-                        {(
-                          product.price *
-                          (1 - product.discountPercentage / 100)
-                        ).toFixed(2)}
+                        {discountPrice(product)}
                       </p>
                       <p className="text-sm font-medium text-gray-400 line-through">
                         $ {product.price}

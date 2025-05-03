@@ -14,6 +14,7 @@ import {
 } from "../features/auth/authSlice";
 import { createOrderAsync, selectCurrentOrder } from "../features/orders/orderSlice";
 import { selectUserInfo } from "../features/user/userSlice";
+import { discountPrice } from "../app/constant";
 
 // cart summary data
 
@@ -26,7 +27,7 @@ function Checkout() {
     0
   );
   let totalAmount = products.reduce(
-    (amount, product) => amount + product.price * product.quantity,
+    (amount, product) => discountPrice(product) * product.quantity + amount  ,
     0
   );
   const user = useSelector(selectUserInfo);
@@ -392,7 +393,7 @@ function Checkout() {
                             <h3>
                               <Link to="#">{item.title}</Link>
                             </h3>
-                            <p className="ml-4">$ {item.price}</p>
+                            <p className="ml-4">$ {discountPrice(item)}</p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
                             {item.category}
@@ -440,7 +441,7 @@ function Checkout() {
               <div className="flex justify-between text-base font-medium text-gray-900">
                 <p>Subtotal</p>
                 {products.map((item) => {
-                  Subtotal += item.price * item.quantity;
+                  Subtotal += discountPrice(item) * item.quantity;
                 })}
                 <p>$ {Subtotal.toFixed(2)}</p>
               </div>
