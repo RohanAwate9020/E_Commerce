@@ -12,6 +12,8 @@ import {
 } from "../../product/productSlice";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import DeleteModal from "../../common/DeleteModal";
+import { InfinitySpin } from "react-loader-spinner";
 
 export default function UpdateProduct() {
   const categories = useSelector(selectCategories);
@@ -38,6 +40,8 @@ export default function UpdateProduct() {
 
   const product = useSelector(selectProductById);
   const status = useSelector((state) => state.product.status);
+  const [openremoveModalId, setopenremoveModalId] = useState(null);
+  const [openrelistModalId, setopenrelistModalId] = useState(null);
 
   useEffect(() => {
     if (product) {
@@ -70,8 +74,23 @@ export default function UpdateProduct() {
   const handleRemove = async () => {
     const removingproduct = { ...product };
     removingproduct.deleted = true;
-    dispatch(updateProductAsync(removingproduct)); // Redirect to the products page
-    const resultAction = await dispatch(updateProductAsync(product));
+     // Redirect to the products page
+    const resultAction = await dispatch(updateProductAsync(removingproduct));
+    if (updateProductAsync.fulfilled.match(resultAction)) {
+      setshowRemoval(true); // Show success alert
+
+      setTimeout(() => {
+        setshowRemoval(false); // Hide alert// Redirect to home
+      }, 2000); // 2 seconds de
+    } else {
+      console.error("❌ Product Deletion failed.");
+    }
+  };
+  const handleRelist = async () => {
+    const removingproduct = { ...product };
+    removingproduct.deleted = false;
+     // Redirect to the products page
+    const resultAction = await dispatch(updateProductAsync(removingproduct));
     if (updateProductAsync.fulfilled.match(resultAction)) {
       setshowRemoval(true); // Show success alert
 
@@ -93,7 +112,15 @@ export default function UpdateProduct() {
 
   if (status === "loading") {
     return (
-      <div className="text-center text-lg mt-12">Loading product data...</div>
+      <InfinitySpin
+        visible={true}
+        top="50%"
+        left="50%"
+        width="200"
+        height="400"
+        color="#4e46e5"
+        ariaLabel="infinity-spin-loading"
+      />
     );
   }
 
@@ -147,7 +174,11 @@ export default function UpdateProduct() {
                 Back to Home Page
               </button>
             </div>
-
+            {product.deleted ? (
+              <div>
+                <p className="text-red-500">This products is deleted.</p>
+              </div>
+            ) : null}
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-full">
                 <label
@@ -426,13 +457,23 @@ export default function UpdateProduct() {
           >
             Back to Home Page
           </button> */}
-          <button
-            type="button"
-            onClick={handleRemove}
+          {product && !product.deleted &&(<button
+            type="button" 
+            onClick={() => setopenremoveModalId(product.id)}
             className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           >
             Remove Product
           </button>
+        )}
+          {product && product.deleted &&(<button
+            type="button" 
+            onClick={() => setopenrelistModalId(product.id)}
+            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+          >
+            Relist Product
+          </button>
+        )}
+
           <button
             type="submit"
             className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -441,6 +482,30 @@ export default function UpdateProduct() {
           </button>
         </div>
       </form>
+      <DeleteModal
+        isOpen={openremoveModalId !== null}
+        onClose={() => setopenremoveModalId(null)}
+        title={`Delete ${product.title}`}
+        message="Are you sure you want to delete this item?"
+        dangerOption="Delete"
+        cancelOption="Cancel"
+        onConfirm={() => {
+          handleRemove();
+          setopenremoveModalId(null);
+        }}
+      />
+      <DeleteModal
+        isOpen={openrelistModalId !== null}
+        onClose={() => setopenrelistModalId(null)}
+        title={`Relist ${product.title}`}
+        message="Are you sure you want to Relist this item?"
+        dangerOption="Relist"
+        cancelOption="Cancel"
+        onConfirm={() => {
+          handleRelist();
+          setopenrelistModalId(null);
+        }}
+      />
     </div>
   );
 }

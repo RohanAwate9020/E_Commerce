@@ -23,6 +23,13 @@ import AdminProductDetailPage from "./pages/AdminProductDetailsPage";
 import AdminProdcutFormPage from "./pages/AdminProdcutFormPage";
 import AdminUpdateProduct from "./pages/adminUpdateProduct";
 import AdminOrdersPages from "./pages/AdminOrdersPages";
+import { positions, Provider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+
+const options = {
+  timeout: 5000,
+  position: positions.BOTTOM_CENTER,
+};
 
 // import { selectLoggedInUser } from "../authSlice";
 
@@ -47,7 +54,7 @@ const router = createBrowserRouter([
     path: "/admin/orders",
     element: (
       <ProtectedAdmin>
-        <AdminOrdersPages/>
+        <AdminOrdersPages />
       </ProtectedAdmin>
     ),
   },
@@ -139,7 +146,6 @@ const router = createBrowserRouter([
       </Protected>
     ),
   },
-  
 ]);
 
 function App() {
@@ -154,7 +160,15 @@ function App() {
     }
   }, [dispatch, user]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <div className="App">
+        <Provider template={AlertTemplate} {...options}>
+          <RouterProvider router={router} />
+        </Provider>
+      </div>
+    </>
+  );
 }
 
 export default App;

@@ -37,12 +37,18 @@ export function fetchAllOrders({pagination}) {
     const response = await fetch(
       "http://localhost:8080/orders?" + querystring
     );
-    // console.log("http://localhost:8080/products?" + querystring);
+    console.log("http://localhost:8080/products?" + querystring);
     const data = await response.json();
-    const totalOrders = response.headers.get("X-Total-Count") || 95;
+    const totalOrders =await response.headers.get("X-Total-Count") || 90;
     resolve({ data: { orders: data, totalOrders: +totalOrders } });
   });
 }
+
+
+
+
+
+
   // let addJob = () => {
   //   axios
   //     .post(`${process.env.REACT_APP_CRUD_SINGLE_JOB_URL}`, newJob, config)
