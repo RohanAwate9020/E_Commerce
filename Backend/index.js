@@ -1,7 +1,13 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const Product =require("./controller/Product.js")
+const productsRouter =require("./routes/Products.js")
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/products', productsRouter.router);
 
 require('dotenv').config();
 const DBPassword= process.env.DB_Password;
@@ -16,9 +22,5 @@ async function connectDB() {
 }
 
 app.listen(8080,()=>{
-    console.log("Server is running on port 3000");
+    console.log("Server is running on port 8080");
 })
-
-app.get('/', (req, res) => {    
-    res.send('Hello World!');
-});
