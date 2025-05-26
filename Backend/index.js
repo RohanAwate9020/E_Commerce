@@ -6,6 +6,13 @@ const productsRouter =require("./routes/Products.js")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// const cors = require("cors");
+
+// // Use this config to expose custom headers like X-Total-Count
+// app.use(cors({
+//   exposedHeaders: ["X-Total-Count"]
+// }));
+
 
 app.use('/products', productsRouter.router);
 
