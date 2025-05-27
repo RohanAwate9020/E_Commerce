@@ -1,23 +1,26 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const Product =require("./controller/Product.js")
 const productsRouter =require("./routes/Products.js")
+const BrandsRouter =require("./routes/Brands.js")
+const categoryRouter =require("./routes/Category.js")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// const cors = require("cors");
+const cors = require("cors");
 
-// // Use this config to expose custom headers like X-Total-Count
-// app.use(cors({
-//   exposedHeaders: ["X-Total-Count"]
-// }));
+// Use this config to expose custom headers like X-Total-Count
+app.use(cors({
+  exposedHeaders: ["X-Total-Count"]
+}));
 
 
 app.use('/products', productsRouter.router);
+app.use('/brands', BrandsRouter.router);
+app.use('/category', categoryRouter.router);
 
 require('dotenv').config();
-const DBPassword= process.env.DB_Password;
+const connectionString= process.env.DB_ConnectionString;
 connectDB().then(()=>{
   console.log("Connected to MongoDB successfully");
 })
@@ -25,9 +28,9 @@ connectDB().then(()=>{
   console.error("Error connecting to MongoDB:", err);
 });
 async function connectDB() {
-  await mongoose.connect(`mongodb+srv://Rohan:${DBPassword}@ecommerce.w4ovj5y.mongodb.net/?retryWrites=true&w=majority&appName=ecommerce`);
+  await mongoose.connect(`${connectionString}`);
 }
 
-app.listen(8080,()=>{
+app.listen(3000,()=>{
     console.log("Server is running on port 8080");
 })
