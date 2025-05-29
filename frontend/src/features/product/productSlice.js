@@ -102,6 +102,7 @@ export const productSlice = createSlice({
         state.status = 'idle';
         state.products = action.payload.product;
         state.totalItems = action.payload.totalItems;
+
       })
 
       .addCase(fetchBrandsAsync.pending, (state) => {

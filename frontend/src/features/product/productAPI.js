@@ -67,11 +67,10 @@ export function fetchProductsByFilters(filter, sort, pagination) {
 
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/products?" + querystring
+      "http://localhost:3000/products?" + querystring
     );
     // console.log("http://localhost:8080/products?" + querystring);
     const data = await response.json();
-    console.log(data)
     const totalItems = response.headers.get("X-Total-Count") ;
     resolve({ data: { product: data, totalItems: +totalItems } });
   });

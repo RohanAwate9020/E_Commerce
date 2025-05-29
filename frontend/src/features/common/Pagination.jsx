@@ -2,7 +2,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { ITEMS_PER_PAGE } from "../../app/constant";
 
 export function Pagination({ handlePage, page, setPage, totalItems }) {
-    console.log("Pagination", page, totalItems);
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
     return (
       <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">

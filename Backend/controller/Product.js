@@ -37,8 +37,8 @@ const Product = model.Product;
 // };
 
 exports.fetchallProducts = async (req, res) => {
-  let query = Product.find({});
-  let totalProductsQuery = Product.find({});
+  let query = Product.find({}); // Assuming you want to exclude deleted products
+  let totalProductsQuery = Product.find({deleted: false}); // Same for total count
 
   if (req.query.category) {
     query = query.find({ category: req.query.category });
@@ -72,7 +72,6 @@ exports.fetchallProducts = async (req, res) => {
   }
 };
 
-
 exports.createProduct = async (req, res) => {
   const product = new Product(req.body);
   product
@@ -90,3 +89,28 @@ exports.createProduct = async (req, res) => {
       });
     });
 };
+
+exports.fetchProductById= async (req,res)=>{
+  const productId =req.params.id;
+  try{
+    const product= await Product.findById(productId).exec();
+    res.status(200).json(product);
+  }catch(err){
+    res.status(500).json({
+      message: "Error fetching product",
+      error: err,
+    })
+  }
+}
+exports.updateProduct= async (req,res)=>{
+  const productId =req.params.id;
+  try{
+    const product= await Product.findByIdAndUpdate(productId, req.body, { new: true }).exec();
+    res.status(200).json(product);
+  }catch(err){
+    res.status(500).json({
+      message: "Error fetching product",
+      error: err,
+    })
+  }
+}

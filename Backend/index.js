@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const productsRouter =require("./routes/Products.js")
 const BrandsRouter =require("./routes/Brands.js")
 const categoryRouter =require("./routes/Category.js")
+const userRouter =require("./routes/User.js")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,6 +19,7 @@ app.use(cors({
 app.use('/products', productsRouter.router);
 app.use('/brands', BrandsRouter.router);
 app.use('/category', categoryRouter.router);
+app.use('/user', userRouter.router);
 
 require('dotenv').config();
 const connectionString= process.env.DB_ConnectionString;
