@@ -67,7 +67,7 @@ function Checkout() {
       products,
       TotalItemsincart,
       totalAmount,
-      user,
+      user:user.id,
       paymentMethod,
       selectedAddress,
       status: "pending",
