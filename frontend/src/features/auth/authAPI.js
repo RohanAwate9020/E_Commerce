@@ -14,29 +14,31 @@ export function createUser(userData) {
 
 export function checkUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
-    const email = loginInfo.email;
-    const password = loginInfo.password;
-    const response = await fetch("http://localhost:8080/users?email=" + email);
-    const data = await response.json();
-    if (data.length) {
-      if (data[0].password === password) {
-        resolve({ data: data[0] });
-      } else {
-        reject({ message: "Password is incorrect." });
-      }
-    } else {
-      reject({ message: "User not found." });
+    try {
+      const response = await fetch(
+        "http://localhost:8080/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginInfo),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      resolve({ data });
+    } catch (err) {
+      reject({ err });
     }
   });
 }
 
-
 export function signOut(userId) {
   return new Promise(async (resolve, reject) => {
-   resolve({ message: "User signed out." });
+    resolve({ message: "User signed out." });
   });
 }
-
 
 // let addJob = () => {
 //   axios

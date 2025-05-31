@@ -47,14 +47,13 @@ function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
-    if (items.findIndex((item) => item.productId === product.id) < 0) {
+    if (items.findIndex((item) => item.product.id === product.id) < 0) {
+      
       dispatch(
         addToCartAsync({
-          ...product,
           quantity: 1,
-          userId: user.id,
-          id: uuidv4(),
-          productId: product.id,
+          user: user.id,
+          product: product.id,
         })
       );
       alert.success("Item added to cart");
@@ -136,21 +135,21 @@ function ProductDetail() {
           {/* Image gallery */}
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
             <img
-              src={product.images}
+              src={product?.images[0]}
               className="hidden size-full rounded-lg object-cover lg:block"
             />
             <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
               <img
-                src={product.images}
+                src={product?.images[1]}
                 className="aspect-3/2 w-full rounded-lg object-cover"
               />
               <img
-                src={product.images}
+                src={product?.images[2]}
                 className="aspect-3/2 w-full rounded-lg object-cover"
               />
             </div>
             <img
-              src={product.images}
+              src={product?.images[3]}
               className="aspect-4/5 size-full object-cover sm:rounded-lg lg:aspect-auto"
             />
           </div>

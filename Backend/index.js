@@ -5,6 +5,8 @@ const productsRouter =require("./routes/Products.js")
 const BrandsRouter =require("./routes/Brands.js")
 const categoryRouter =require("./routes/Category.js")
 const userRouter =require("./routes/User.js")
+const authRouter =require("./routes/Auth.js")
+const cartRouter =require("./routes/Cart.js")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,6 +22,8 @@ app.use('/products', productsRouter.router);
 app.use('/brands', BrandsRouter.router);
 app.use('/category', categoryRouter.router);
 app.use('/user', userRouter.router);
+app.use('/auth', authRouter.router);
+app.use('/cart', cartRouter.router);
 
 require('dotenv').config();
 const connectionString= process.env.DB_ConnectionString;
@@ -33,6 +37,6 @@ async function connectDB() {
   await mongoose.connect(`${connectionString}`);
 }
 
-app.listen(3000,()=>{
+app.listen(8080,()=>{
     console.log("Server is running on port 8080");
 })

@@ -274,7 +274,7 @@ export default function UserProfiles() {
                     </form>
                   ) : null}
               <p>Your Address</p>
-              {user.addresses.map((address, index) => (
+              {user?.addresses?.map((address, index) => (
                 <div>
                   {selectedEditIndex === index ? (
                     <form

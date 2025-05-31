@@ -1,4 +1,7 @@
+import { data } from "react-router-dom";
+
 export function addToCart(item) {
+
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/cart' ,{
     method:"POST",
@@ -15,18 +18,23 @@ export function addToCart(item) {
 
 export function fetchItemsByUserId(userId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/cart?userId="+userId);
-    const data = await response.json();
-   
-    resolve({ data });
+    try {
+      const response = await fetch("http://localhost:8080/cart/"+userId);
+      const data = await response.json();
+      resolve({ data });
+    }catch(err){
+      data = [];
+      resolve({ data });
+    }
   });
 }
 
 export function UpdateCart(update) {
+  console.log("Update cart item", update);
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/cart/'+update.id,{
     method:"PATCH",
-    body:JSON.stringify(update),
+    body:JSON.stringify(update.quantity),
     headers:{
       'Content-Type': 'application/json'}
     })

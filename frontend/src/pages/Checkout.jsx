@@ -50,7 +50,6 @@ function Checkout() {
   };
 
   const handleDelete = (id) => {
-    console.log(id);
     dispatch(deleteitemfromCartAsync(id));
   };
 
@@ -86,7 +85,6 @@ function Checkout() {
             <form
               noValidate
               onSubmit={handleSubmit((data) => {
-                console.log(data);
                 dispatch(
                   updateUserAsync({
                     ...user,
@@ -282,7 +280,7 @@ function Checkout() {
                     Choose from exixting addresses
                   </p>
                   <ul role="list" className="divide-y divide-gray-200">
-                    {user.addresses.map((address, index) => (
+                    {user?.addresses?.map((address, index) => (
                       <li
                         key={index}
                         className="flex justify-between gap-x-6 py-5 px-3"
@@ -378,11 +376,11 @@ function Checkout() {
               <div className="flow-root">
                 <ul role="list" className="-my-6 divide-y divide-gray-200">
                   {products.map((item) => (
-                    <li key={item.id} className="flex py-6">
+                    <li key={item?.product.id} className="flex py-6">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                         <img
-                          src={item.images[0]}
-                          alt={item.thumnails}
+                          src={item?.product?.thumbnail}
+                          alt={item?.product?.title}
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
@@ -391,12 +389,12 @@ function Checkout() {
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>
-                              <Link to="#">{item.title}</Link>
+                              <Link to="#">{item?.product?.title}</Link>
                             </h3>
-                            <p className="ml-4">$ {discountPrice(item)}</p>
+                            <p className="ml-4">$ {discountPrice(item?.product)}</p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
-                            {item.category}
+                            {item?.product?.category}
                           </p>
                         </div>
                         <div className="flex flex-1 items-end justify-between text-sm">
@@ -409,7 +407,7 @@ function Checkout() {
                             </label>
                             <select
                               className="p-2"
-                              onChange={(e) => handleQuantity(e, item)}
+                              onChange={(e) => handleQuantity(e, item.product)}
                             >
                               <option value="1">1</option>
                               <option value="2">2</option>
@@ -423,7 +421,7 @@ function Checkout() {
                               type="button"
                               className="font-medium text-indigo-600 hover:text-indigo-500"
                               onClick={() => {
-                                handleDelete(item.id);
+                                handleDelete(item?.product?.id);
                               }}
                             >
                               Remove
@@ -441,7 +439,7 @@ function Checkout() {
               <div className="flex justify-between text-base font-medium text-gray-900">
                 <p>Subtotal</p>
                 {products.map((item) => {
-                  Subtotal += discountPrice(item) * item.quantity;
+                  Subtotal += discountPrice(item.product) * item.quantity;
                 })}
                 <p>$ {Subtotal.toFixed(2)}</p>
               </div>

@@ -67,7 +67,7 @@ export function fetchProductsByFilters(filter, sort, pagination) {
 
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:3000/products?" + querystring
+      "http://localhost:8080/products?" + querystring
     );
     // console.log("http://localhost:8080/products?" + querystring);
     const data = await response.json();
@@ -78,7 +78,7 @@ export function fetchProductsByFilters(filter, sort, pagination) {
 
 export function fetchCategories() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/categories");
+    const response = await fetch("http://localhost:8080/category");
     const data = await response.json();
     resolve({ data });
   });
