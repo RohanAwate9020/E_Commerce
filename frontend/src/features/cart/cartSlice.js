@@ -42,7 +42,6 @@ export const deleteitemfromCartAsync = createAsyncThunk(
 export const resetCartAsync = createAsyncThunk(
   "cart/resetCart",
   async (userId) => {
-    console.log("userId", userId);
     const response = await resetCart(userId);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
@@ -87,9 +86,11 @@ export const cartSlice = createSlice({
       })
       .addCase(UpdateCartAsync.fulfilled, (state, action) => {
         state.status = "idle";
+        console.log("Update cart item", action.payload);
         const index = state.items.findIndex(
           (item) => item.id === action.payload.id
         );
+        console.log("Update cart item index", index);
         state.items[index] = action.payload;
       })
       .addCase(deleteitemfromCartAsync.pending, (state) => {

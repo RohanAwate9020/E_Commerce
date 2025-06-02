@@ -98,7 +98,7 @@ export default function Cart() {
                             </label>
                             <select
                               className="p-2"
-                              onChange={(e) => handleQuantity(e, item?.product)}
+                              onChange={(e) => handleQuantity(e, item)}
                             >
                               <option value="1">1</option>
                               <option value="2">2</option>

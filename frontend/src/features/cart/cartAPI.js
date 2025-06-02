@@ -30,11 +30,10 @@ export function fetchItemsByUserId(userId) {
 }
 
 export function UpdateCart(update) {
-  console.log("Update cart item", update);
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/cart/'+update.id,{
     method:"PATCH",
-    body:JSON.stringify(update.quantity),
+    body:JSON.stringify(update),
     headers:{
       'Content-Type': 'application/json'}
     })

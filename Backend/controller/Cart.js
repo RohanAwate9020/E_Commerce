@@ -23,7 +23,7 @@ exports.addToCart = async (req, res) => {
   try {
     const doc = await cart.save();
     const result = await doc.populate("product");
-    res.status(201).json( result );
+    res.status(201).json(result);
   } catch (err) {
     res.status(500).json({
       message: "Error adding product in cart",
@@ -34,26 +34,46 @@ exports.addToCart = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
   const cartId = req.params.id;
+  console.log("Update cart item", req.body);
   try {
     const cart = await Cart.findByIdAndUpdate(
       cartId,
-      { quantity: req.body.quantity },
-      { new: true }
+      req.body.quantity,
+      { new: true }.populate("product") 
     ).exec();
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
     res.status(200).json(cart);
   } catch (err) {
-    res.status(500).json({
-      message: "Error fetching product",
-      error: err,
-    });
+    res.status(500).json({ message: "Update failed", error: err });
   }
 };
+// exports.updateCart = async (req, res) => {
+//   const cartId = req.params.id;
+//   console.log("Update cart item", req.body);
+//   try {
+//     const cart = await Cart.findByIdAndUpdate(
+//       cartId,
+//        req.body ,
+//       { new: true }
+//     ).exec();
+//     console.log("Updated cart item", cart);
+//     res.status(200).json(cart);
+//   } catch (err) {
+//     res.status(500).json({
+//       message: "Error fetching product",
+//       error: err,
+//     });
+//   }
+// };
 
 exports.deleteFromCart = async (req, res) => {
   const cartId = req.params.id;
   try {
     const result = await Cart.findByIdAndDelete(cartId).exec();
-    res.status(201).json( result );
+    res.status(201).json(result);
   } catch (err) {
     res.status(500).json({
       message: "Error removing product in cart",

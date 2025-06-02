@@ -12,7 +12,10 @@ import {
   selectLoggedInUser,
   updateUserAsync,
 } from "../features/auth/authSlice";
-import { createOrderAsync, selectCurrentOrder } from "../features/orders/orderSlice";
+import {
+  createOrderAsync,
+  selectCurrentOrder,
+} from "../features/orders/orderSlice";
 import { selectUserInfo } from "../features/user/userSlice";
 import { discountPrice } from "../app/constant";
 
@@ -20,16 +23,21 @@ import { discountPrice } from "../app/constant";
 
 function Checkout() {
   const products = useSelector(selectItems);
-  let Subtotal = 0;
-  let TotalItems = 0;
-  let TotalItemsincart = products.reduce(
+
+  // let  = 0;
+  const totalItems = products.reduce(
     (total, product) => total + product.quantity,
     0
   );
-  let totalAmount = products.reduce(
-    (amount, product) => discountPrice(product) * product.quantity + amount  ,
-    0
-  );
+  // const totalAmount = products.reduce(
+  //   (amount, product) => discountPrice(product) * product.quantity + amount  ,
+  //   0
+  // );
+  const totalAmount = products.reduce((amount, item) => {
+    const price = discountPrice(item.product);
+    return price * item.quantity + amount;
+  }, 0);
+
   const user = useSelector(selectUserInfo);
   const [selectedAddress, setselectedAddress] = useState(null);
   const [paymentMethod, setpaymentMethod] = useState("card");
@@ -55,19 +63,17 @@ function Checkout() {
 
   const handleAddressChange = (e) => {
     setselectedAddress(user.addresses[e.target.value]);
-    console.log(user.addresses[e.target.value]);
   };
   const handlePaymentMethod = (e) => {
     setpaymentMethod(e.target.value);
-    console.log(paymentMethod);
   };
 
   const handleOrder = (e) => {
     const order = {
       products,
-      TotalItemsincart,
+      totalItems,
       totalAmount,
-      user:user.id,
+      user: user.id,
       paymentMethod,
       selectedAddress,
       status: "pending",
@@ -77,7 +83,9 @@ function Checkout() {
   return (
     <>
       {!products.length && <Navigate to="/" replace="true" />}
-      {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace="true" />} ``
+      {currentOrder && (
+        <Navigate to={`/order-success/${currentOrder.id}`} replace="true" />
+      )}
       <div className="mx-auto mt-12  max-w-7xl px-4 sm:px-6 lg:px-8  ">
         <div className="grid grid-cols-1 gap-y-10  lg:grid-cols-5 bg-white rounded-xl">
           {/* personal information form */}
@@ -87,7 +95,6 @@ function Checkout() {
               onSubmit={handleSubmit((data) => {
                 dispatch(
                   updateUserAsync({
-                    ...user,
                     addresses: [...user.addresses, data],
                   })
                 );
@@ -391,7 +398,9 @@ function Checkout() {
                             <h3>
                               <Link to="#">{item?.product?.title}</Link>
                             </h3>
-                            <p className="ml-4">$ {discountPrice(item?.product)}</p>
+                            <p className="ml-4">
+                              $ {discountPrice(item?.product)}
+                            </p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
                             {item?.product?.category}
@@ -438,17 +447,14 @@ function Checkout() {
             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
               <div className="flex justify-between text-base font-medium text-gray-900">
                 <p>Subtotal</p>
-                {products.map((item) => {
-                  Subtotal += discountPrice(item.product) * item.quantity;
-                })}
-                <p>$ {Subtotal.toFixed(2)}</p>
+                <p>$ {totalAmount}</p>
               </div>
               <div className="flex justify-between text-base font-medium text-gray-900">
                 <p>Total items in Cart</p>
-                {products.map((item) => {
-                  TotalItems += item.quantity;
-                })}
-                <p>{TotalItems} items</p>
+                {/* {products.map((item) => {
+                  totalItems += item.quantity;
+                })} */}
+                <p>{totalItems} items</p>
               </div>
               <p className="mt-0.5 text-sm text-gray-500">
                 Shipping and taxes calculated at checkout.
