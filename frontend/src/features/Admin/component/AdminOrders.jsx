@@ -11,6 +11,7 @@ import {
   updateOrderAsync,
 } from "../../orders/orderSlice";
 import { EyeIcon, PencilIcon } from "@heroicons/react/24/solid";
+import { Pagination } from "../../common/Pagination";
 
 export default function AdminOrders() {
   const [page, setPage] = useState(1);
@@ -39,6 +40,10 @@ export default function AdminOrders() {
     };
     dispatch(updateOrderAsync(updatedOrder));
     setEdittableOrderId(-1);
+  };
+
+   const handlePage = (page) => {
+    setPage(page); // Update state
   };
 
   const chooseColor = (status) => {
@@ -167,6 +172,12 @@ export default function AdminOrders() {
                   ))}
                 </tbody>
               </table>
+              <Pagination
+                            page={page}
+                            setPage={setPage}
+                            handlePage={handlePage}
+                            totalItems={totalOrders}
+                          ></Pagination>
             </div>
           </div>
         </div>

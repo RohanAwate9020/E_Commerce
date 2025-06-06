@@ -29,6 +29,7 @@ export function updateOrder(order) {
 
 export function fetchAllOrders({pagination}) {
   let querystring = "";
+  
   for (let key in pagination) {
     querystring += `${key}=${pagination[key]}&`;
   }
