@@ -1,18 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectLoggedInUser } from "../../auth/authSlice";
-import { fetchLoggedInUserOrdersAsync, selectUserOrders } from "../userSlice";
+import { fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders } from "../userSlice";
 import { Link } from "react-router-dom";
 import { discountPrice } from "../../../app/constant";
 
 export default function UserOrders() {
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const userInfo = useSelector(selectUserInfo);
   const orders = useSelector(selectUserOrders);
 
   useEffect(() => {
-    dispatch(fetchLoggedInUserOrdersAsync(user.id));
-  }, [dispatch]);
+    dispatch(fetchLoggedInUserOrdersAsync(userInfo.id));
+  }, [dispatch,userInfo]);
   return (
     <div>
         <h1>My Orders</h1>
@@ -33,8 +32,8 @@ export default function UserOrders() {
                     <li key={item.id} className="flex py-6">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                         <img
-                          src={item.images[0]}
-                          alt={item.thumnails}
+                          src={item?.product?.thumbnail}
+                          alt={item?.product?.title}
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
@@ -43,12 +42,12 @@ export default function UserOrders() {
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>
-                              <Link to="#">{item.title}</Link>
+                              <Link to= {`/product-detail/${item.product.id}`}>{item?.product?.title}</Link>
                             </h3>
-                            <p className="ml-4">$ {discountPrice(item)}</p>
+                            <p className="ml-4">$ {discountPrice(item?.product)}</p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
-                            {item.category}
+                            {item?.product?.category}
                           </p>
                         </div>
                         <div className="flex flex-1 items-end justify-between text-sm">
@@ -73,7 +72,7 @@ export default function UserOrders() {
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Total items in Cart</p>
 
-                      <p>{order.TotalItemsincart}</p>
+                      <p>{order.totalItems}</p>
                     </div>
                     
                     <div

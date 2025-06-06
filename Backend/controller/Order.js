@@ -17,7 +17,8 @@ exports.createNewOrder = async (req, res) => {
 };
 
 exports.fetchOrdersByUserId = async (req, res) => {
-  const {userId} = req.query;
+  const userId = req.query.user;
+  console.log("User ID", userId);
   try {
     const order = await Order.find({ user: userId }).exec();
     res.status(200).json(order);
@@ -28,6 +29,7 @@ exports.fetchOrdersByUserId = async (req, res) => {
     });
   }
 };
+
 
 exports.deleteOrder = async (req, res) => {
   const id = req.params.id;
@@ -57,5 +59,33 @@ exports.updateOrder = async (req, res) => {
       message: "Error fetching product",
       error: err,
     });
+  }
+};
+
+
+exports.fetchOrdersAdmin = async (req, res) => {
+  let query = Order.find({deleted: {$ne:true}}); // Assuming you want to exclude deleted products
+  let totalOrdersQuery = Order.find({deleted: {$ne:true}}); // Same for total count
+
+
+console.log("Query Parameters:", req.query);
+  if (req.query._sort && req.query._order) {
+    query = query.sort({ [req.query._sort]: req.query._order });
+  }
+
+  try {
+    const totalDocs = await totalOrdersQuery.countDocuments().exec();
+
+    if (req.query._page && req.query._limit) {
+      const pageSize = parseInt(req.query._limit);
+      const page = parseInt(req.query._page);
+      query = query.skip((page - 1) * pageSize).limit(pageSize);
+    }
+
+    const docs = await query.exec();
+    res.set("X-Total-Count", totalDocs);
+    res.status(200).json(docs);
+  } catch (err) {
+    res.status(400).json(err);
   }
 };

@@ -88,11 +88,11 @@ export default function AdminOrders() {
                             <div className="mr-2">
                               <img
                                 className="w-6 h-6 rounded-full"
-                                src={product.thumbnail}
+                                src={product?.product?.thumbnail}
                               />
                             </div>
                             <span>
-                              {product?.title} - {product?.quantity}
+                              {product?.product?.title} - {product?.quantity}
                             </span>
                             <span> </span>
                           </div>

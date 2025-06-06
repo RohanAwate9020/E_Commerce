@@ -8,6 +8,7 @@ const userRouter =require("./routes/User.js")
 const authRouter =require("./routes/Auth.js")
 const cartRouter =require("./routes/Cart.js")
 const orderRouter =require("./routes/Order.js")
+const adminRouter =require("./routes/Admin.js")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,6 +27,7 @@ app.use('/user', userRouter.router);
 app.use('/auth', authRouter.router);
 app.use('/cart', cartRouter.router);
 app.use('/orders', orderRouter.router);
+app.use('/admin', adminRouter.router);
 
 require('dotenv').config();
 const connectionString= process.env.DB_ConnectionString;

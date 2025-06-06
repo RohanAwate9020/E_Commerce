@@ -8,15 +8,12 @@ import {
   UpdateCartAsync,
 } from "../features/cart/cartSlice";
 import { useForm } from "react-hook-form";
-import {
-  selectLoggedInUser,
-  updateUserAsync,
-} from "../features/auth/authSlice";
+
 import {
   createOrderAsync,
   selectCurrentOrder,
 } from "../features/orders/orderSlice";
-import { selectUserInfo } from "../features/user/userSlice";
+import { selectUserInfo, updateUserAsync } from "../features/user/userSlice";
 import { discountPrice } from "../app/constant";
 
 // cart summary data

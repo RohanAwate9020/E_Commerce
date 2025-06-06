@@ -34,13 +34,13 @@ exports.addToCart = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
   const cartId = req.params.id;
-  console.log("Update cart item", req.body);
+  console.log("Update cart item", req.body.quantity);
   try {
     const cart = await Cart.findByIdAndUpdate(
       cartId,
-      req.body.quantity,
-      { new: true }.populate("product") 
-    ).exec();
+      {"quantity":req.body.quantity},
+      { new: true }
+    ).populate("product") .exec();
 
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
