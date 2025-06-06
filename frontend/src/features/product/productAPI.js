@@ -5,6 +5,13 @@ export function fetchAllProducts() {
     resolve({ data });
   });
 }
+export function fetchAllProductsAdmin() {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/admin/products");
+    const data = await response.json();
+    resolve({ data });
+  });
+}
 
 export function createProduct(product) {
   return new Promise(async (resolve) => {
@@ -41,7 +48,7 @@ export function fetchProductsByID(id) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/products/" + id);
     const data = await response.json();
-
+console.log("Fetched product by ID:", data);
     resolve({ data });
   });
 }
@@ -68,6 +75,35 @@ export function fetchProductsByFilters(filter, sort, pagination) {
   return new Promise(async (resolve) => {
     const response = await fetch(
       "http://localhost:8080/products?" + querystring
+    );
+    // console.log("http://localhost:8080/products?" + querystring);
+    const data = await response.json();
+    const totalItems = response.headers.get("X-Total-Count") ;
+    resolve({ data: { product: data, totalItems: +totalItems } });
+  });
+}
+export function fetchProductsByFiltersAdmin(filter, sort, pagination) {
+  let querystring = "";
+  for (let key in filter) {
+    const categoryValues = filter[key];
+    if (categoryValues.length > 0) {
+      const lastCategoryValue = categoryValues[categoryValues.length - 1];
+      querystring += `${key}=${lastCategoryValue}&`;
+      // categoryValues.forEach((value) => {
+      //   querystring += `${key}=${value}&`;
+      // });
+    }
+  }
+  for (let key in sort) {
+    querystring += `${key}=${sort[key]}&`;
+  }
+  for (let key in pagination) {
+    querystring += `${key}=${pagination[key]}&`;
+  }
+
+  return new Promise(async (resolve) => {
+    const response = await fetch(
+      "http://localhost:8080/admin/products?" + querystring
     );
     // console.log("http://localhost:8080/products?" + querystring);
     const data = await response.json();

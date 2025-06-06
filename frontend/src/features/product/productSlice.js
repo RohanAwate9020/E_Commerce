@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchAllProducts,fetchProductsByFilters, fetchBrands,fetchCategories,fetchProductsByID, createProduct, updateProduct } from './productAPI';
+import { fetchAllProducts,fetchProductsByFilters, fetchBrands,fetchCategories,fetchProductsByID, createProduct, updateProduct, fetchAllProductsAdmin, fetchProductsByFiltersAdmin } from './productAPI';
 
 
 const initialState = {
   products: [],
+  productsAdmin: [],
   brands: [],
   categories: [],
   status: 'idle',
@@ -14,6 +15,7 @@ const initialState = {
 export const fetchProductsByIDAsync = createAsyncThunk(
   'product/fetchProductsByID',
   async (id) => {
+    console.log("Fetching product by ID:", id);
     const response = await fetchProductsByID(id);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
@@ -47,6 +49,14 @@ export const fetchAllProductsAsync = createAsyncThunk(
     return response.data;
   }
 );
+export const fetchAllProductsAdminAsync = createAsyncThunk(
+  'product/fetchAllProductsAdmin',
+  async () => {
+    const response = await fetchAllProductsAdmin();
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
 
 export const fetchBrandsAsync = createAsyncThunk(
   'product/fetchBrands',
@@ -76,6 +86,16 @@ export const fetchProductsByFiltersAsync = createAsyncThunk(
     return response.data;
   }
 );
+export const fetchProductsByFiltersAdminAsync = createAsyncThunk(
+  'product/fetchProductsByFiltersAdmin',
+  async ({filter,sort,pagination}) => {
+    const response = await fetchProductsByFiltersAdmin(filter,sort,pagination);
+    // The value we return becomes the `fulfilled` action payload
+    // console.log(filter)
+    // console.log(response.data)
+    return response.data;
+  }
+);
 
 export const productSlice = createSlice({
   name: 'product',
@@ -94,6 +114,13 @@ export const productSlice = createSlice({
         state.status = 'idle';
         state.products = action.payload;
       })
+      .addCase(fetchAllProductsAdminAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchAllProductsAdminAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.productsAdmin = action.payload;
+      })
 
       .addCase(fetchProductsByFiltersAsync.pending, (state) => {
         state.status = 'loading';
@@ -101,6 +128,15 @@ export const productSlice = createSlice({
       .addCase(fetchProductsByFiltersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.products = action.payload.product;
+        state.totalItems = action.payload.totalItems;
+
+      })
+      .addCase(fetchProductsByFiltersAdminAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchProductsByFiltersAdminAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.productsAdmin = action.payload.product;
         state.totalItems = action.payload.totalItems;
 
       })
@@ -152,6 +188,7 @@ export const productSlice = createSlice({
 export const { clearSelectedProduct } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.product.products;
+export const selectAllProductsAdmin = (state) => state.product.productsAdmin;
 export const selectBrands = (state) => state.product.brands;
 export const selectCategories = (state) => state.product.categories;
 export const selectTotalItems = (state) => state.product.totalItems;

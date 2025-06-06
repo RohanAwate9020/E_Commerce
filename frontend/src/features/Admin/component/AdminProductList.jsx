@@ -9,6 +9,9 @@ import {
   selectCategories,
   fetchBrandsAsync,
   fetchCategoriesAsync,
+  selectAllProductsAdmin,
+  fetchAllProductsAdminAsync,
+  fetchProductsByFiltersAdminAsync,
 } from "../../product/productSlice";
 import {
   Dialog,
@@ -52,7 +55,7 @@ function classNames(...classes) {
 export default function AdminProductList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const products = useSelector(selectAllProducts);
+  const products = useSelector(selectAllProductsAdmin);
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
   const totalItems = useSelector(selectTotalItems);
@@ -108,12 +111,13 @@ export default function AdminProductList() {
 
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
+    dispatch(fetchProductsByFiltersAdminAsync({ filter, sort, pagination }));
   }, [dispatch, filter, sort, page]);
 
   useEffect(() => {
     dispatch(fetchBrandsAsync());
     dispatch(fetchCategoriesAsync());
+    dispatch(fetchAllProductsAdminAsync());
   }, []);
 
   useEffect(() => {

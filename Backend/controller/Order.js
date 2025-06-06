@@ -67,8 +67,6 @@ exports.fetchOrdersAdmin = async (req, res) => {
   let query = Order.find({deleted: {$ne:true}}); // Assuming you want to exclude deleted products
   let totalOrdersQuery = Order.find({deleted: {$ne:true}}); // Same for total count
 
-
-console.log("Query Parameters:", req.query);
   if (req.query._sort && req.query._order) {
     query = query.sort({ [req.query._sort]: req.query._order });
   }

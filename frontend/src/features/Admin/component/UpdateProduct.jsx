@@ -24,7 +24,8 @@ export default function UpdateProduct() {
   const navigate = useNavigate();
 
   const id = useParams().id;
-
+  console.log("Product ID to update:", id);
+ 
   const {
     register,
     handleSubmit,
@@ -34,14 +35,16 @@ export default function UpdateProduct() {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    dispatch(fetchProductsByIDAsync(id));
-  }, [dispatch, id]);
-
   const product = useSelector(selectProductById);
+  console.log("Product to update:", product);
   const status = useSelector((state) => state.product.status);
   const [openremoveModalId, setopenremoveModalId] = useState(null);
   const [openrelistModalId, setopenrelistModalId] = useState(null);
+
+   useEffect(() => {
+    console.log("Fetching product by ID::::::::", id);
+    dispatch(fetchProductsByIDAsync(id));
+  }, [id]);
 
   useEffect(() => {
     if (product) {
@@ -74,7 +77,7 @@ export default function UpdateProduct() {
   const handleRemove = async () => {
     const removingproduct = { ...product };
     removingproduct.deleted = true;
-     // Redirect to the products page
+    // Redirect to the products page
     const resultAction = await dispatch(updateProductAsync(removingproduct));
     if (updateProductAsync.fulfilled.match(resultAction)) {
       setshowRemoval(true); // Show success alert
@@ -89,7 +92,7 @@ export default function UpdateProduct() {
   const handleRelist = async () => {
     const removingproduct = { ...product };
     removingproduct.deleted = false;
-     // Redirect to the products page
+    // Redirect to the products page
     const resultAction = await dispatch(updateProductAsync(removingproduct));
     if (updateProductAsync.fulfilled.match(resultAction)) {
       setshowRemoval(true); // Show success alert
@@ -174,7 +177,7 @@ export default function UpdateProduct() {
                 Back to Home Page
               </button>
             </div>
-            {product.deleted ? (
+            {product?.deleted ? (
               <div>
                 <p className="text-red-500">This products is deleted.</p>
               </div>
@@ -457,22 +460,24 @@ export default function UpdateProduct() {
           >
             Back to Home Page
           </button> */}
-          {product && !product.deleted &&(<button
-            type="button" 
-            onClick={() => setopenremoveModalId(product.id)}
-            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-          >
-            Remove Product
-          </button>
-        )}
-          {product && product.deleted &&(<button
-            type="button" 
-            onClick={() => setopenrelistModalId(product.id)}
-            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-          >
-            Relist Product
-          </button>
-        )}
+          {product && !product.deleted && (
+            <button
+              type="button"
+              onClick={() => setopenremoveModalId(product.id)}
+              className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            >
+              Remove Product
+            </button>
+          )}
+          {product && product.deleted && (
+            <button
+              type="button"
+              onClick={() => setopenrelistModalId(product.id)}
+              className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            >
+              Relist Product
+            </button>
+          )}
 
           <button
             type="submit"
