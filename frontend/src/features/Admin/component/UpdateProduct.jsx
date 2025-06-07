@@ -25,7 +25,17 @@ export default function UpdateProduct() {
 
   const id = useParams().id;
   console.log("Product ID to update:", id);
- 
+
+  const product = useSelector(selectProductById);
+  const status = useSelector((state) => state.product.status);
+  const [openremoveModalId, setopenremoveModalId] = useState(null);
+  const [openrelistModalId, setopenrelistModalId] = useState(null);
+  
+  useEffect(() => {
+    dispatch(fetchProductsByIDAsync(id));
+  }, [id]);
+  
+  console.log("Product to update:", product);
   const {
     register,
     handleSubmit,
@@ -34,17 +44,6 @@ export default function UpdateProduct() {
     setValue,
     formState: { errors },
   } = useForm();
-
-  const product = useSelector(selectProductById);
-  console.log("Product to update:", product);
-  const status = useSelector((state) => state.product.status);
-  const [openremoveModalId, setopenremoveModalId] = useState(null);
-  const [openrelistModalId, setopenrelistModalId] = useState(null);
-
-   useEffect(() => {
-    console.log("Fetching product by ID::::::::", id);
-    dispatch(fetchProductsByIDAsync(id));
-  }, [id]);
 
   useEffect(() => {
     if (product) {
@@ -490,7 +489,7 @@ export default function UpdateProduct() {
       <DeleteModal
         isOpen={openremoveModalId !== null}
         onClose={() => setopenremoveModalId(null)}
-        title={`Delete ${product.title}`}
+        title={`Delete ${product?.title}`}
         message="Are you sure you want to delete this item?"
         dangerOption="Delete"
         cancelOption="Cancel"
@@ -502,7 +501,7 @@ export default function UpdateProduct() {
       <DeleteModal
         isOpen={openrelistModalId !== null}
         onClose={() => setopenrelistModalId(null)}
-        title={`Relist ${product.title}`}
+        title={`Relist ${product?.title}`}
         message="Are you sure you want to Relist this item?"
         dangerOption="Relist"
         cancelOption="Cancel"

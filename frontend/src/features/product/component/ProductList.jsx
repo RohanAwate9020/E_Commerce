@@ -87,6 +87,7 @@ export default function ProductList() {
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
   const status = useSelector(selectProductListStatus);
+  const [productName, setproductName] = useState("");
 
   const filters = [
     {
@@ -130,10 +131,16 @@ export default function ProductList() {
     setPage(page); // Update state
   };
 
+  const handleBrand = (brand) => {
+    setproductName(brand);
+  };
+
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
-  }, [dispatch, filter, sort, page]);
+    dispatch(
+      fetchProductsByFiltersAsync({ filter, sort, pagination, productName })
+    );
+  }, [dispatch, filter, sort, page, productName]);
 
   useEffect(() => {
     dispatch(fetchBrandsAsync());
@@ -225,6 +232,14 @@ export default function ProductList() {
                 ></DesktopFilter>
                 {/* Product grid */}
                 <div className="lg:col-span-3">
+                  <input
+                    type="text"
+                    id="productName"
+                    onChange={(event) => handleBrand(event.target.value)}
+                    className="border border-gray-300 rounded-md px-3 py-2 w-full text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-grey-500"
+                    placeholder="Enter product name"
+                  />
+
                   <ProductGrid
                     products={products}
                     status={status}
@@ -467,52 +482,56 @@ function ProductGrid({ products, status }) {
           color="#4e46e5"
           ariaLabel="infinity-spin-loading"
         />
-      ) : 
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-          {products.map((product) =>
-            !product.deleted ? (
-              <Link key={product.id} to={`/product-detail/${product.id}`}>
-                <div
-                  
-                  className="group relative p-2 border-solid border-2 border-gray-200 rounded-lg"
-                >
-                  <img
-                    alt={product.title}
-                    src={product.thumbnail}
-                    className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-60 "
-                  />
-                  <div className="mt-4 flex justify-between">
-                    <div>
-                      <h3 className="text-sm text-gray-700">
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.title}
-                      </h3>
-                      <p className="mt-1 text-sm text-gray-500">
-                        <StarIcon className="w-5 h-5 inline"></StarIcon>
-                        <span className="align-bottom"> {product.rating}</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        $ {discountPrice(product)}
-                      </p>
-                      <p className="text-sm font-medium text-gray-400 line-through">
-                        $ {product.price}
-                      </p>
-                    </div>
-                    {product.stock === 0 ? (
-                      <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">
-                        Out of Stock
+      ) : (
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+            {products.map((product) =>
+              !product.deleted ? (
+                <Link key={product.id} to={`/product-detail/${product.id}`}>
+                  <div className="group relative p-2 border-solid border-2 border-gray-200 rounded-lg">
+                    <img
+                      alt={product.title}
+                      src={product.thumbnail}
+                      className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-60 "
+                    />
+                    <div className="mt-4 flex justify-between">
+                      <div>
+                        <h3 className="text-sm text-gray-700">
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0"
+                          />
+                          {product.title}
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-500">
+                          <StarIcon className="w-5 h-5 inline"></StarIcon>
+                          <span className="align-bottom">
+                            {" "}
+                            {product.rating}
+                          </span>
+                        </p>
                       </div>
-                    ) : null}
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          $ {discountPrice(product)}
+                        </p>
+                        <p className="text-sm font-medium text-gray-400 line-through">
+                          $ {product.price}
+                        </p>
+                      </div>
+                      {product.stock === 0 ? (
+                        <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">
+                          Out of Stock
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ) : null
-          )}
+                </Link>
+              ) : null
+            )}
+          </div>
         </div>
-      </div>}
+      )}
     </div>
   );
 }

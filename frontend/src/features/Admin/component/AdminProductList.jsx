@@ -38,6 +38,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { discountPrice, ITEMS_PER_PAGE } from "../../../app/constant";
 import { fetchBrands, fetchCategories } from "../../product/productAPI";
 import { Pagination } from "../../common/Pagination";
+import { set } from "react-hook-form";
 
 // Product data
 
@@ -63,6 +64,7 @@ export default function AdminProductList() {
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [page, setPage] = useState(1);
+  const [productName, setproductName] = useState("");
 
   const filters = [
     {
@@ -97,8 +99,7 @@ export default function AdminProductList() {
   };
 
   const handleSort = (e, option) => {
-    const newSort = { _sort: option.sort, _order: option.order };
-    setSort(newSort); // Update state
+    const newSort = { _sort: option.sort, _order: option.order };// Update state
   };
 
   const handlePage = (page) => {
@@ -109,10 +110,15 @@ export default function AdminProductList() {
     navigate(`/admin/update-product/${id}`);
   };
 
+  const handleBrand = (brand) => {
+    setproductName(brand);
+
+  }
+
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFiltersAdminAsync({ filter, sort, pagination }));
-  }, [dispatch, filter, sort, page]);
+    dispatch(fetchProductsByFiltersAdminAsync({ filter, sort, pagination,productName }));
+  }, [dispatch, filter, sort, page, productName]);
 
   useEffect(() => {
     dispatch(fetchBrandsAsync());
@@ -211,12 +217,22 @@ export default function AdminProductList() {
                 ></DesktopFilter>
                 {/* Product grid */}
                 <div className="lg:col-span-3">
-                  <Link
-                    to="/admin/product-form"
-                    className=" mt-2 justify-center rounded-md bg-green-600 opacity-90 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                  >
-                    + Add New Product
-                  </Link>
+                  <div className="flex justify-between">
+                    <Link
+                      to="/admin/product-form"
+                      className=" mt-2 justify-center rounded-md bg-green-600 opacity-90 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                    >
+                      + Add New Product
+                    </Link>
+                    <input
+                      type="text"
+                      id="productName"
+                      onChange={(event)=>{handleBrand(event.target.value)}}
+                      class=" border border-black  text-sm rounded-lg placeholder-black text-black "
+                      placeholder="Enter product name"
+                    />
+                  </div>
+
                   <ProductGrid
                     products={products}
                     handleEditProduct={handleEditProduct}
@@ -466,19 +482,20 @@ function ProductGrid({ products, handleEditProduct }) {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900">
-                        ${" "}
-                        {discountPrice(product)}
+                        $ {discountPrice(product)}
                       </p>
                       <p className="text-sm font-medium text-gray-400 line-through">
                         $ {product.price}
                       </p>
                     </div>
-                  </div> 
+                  </div>
                   {product.deleted && (
                     <div className="text-sm text-red-400">Product Removed</div>
                   )}
                   {product.stock <= 0 && (
-                    <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">Out of Stock</div>
+                    <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">
+                      Out of Stock
+                    </div>
                   )}
                 </div>
               </Link>

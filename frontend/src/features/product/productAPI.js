@@ -53,7 +53,7 @@ console.log("Fetched product by ID:", data);
   });
 }
 
-export function fetchProductsByFilters(filter, sort, pagination) {
+export function fetchProductsByFilters(filter, sort, pagination, productName) {
   let querystring = "";
   for (let key in filter) {
     const categoryValues = filter[key];
@@ -70,6 +70,9 @@ export function fetchProductsByFilters(filter, sort, pagination) {
   }
   for (let key in pagination) {
     querystring += `${key}=${pagination[key]}&`;
+  }
+  if (productName) {
+    querystring += `productName=${productName}&`;
   }
 
   return new Promise(async (resolve) => {
@@ -82,7 +85,8 @@ export function fetchProductsByFilters(filter, sort, pagination) {
     resolve({ data: { product: data, totalItems: +totalItems } });
   });
 }
-export function fetchProductsByFiltersAdmin(filter, sort, pagination) {
+export function fetchProductsByFiltersAdmin(filter, sort, pagination,productName) {
+
   let querystring = "";
   for (let key in filter) {
     const categoryValues = filter[key];
@@ -99,6 +103,9 @@ export function fetchProductsByFiltersAdmin(filter, sort, pagination) {
   }
   for (let key in pagination) {
     querystring += `${key}=${pagination[key]}&`;
+  }
+  if (productName) {
+    querystring += `productName=${productName}&`;
   }
 
   return new Promise(async (resolve) => {

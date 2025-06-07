@@ -53,6 +53,12 @@ exports.fetchallProducts = async (req, res) => {
   if (req.query._sort && req.query._order) {
     query = query.sort({ [req.query._sort]: req.query._order });
   }
+  if (req.query.productName) {
+  const nameRegex = new RegExp(req.query.productName, "i"); // 'i' for case-insensitive search
+  // Assuming 'title' is the field you want to search in
+  query = query.find({ title: nameRegex });
+  totalProductsQuery = totalProductsQuery.find({ title: nameRegex });
+}
 
   try {
     const totalDocs = await totalProductsQuery.countDocuments().exec();
@@ -89,6 +95,14 @@ exports.fetchallProductsAdmin = async (req, res) => {
   if (req.query._sort && req.query._order) {
     query = query.sort({ [req.query._sort]: req.query._order });
   }
+  if (req.query.productName) {
+  const nameRegex = new RegExp(req.query.productName, "i"); // 'i' for case-insensitive search
+  // Assuming 'title' is the field you want to search in
+  query = query.find({ title: nameRegex });
+  totalProductsQuery = totalProductsQuery.find({ title: nameRegex });
+}
+
+
 
   try {
     const totalDocs = await totalProductsQuery.countDocuments().exec();
