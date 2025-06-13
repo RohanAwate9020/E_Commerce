@@ -1,16 +1,35 @@
 const mongoose = require("mongoose");
 const model = require("../model/User");
 const User = model.User;
+const crypto = require("crypto");
+const { sanitizeUser } = require("../services/common");
+const SECRET_KEY="SECRET_KEY"
+const jwt = require('jsonwebtoken');
+
 
 exports.createUser = async (req, res) => {
-  const user = new User(req.body);
-
   try {
-    const doc = await user.save();
-    res.status(201).json({
-      id:doc.id,
-      role:doc.role,
-    });
+    var salt = crypto.randomBytes(16);
+    crypto.pbkdf2(
+      req.body.password,
+      salt,
+      310000,
+      32,
+      "sha256",
+      async function (err, hashedPassword) {
+        const user = new User({ ...req.body, password: hashedPassword ,salt: salt });
+        const doc = await user.save();
+        req.login(sanitizeUser(doc), (err)=> {
+        if (err) { 
+          res.status(400).json(err) 
+        }
+        else{
+          const token = jwt.sign(sanitizeUser(doc), SECRET_KEY);
+          res.status(201).json(token);
+        }
+      });
+      }
+    );
   } catch (err) {
     res.status(500).json({
       message: "Error creating user",
@@ -20,25 +39,8 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email }).exec();
-    console.log(user);
-    if(!user) {
-      return res.status(404).json({
-        message: "No user found with this email",
-      });
-    }
-    else if (user.password === req.body.password) {
-      return res.status(200).json({id:user.id, role:user.role});
-    }
-    else{
-    res.status(401).json({
-      message: "Password does not match",
-    });}
-  } catch (err) {
-    res.status(500).json({
-      message: "No user found with this email",
-      error: err.message,
-    });
-  }
+  res.json(req.user);
+};
+exports.checkUser = async (req, res) => {
+  res.json({Status:'success',User: req.user});
 };
