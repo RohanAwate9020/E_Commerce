@@ -14,4 +14,9 @@ export default defineConfig({
       },
     },
   },
+
+  build: {
+    outDir: "build",
+  },
+  base: "/", // or './' if you're hosting from a subfolder
 });

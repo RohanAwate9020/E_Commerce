@@ -3,9 +3,10 @@ const model = require("../model/Cart");
 const Cart = model.Cart;
 
 exports.fetchCartByUserId = async (req, res) => {
-  const userId = req.params.userId;
+  console.log("Fetching cart items for user", req.user);
+  const {id} = req.user;
   try {
-    const cartItems = await Cart.find({ userId: userId })
+    const cartItems = await Cart.find({ userId: id })
       .populate("user")
       .populate("product")
       .exec();
@@ -19,7 +20,8 @@ exports.fetchCartByUserId = async (req, res) => {
 };
 
 exports.addToCart = async (req, res) => {
-  const cart = new Cart(req.body);
+  const {id}=req.user;
+  const cart = new Cart({...req.body,userId:id});
   try {
     const doc = await cart.save();
     const result = await doc.populate("product");

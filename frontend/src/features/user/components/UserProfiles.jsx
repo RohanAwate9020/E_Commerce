@@ -62,7 +62,7 @@ export default function UserProfiles() {
               Email : {userInfo?.email}
             </h3>
             
-            {userInfo.role==="admin" &&
+            {userInfo?.role==="admin" &&
             <h3 className="text-xl my-5 font-semibold tracking-tight text-red-900">
                Role : {userInfo?.role}
             </h3>

@@ -15,9 +15,7 @@ export default function Login() {
   } = useForm();
   const error = useSelector(selectError);
   const user = useSelector(selectLoggedInUser);
-  if (user) {
-    localStorage.setItem("user", user.role);
-  }
+ 
 
   return (
     <>

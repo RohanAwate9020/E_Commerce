@@ -22,6 +22,7 @@ export function checkUser(loginInfo) {
           headers: {
             "Content-Type": "application/json",
           },
+           credentials: 'include',
           body: JSON.stringify(loginInfo),
         }
       );

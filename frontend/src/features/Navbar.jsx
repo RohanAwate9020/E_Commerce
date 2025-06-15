@@ -17,7 +17,8 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "../assets/cmpLogoRed.png";
 import { selectItems } from "../features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectLoggedInUser, signOutAsync } from "./auth/authSlice";
+import {  signOutAsync } from "./auth/authSlice";
+import { selectUserInfo } from "./user/userSlice";
 
 const navigation = [
   { name: "Home", link: "/home", user: true},
@@ -37,10 +38,10 @@ function classNames(...classes) {
 export default function Navbar({ children }) {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
   
   const handleSignOut = () => {
-    dispatch(signOutAsync(user.id));
+    dispatch(signOutAsync(user?.id));
     Navigate("/login");
   };
   const items = useSelector(selectItems);

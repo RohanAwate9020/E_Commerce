@@ -1,19 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { selectLoggedInUser } from '../../auth/authSlice'
 import { Navigate } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLoggedInUserAsync, selectUserInfo } from '../../user/userSlice';
 
 export default function ProtectedAdmin({ children }) {
-    const user = localStorage.getItem("user") || useSelector(selectLoggedInUser);
+   const dispatch = useDispatch();
+  const user = useSelector(selectLoggedInUser);
+  const userInfo = useSelector(selectUserInfo);
 
-    if (!user) {
-        return <Navigate to="/login" replace={true}/>;
-    }
-    if ( user !== "admin") {
-        return <Navigate to="/home" replace={true}/>;
-    }
-    
-    return children;
+ useEffect(() => {
+  if (!userInfo) {
+    dispatch(fetchLoggedInUserAsync());
+  }
+}, [dispatch, userInfo]);
+
+  if (!user) {
+    return <Navigate to="/login" replace={true} />;
+  }
+
+  if (!userInfo) {
+    return <div>Loading...</div>; // handle loading
+  }
+
+  if (userInfo.role !== "admin") {
+    return <Navigate to="/home" replace={true} />;
+  }
+
+  return children;
 }
 
 

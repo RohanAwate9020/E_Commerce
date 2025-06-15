@@ -1,10 +1,11 @@
-import { data } from "react-router-dom";
+
 
 export function addToCart(item) {
 
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/cart' ,{
     method:"POST",
+    credentials: "include",
     body:JSON.stringify(item),
     headers:{
       'Content-Type': 'application/json'}
@@ -16,18 +17,20 @@ export function addToCart(item) {
 }
 
 
-export function fetchItemsByUserId(userId) {
+export function fetchItemsByUserId() {
   return new Promise(async (resolve) => {
     try {
-      const response = await fetch("http://localhost:8080/cart/"+userId);
+      const response = await fetch("http://localhost:8080/cart", {
+        credentials: 'include', // ✅ this sends the jwt cookie
+      });
       const data = await response.json();
       resolve({ data });
-    }catch(err){
-      data = [];
-      resolve({ data });
+    } catch (err) {
+      resolve({ data: [] });
     }
   });
 }
+
 
 export function UpdateCart(update) {
   return new Promise(async (resolve) =>{
@@ -75,10 +78,10 @@ export function deleteitemfromCart(ItemId) {
 }
 
 
-export  function resetCart(userId) {
+export  function resetCart() {
   return new Promise(async (resolve) => {  
   // get all itemns from users carts and then delete them one by one
-   const response = await fetchItemsByUserId(userId);
+   const response = await fetchItemsByUserId();
    const items = response.data;
    for (let item of items){
 

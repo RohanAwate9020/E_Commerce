@@ -38,7 +38,6 @@ function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product = useSelector(selectProductById);
-  const user = useSelector(selectLoggedInUser);
   const dispatch = useDispatch();
   const params = useParams();
   const items = useSelector(selectItems);
@@ -52,7 +51,6 @@ function ProductDetail() {
       dispatch(
         addToCartAsync({
           quantity: 1,
-          user: user.id,
           product: product.id,
         })
       );

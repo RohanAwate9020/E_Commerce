@@ -5,7 +5,7 @@ const { fetchCartByUserId, addToCart, updateCart, deleteFromCart } = require("..
 const router= express.Router();
 
 router
-.get('/:id', fetchCartByUserId)
+.get('/', fetchCartByUserId)
 .patch('/:id', updateCart)
 .delete('/:id', deleteFromCart)
 .post('/', addToCart);

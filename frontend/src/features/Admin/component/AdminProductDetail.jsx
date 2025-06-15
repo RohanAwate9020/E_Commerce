@@ -6,7 +6,6 @@ import { Radio, RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsByIDAsync, selectProductById } from "../../product/productSlice";
 import { Link, useParams } from "react-router-dom";
-import { selectLoggedInUser } from "../../auth/authSlice";
 import { addToCartAsync } from "../../cart/cartSlice";
 import { v4 as uuidv4 } from 'uuid';
 import { discountPrice } from "../../../app/constant";
@@ -36,12 +35,11 @@ function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product= useSelector(selectProductById);
-  const user=useSelector(selectLoggedInUser);
   const dispatch = useDispatch(); 
   const params = useParams();
 
   const handleCart=(e)=>{
-    dispatch(addToCartAsync({...product,quantity:1,userId:user.id,id:uuidv4()}));
+    dispatch(addToCartAsync({...product,quantity:1}));
     e.preventDefault();
   }
 
