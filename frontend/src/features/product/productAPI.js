@@ -1,13 +1,17 @@
 export function fetchAllProducts() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products");
+    const response = await fetch("http://localhost:8080/products",
+      {credentials: 'include'}
+    );
     const data = await response.json();
     resolve({ data });
   });
 }
 export function fetchAllProductsAdmin() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/admin/products");
+    const response = await fetch("http://localhost:8080/admin/products",
+      {credentials: 'include'}
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -17,6 +21,7 @@ export function createProduct(product) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/products", {
       method: "POST",
+      credentials: 'include',
       body: JSON.stringify(product),
       headers: {
         "Content-Type": "application/json",
@@ -33,6 +38,7 @@ export function updateProduct(product) {
       "http://localhost:8080/products/" + product.id,
       {
         method: "PATCH",
+        credentials: 'include',
         body: JSON.stringify(product),
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +52,9 @@ export function updateProduct(product) {
 
 export function fetchProductsByID(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products/" + id);
+    const response = await fetch("http://localhost:8080/products/" + id,
+      {credentials: 'include'}
+    );
     const data = await response.json();
 console.log("Fetched product by ID:", data);
     resolve({ data });
@@ -77,7 +85,8 @@ export function fetchProductsByFilters(filter, sort, pagination, productName) {
 
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/products?" + querystring
+      "http://localhost:8080/products?" + querystring,
+      {credentials: 'include'}
     );
     // console.log("http://localhost:8080/products?" + querystring);
     const data = await response.json();
@@ -85,6 +94,7 @@ export function fetchProductsByFilters(filter, sort, pagination, productName) {
     resolve({ data: { product: data, totalItems: +totalItems } });
   });
 }
+
 export function fetchProductsByFiltersAdmin(filter, sort, pagination,productName) {
 
   let querystring = "";
@@ -110,7 +120,8 @@ export function fetchProductsByFiltersAdmin(filter, sort, pagination,productName
 
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/admin/products?" + querystring
+      "http://localhost:8080/admin/products?" + querystring,
+      {credentials: 'include',}
     );
     // console.log("http://localhost:8080/products?" + querystring);
     const data = await response.json();
@@ -121,7 +132,9 @@ export function fetchProductsByFiltersAdmin(filter, sort, pagination,productName
 
 export function fetchCategories() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/category");
+    const response = await fetch("http://localhost:8080/category",
+      {credentials: 'include'}
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -129,7 +142,9 @@ export function fetchCategories() {
 
 export function fetchBrands() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/brands");
+    const response = await fetch("http://localhost:8080/brands",
+      {credentials: 'include'}
+    );
     const data = await response.json();
     resolve({ data });
   });

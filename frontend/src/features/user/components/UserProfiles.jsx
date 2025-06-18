@@ -51,6 +51,8 @@ export default function UserProfiles() {
   } = useForm();
 
   return (
+    <>
+{userInfo ? 
     <div>
       <div>
         <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -275,6 +277,7 @@ export default function UserProfiles() {
                   ) : null}
               <p>Your Address</p>
               {userInfo?.addresses?.map((address, index) => (
+                console.log(address),
                 <div>
                   {selectedEditIndex === index ? (
                     <form
@@ -470,6 +473,7 @@ export default function UserProfiles() {
                       </div>
                     </form>
                   ) : null}
+                  {selectedEditIndex === -1 ?
                   <div className="flex justify-between gap-x-6 py-5 px-3">
                     <div className="flex min-w-0 gap-x-4">
                       <div className="min-w-0 flex-auto" htmlFor="address">
@@ -512,6 +516,7 @@ export default function UserProfiles() {
                       </button>
                     </div>
                   </div>
+                  :null}
                 </div>
               ))}
             </div>
@@ -519,5 +524,7 @@ export default function UserProfiles() {
         </div>
       </div>
     </div>
+    :null }
+    </>
   );
 }

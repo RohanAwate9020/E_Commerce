@@ -65,6 +65,7 @@ export function deleteitemfromCart(ItemId) {
   return new Promise(async (resolve, reject) => {
     const response = await fetch('http://localhost:8080/cart/' + ItemId, {
       method: "DELETE",
+      credentials: 'include', // ✅ this sends the jwt cookie
       headers: { 'Content-Type': 'application/json' }
     });
 

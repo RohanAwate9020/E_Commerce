@@ -88,7 +88,7 @@ passport.use(
             done(null, false, { message: "Password does not match" });
           }
           // const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
-const token = jwt.sign({ sub: user._id, role: user.role }, SECRET_KEY);
+const token = jwt.sign({ id: user._id, role: user.role }, SECRET_KEY);
 
           done(null, { token }, { message: "Login successful" });
         }
@@ -102,9 +102,8 @@ const token = jwt.sign({ sub: user._id, role: user.role }, SECRET_KEY);
 passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
-    console.log("JWT Payload:", jwt_payload);
     try {
-const user = await User.findById(jwt_payload.sub); // ✅ correct method
+const user = await User.findById(jwt_payload.id); // ✅ correct method
       if (user) {
         return done(null, sanitizeUser(user));
       } else {

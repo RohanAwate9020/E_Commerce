@@ -6,7 +6,7 @@ const router= express.Router();
 
 router
 .get('/own', fetchUserById)
-.patch('/:id', updateUser)
+.patch('/update', updateUser)
 
 
 

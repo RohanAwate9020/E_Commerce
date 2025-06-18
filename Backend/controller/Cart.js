@@ -6,7 +6,7 @@ exports.fetchCartByUserId = async (req, res) => {
   console.log("Fetching cart items for user", req.user);
   const {id} = req.user;
   try {
-    const cartItems = await Cart.find({ userId: id })
+    const cartItems = await Cart.find({ user: id })
       .populate("user")
       .populate("product")
       .exec();
@@ -21,7 +21,8 @@ exports.fetchCartByUserId = async (req, res) => {
 
 exports.addToCart = async (req, res) => {
   const {id}=req.user;
-  const cart = new Cart({...req.body,userId:id});
+  console.log("Adding product to cart", id);
+  const cart = new Cart({...req.body,user:id});
   try {
     const doc = await cart.save();
     const result = await doc.populate("product");

@@ -46,8 +46,8 @@ function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
+    console.log("Adding to cart", items);
     if (items.findIndex((item) => item.product.id === product.id) < 0) {
-      
       dispatch(
         addToCartAsync({
           quantity: 1,

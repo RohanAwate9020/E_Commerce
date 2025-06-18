@@ -2,6 +2,7 @@ export function createOrder(order) {
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/orders' ,{
     method:"POST",
+    credentials: 'include', // ✅ this sends the jwt cookie
     body:JSON.stringify(order),
     headers:{
       'Content-Type': 'application/json'}
@@ -17,6 +18,7 @@ export function updateOrder(order) {
   return new Promise(async (resolve) =>{
     const response = await fetch('http://localhost:8080/orders/'+order.id ,{
     method:"PATCH",
+    credentials: 'include', // ✅ this sends the jwt cookie
     body:JSON.stringify(order),
     headers:{
       'Content-Type': 'application/json'}
@@ -36,7 +38,9 @@ export function fetchAllOrders({pagination}) {
 
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/admin/orders?" + querystring
+      "http://localhost:8080/admin/orders?" + querystring,{
+        credentials: 'include'
+      }
     );
     const data = await response.json();
     const totalOrders =await response.headers.get("X-Total-Count") ;
