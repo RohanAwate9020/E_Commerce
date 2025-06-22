@@ -10,7 +10,7 @@ import Checkout from "./pages/Checkout";
 import ProductDetailPage from "./pages/ProductDetailsPage";
 import Protected from "./features/auth/components/Protected";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
-import { selectLoggedInUser } from "./features/auth/authSlice"; // assuming this selector exists
+import { checkAuthAsync, selectLoggedInUser, selectUserChecked } from "./features/auth/authSlice"; // assuming this selector exists
 import PageNotFound from "./pages/404";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
@@ -151,7 +151,11 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
-  // console.log(user);
+  const userChecked =useSelector(selectUserChecked)
+
+  useEffect(() => {
+    dispatch(checkAuthAsync());
+  }, [dispatch]);
 
   useEffect(() => {
     if (user) {
@@ -163,9 +167,11 @@ function App() {
   return (
     <>
       <div className="App">
+        {userChecked && 
         <Provider template={AlertTemplate} {...options}>
           <RouterProvider router={router} />
         </Provider>
+}
       </div>
     </>
   );

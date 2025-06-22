@@ -3,7 +3,6 @@ const model = require("../model/Cart");
 const Cart = model.Cart;
 
 exports.fetchCartByUserId = async (req, res) => {
-  console.log("Fetching cart items for user", req.user);
   const {id} = req.user;
   try {
     const cartItems = await Cart.find({ user: id })
@@ -21,7 +20,6 @@ exports.fetchCartByUserId = async (req, res) => {
 
 exports.addToCart = async (req, res) => {
   const {id}=req.user;
-  console.log("Adding product to cart", id);
   const cart = new Cart({...req.body,user:id});
   try {
     const doc = await cart.save();
@@ -37,7 +35,6 @@ exports.addToCart = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
   const cartId = req.params.id;
-  console.log("Update cart item", req.body.quantity);
   try {
     const cart = await Cart.findByIdAndUpdate(
       cartId,

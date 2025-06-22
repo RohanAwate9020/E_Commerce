@@ -50,7 +50,6 @@ export default function ProtectedAdmin({ children }) {
     if (user && !userInfo) {
       dispatch(fetchLoggedInUserAsync());
     }
-    console.log("ProtectedAdmin userInfo", userInfo);
   }, [dispatch, user, userInfo]);
 
   if (!user) return <Navigate to="/login" replace />;

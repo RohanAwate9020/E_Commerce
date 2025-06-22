@@ -3,6 +3,7 @@ export function createUser(userData) {
     const response = await fetch("http://localhost:8080/auth/signup", {
       method: "POST",
       body: JSON.stringify(userData),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -12,22 +13,69 @@ export function createUser(userData) {
   });
 }
 
-export function checkUser(loginInfo) {
+// export function loginUser(loginInfo) {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const response = await fetch("http://localhost:8080/auth/login", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(loginInfo),
+//       });
+//       console.log("Response status:", response);
+//       if (response.ok) {
+//         const Data = await response.json();
+//         resolve({ Data });
+//       } else {
+//         const error = await response.text();
+//         reject(error);
+//       }
+//     } catch (err) {
+//       reject({ err });
+//     }
+//   });
+// }
+export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(
-        "http://localhost:8080/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-           credentials: 'include',
-          body: JSON.stringify(loginInfo),
-        }
-      );
-      const data = await response.json();
-      resolve({ data });
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // ✅ Include credentials for session management
+        body: JSON.stringify(loginInfo),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        resolve(data); // ✅ Directly resolve with data
+      } else {
+        const error = await response.text();
+        reject(error);
+      }
+    } catch (err) {
+      reject(err); // ❌ No need to wrap in { err }
+    }
+  });
+}
+
+export function checkAuth() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/check", {
+        method: "get",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const Data = await response.json();
+        resolve({ Data });
+      } else {
+        const error = await response.text();
+        reject(error);
+      }
     } catch (err) {
       reject({ err });
     }

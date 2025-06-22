@@ -10,7 +10,11 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common.js");
+const {
+  isAuth,
+  sanitizeUser,
+  cookieExtractor,
+} = require("./services/common.js");
 const productsRouter = require("./routes/Products.js");
 const BrandsRouter = require("./routes/Brands.js");
 const categoryRouter = require("./routes/Category.js");
@@ -48,8 +52,8 @@ const cors = require("cors");
 app.use(
   cors({
     exposedHeaders: ["X-Total-Count"],
-    origin: 'http://localhost:5173', // your frontend dev origin
-  credentials: true,  
+    origin: "http://localhost:5173", // your frontend dev origin
+    credentials: true,
   })
 );
 
@@ -58,10 +62,9 @@ app.use("/brands", isAuth(), BrandsRouter.router);
 app.use("/category", isAuth(), categoryRouter.router);
 app.use("/user", isAuth(), userRouter.router);
 app.use("/auth", authRouter.router);
-app.use("/cart", isAuth(),cartRouter.router);
+app.use("/cart", isAuth(), cartRouter.router);
 app.use("/orders", isAuth(), orderRouter.router);
 app.use("/admin", isAuth(), adminRouter.router);
-
 
 const User = require("./model/User.js").User;
 
@@ -75,7 +78,7 @@ passport.use(
     try {
       const user = await User.findOne({ email: email }).exec();
       if (!user) {
-        done(null, false, { message: "No user found with this email" });
+       return done(null, false, { message: "invalid credentials" });
       }
       crypto.pbkdf2(
         password,
@@ -85,10 +88,10 @@ passport.use(
         "sha256",
         async function (err, hashedPassword) {
           if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
-            done(null, false, { message: "Password does not match" });
+            return done(null, false, { message: "Password does not match" });
           }
           // const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
-const token = jwt.sign({ id: user._id, role: user.role }, SECRET_KEY);
+          const token = jwt.sign({ id: user._id, role: user.role }, SECRET_KEY);
 
           done(null, { token }, { message: "Login successful" });
         }
@@ -103,7 +106,7 @@ passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
     try {
-const user = await User.findById(jwt_payload.id); // ✅ correct method
+      const user = await User.findById(jwt_payload.id); // ✅ correct method
       if (user) {
         return done(null, sanitizeUser(user));
       } else {
@@ -117,7 +120,7 @@ const user = await User.findById(jwt_payload.id); // ✅ correct method
 );
 
 passport.serializeUser(function (user, cb) {
-  console.log("Serializing user:", user);
+  // console.log("Serializing user:", user);
   process.nextTick(function () {
     return cb(null, { id: user.id, role: user.role });
   });

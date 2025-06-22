@@ -4,7 +4,6 @@ const User = model.User;
 
 exports.fetchUserById= async (req,res)=>{
   const {id} =req?.user;
-  console.log("fetchUserById id", id);
   try{
     const user= await User.findById(id,{password:0,salt:0}).exec();
     res.status(200).json({id:user.id,addresses:user.addresses,email:user.email,role:user.role,name:user.name});
