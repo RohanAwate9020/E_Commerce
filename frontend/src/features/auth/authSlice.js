@@ -1,5 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { checkAuth, createUser, loginUser, signOut } from "./authAPI";
+import {
+  checkAuth,
+  createUser,
+  loginUser,
+  resetPassword,
+  resetPasswordRequest,
+  signOut,
+} from "./authAPI";
 import { updateUser } from "../user/userAPI";
 
 const initialState = {
@@ -7,6 +14,8 @@ const initialState = {
   status: "idle",
   error: null,
   userChecked: false,
+  userExists: null,
+  passwordReset: false
 };
 
 export const createUserAsync = createAsyncThunk(
@@ -39,15 +48,35 @@ export const loginUserAsync = createAsyncThunk(
     }
   }
 );
-export const checkAuthAsync = createAsyncThunk(
-  "user/checkAuth",
-  async () => {
+export const checkAuthAsync = createAsyncThunk("user/checkAuth", async () => {
+  try {
+    const response = await checkAuth();
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const resetPasswordRequestAsync = createAsyncThunk(
+  "user/resetPasswordRequest",
+  async (email, { rejectWithValue }) => {
     try {
-      const response = await checkAuth();
+      const response = await resetPasswordRequest(email);
       return response;
     } catch (error) {
-      console.log(error);
-    
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
+
+export const resetPasswordAsync = createAsyncThunk(
+  "user/resetPassword",
+  async ({token,email,password}) => {
+    try {
+      const response = await resetPassword({token,email,password});
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message || "Something went wrong");
     }
   }
 );
@@ -74,7 +103,8 @@ export const userSlice = createSlice({
       })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUserToken = action.payload;f
+        state.loggedInUserToken = action.payload;
+        f;
       })
       .addCase(loginUserAsync.pending, (state) => {
         state.status = "loading";
@@ -102,18 +132,39 @@ export const userSlice = createSlice({
       .addCase(checkAuthAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.loggedInUserToken = action.payload;
-         state.userChecked = true;
+        state.userChecked = true;
       })
- 
+
       .addCase(checkAuthAsync.rejected, (state, action) => {
         state.status = "idle";
-       
-      });
+      })
+      .addCase(resetPasswordRequestAsync.pending, (state) => {
+        state.userExists = null;
+      })
+      .addCase(resetPasswordRequestAsync.fulfilled, (state, action) => {
+        state.userExists = true;
+      })
+      .addCase(resetPasswordRequestAsync.rejected, (state, action) => {
+        state.userExists = false;
+        state.error = action.payload;
+      })
+      .addCase(resetPasswordAsync.pending, (state) => {
+        state.userExists = null;
+      })
+      .addCase(resetPasswordAsync.fulfilled, (state, action) => {
+        state.passwordReset = true;
+      })
+      .addCase(resetPasswordAsync.rejected, (state, action) => {
+        state.passwordReset = false;
+        state.error = action.payload;
+      })
   },
 });
 
 export const selectLoggedInUser = (state) => state.auth.loggedInUserToken;
 export const selectError = (state) => state.auth.error;
 export const selectUserChecked = (state) => state.auth.userChecked;
+export const selectUserExists = (state) => state.auth.userExists;
+export const selectPasswordReset = (state) => state.auth.passwordReset;
 
 export default userSlice.reducer;

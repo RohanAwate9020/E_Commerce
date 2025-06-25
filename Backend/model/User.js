@@ -10,6 +10,7 @@ const userSchema = new Schema ({
     name: {type:String},
     orders: {type:[Schema.Types.Mixed]},
     salt: {type:Buffer},
+    resetPasswordToken: {type:String, default:""},
 })
 
 const virtual = userSchema.virtual('id');

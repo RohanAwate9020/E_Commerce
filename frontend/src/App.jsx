@@ -10,13 +10,16 @@ import Checkout from "./pages/Checkout";
 import ProductDetailPage from "./pages/ProductDetailsPage";
 import Protected from "./features/auth/components/Protected";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
-import { checkAuthAsync, selectLoggedInUser, selectUserChecked } from "./features/auth/authSlice"; // assuming this selector exists
+import {
+  checkAuthAsync,
+  selectLoggedInUser,
+  selectUserChecked,
+} from "./features/auth/authSlice"; // assuming this selector exists
 import PageNotFound from "./pages/404";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import UserOrdersPage from "./pages/UserOrdersPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import { fetchLoggedInUserAsync } from "./features/user/userSlice";
-import ForgotPassword from "./features/auth/components/ForgotPassword";
 import AdminHome from "./pages/AdminHome";
 import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
 import AdminProductDetailPage from "./pages/AdminProductDetailsPage";
@@ -25,6 +28,8 @@ import AdminUpdateProduct from "./pages/adminUpdateProduct";
 import AdminOrdersPages from "./pages/AdminOrdersPages";
 import { positions, Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const options = {
   timeout: 5000,
@@ -68,7 +73,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/forgot-password",
-    element: <ForgotPassword />,
+    element: <ForgotPasswordPage />,
   },
   {
     path: "/cart",
@@ -146,12 +151,16 @@ const router = createBrowserRouter([
       </Protected>
     ),
   },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordPage />,
+  },
 ]);
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
-  const userChecked =useSelector(selectUserChecked)
+  const userChecked = useSelector(selectUserChecked);
 
   useEffect(() => {
     dispatch(checkAuthAsync());
@@ -167,11 +176,11 @@ function App() {
   return (
     <>
       <div className="App">
-        {userChecked && 
-        <Provider template={AlertTemplate} {...options}>
-          <RouterProvider router={router} />
-        </Provider>
-}
+        {userChecked && (
+          <Provider template={AlertTemplate} {...options}>
+            <RouterProvider router={router} />
+          </Provider>
+        )}
       </div>
     </>
   );

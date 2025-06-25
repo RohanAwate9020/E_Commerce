@@ -88,6 +88,56 @@ export function signOut(userId) {
   });
 }
 
+
+export function resetPasswordRequest(email) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/reset-password-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to request password reset");
+      }
+
+      const data = await response.json();
+      resolve(data);
+    } catch (err) {
+      reject(err); // ✅ This will now be a real error caught in the thunk
+    }
+  });
+}
+export function resetPassword({token,email,password}) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, email, password }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to request password reset");
+      }
+
+      const data = await response.json();
+      resolve(data);
+    } catch (err) {
+      reject(err); // ✅ This will now be a real error caught in the thunk
+    }
+  });
+}
+
 // let addJob = () => {
 //   axios
 //     .post(`${process.env.REACT_APP_CRUD_SINGLE_JOB_URL}`, newJob, config)

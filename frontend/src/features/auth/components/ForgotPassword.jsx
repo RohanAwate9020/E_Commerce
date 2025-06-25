@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import {  loginUserAsync, selectError, selectLoggedInUser } from "../authSlice";
+import { resetPasswordRequestAsync, selectUserExists } from "../authSlice";
 import { Link, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import logo from "../../../assets/cmpLogoRed.png"; // Adjust the path as necessary
+
 
 export default function ForgotPassword() {
   const {
@@ -11,7 +14,9 @@ export default function ForgotPassword() {
     watch,
     formState: { errors },
   } = useForm();
- 
+  const ForgotPasswordResponse = useSelector(selectUserExists);
+  const dispatch = useDispatch();
+  console.log("ForgotPasswordResponse", ForgotPasswordResponse);
 
   return (
     <>
@@ -19,8 +24,8 @@ export default function ForgotPassword() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Your Company"
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-            className="mx-auto h-10 w-auto"
+            src={logo}
+            className="mx-auto h-15 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             Enter email to reset password
@@ -31,9 +36,7 @@ export default function ForgotPassword() {
           <form
             noValidate
             onSubmit={handleSubmit((data) => {
-              dispatch(
-                loginUserAsync({ email: data.email, password: data.password })
-              );
+              dispatch(resetPasswordRequestAsync(data.email));
             })}
             className="space-y-6"
           >
@@ -60,6 +63,15 @@ export default function ForgotPassword() {
                 {errors.email && (
                   <p className="text-red-500 mt-1">{errors.email.message}</p>
                 )}
+                {ForgotPasswordResponse === true ? (
+                  <p style={{ color: "green" }}>
+                    Password reset link sent successfully!
+                  </p>
+                ) : ForgotPasswordResponse === false ? (
+                  <p style={{ color: "red" }}>
+                    Failed to send password reset link.
+                  </p>
+                ) : null}
               </div>
             </div>
 

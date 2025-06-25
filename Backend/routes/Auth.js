@@ -1,11 +1,13 @@
 const express = require("express");
-const { createUser, loginUser, checkAuth } = require("../controller/Auth");
+const { createUser, loginUser, checkAuth, resetPasswordRequest, resetPassword } = require("../controller/Auth");
 const router= express.Router();
 const passport = require("passport");
 
 router
 .post('/signup', createUser)
 .post('/login',passport.authenticate('local'), loginUser)
+.post('/reset-password-request',resetPasswordRequest)
+.post('/reset-password',resetPassword)
 .get('/check',passport.authenticate('jwt'),checkAuth);
 
 
