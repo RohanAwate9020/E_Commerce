@@ -8,11 +8,13 @@ const orderSchema= new Schema({
     totalItems:{type:Number, required:true},
     user:{type:Schema.Types.ObjectId, ref:'User', required:true},
     paymentMethod:{type:String, required:true},
+    paymentStatus:{type:String, required:true,default:'Pending'},
     status:{type:String, default:'Pending'},
     selectedAddress:{type:Schema.Types.Mixed, required:true},
     createdAt:{type:Date, default:Date.now},
     updatedAt:{type:Date, default:Date.now}
-})
+
+},{timestamps:true})
 
 const virtual=orderSchema.virtual('id');
 

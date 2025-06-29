@@ -71,6 +71,7 @@ export function checkAuth() {
 
       if (response.ok) {
         const Data = await response.json();
+        console.log("Check Auth Response:", Data);
         resolve({ Data });
       } else {
         const error = await response.text();
@@ -82,28 +83,45 @@ export function checkAuth() {
   });
 }
 
-export function signOut(userId) {
+export function signOut() {
   return new Promise(async (resolve, reject) => {
-    resolve({ message: "User signed out." });
+    try {
+      const response = await fetch("http://localhost:8080/auth/logout", {
+        method: "GET", // Use POST if your backend expects it
+        credentials: "include", // ✅ include cookies (like JWT)
+      });
+      if (response.ok) {
+        resolve({ Data:"success" });
+      } else {
+        const error = await response.text();
+        reject(error);
+      }
+    } catch (err) {
+      reject({ err });
+    }
   });
 }
-
 
 export function resetPasswordRequest(email) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/reset-password-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        "http://localhost:8080/auth/reset-password-request",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to request password reset");
+        throw new Error(
+          errorData.message || "Failed to request password reset"
+        );
       }
 
       const data = await response.json();
@@ -113,21 +131,26 @@ export function resetPasswordRequest(email) {
     }
   });
 }
-export function resetPassword({token,email,password}) {
+export function resetPassword({ token, email, password }) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token, email, password }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        "http://localhost:8080/auth/reset-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token, email, password }),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to request password reset");
+        throw new Error(
+          errorData.message || "Failed to request password reset"
+        );
       }
 
       const data = await response.json();

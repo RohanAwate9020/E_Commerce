@@ -41,7 +41,7 @@ export default function Navbar({ children }) {
   const user = useSelector(selectUserInfo);
   
   const handleSignOut = () => {
-    dispatch(signOutAsync(user?.id));
+    dispatch(signOutAsync());
     Navigate("/login");
   };
   const items = useSelector(selectItems);

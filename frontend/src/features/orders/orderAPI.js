@@ -29,16 +29,19 @@ export function updateOrder(order) {
   );
 }
 
-export function fetchAllOrders({pagination}) {
-  let querystring = "";
+export function fetchAllOrders({sort, pagination}) {
+  let queryString = "";
   
   for (let key in pagination) {
-    querystring += `${key}=${pagination[key]}&`;
+    queryString += `${key}=${pagination[key]}&`;
   }
-
+  for (let key in sort) {
+  queryString += `${key}=${sort[key]}&`;
+}
+console.log("Query String", sort);
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/admin/orders?" + querystring,{
+      "http://localhost:8080/admin/orders?" + queryString,{
         credentials: 'include'
       }
     );

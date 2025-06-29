@@ -61,6 +61,17 @@ exports.loginUser = async (req, res) => {
     .status(201)
     .json(req.user.token);
 };
+
+exports.logout = async (req, res) => {
+
+  res
+    .cookie("jwt","", {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    })
+    .sendStatus(200);
+};
+
 exports.checkAuth = async (req, res) => {
   if (req.user) {
     return res.json(req.user);
@@ -68,6 +79,7 @@ exports.checkAuth = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 };
+
 exports.resetPasswordRequest = async (req, res) => {
   const email = req.body.email;
   const user = await User.findOne({ email: email });

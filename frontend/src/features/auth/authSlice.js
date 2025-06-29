@@ -81,8 +81,9 @@ export const resetPasswordAsync = createAsyncThunk(
   }
 );
 
-export const signOutAsync = createAsyncThunk("user/signOut", async (userId) => {
-  const response = await signOut(userId);
+export const signOutAsync = createAsyncThunk(
+  "user/signOut", async () => {
+  const response = await signOut();
 
   // The value we return becomes the `fulfilled` action payload
   return response.data;
@@ -124,6 +125,7 @@ export const userSlice = createSlice({
       })
       .addCase(signOutAsync.fulfilled, (state, action) => {
         state.status = "idle";
+        console.log("Logout successful:", action.payload);
         state.loggedInUserToken = null;
       })
       .addCase(checkAuthAsync.pending, (state) => {
