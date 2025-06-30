@@ -37,6 +37,7 @@ export function UpdateCart(update) {
     const response = await fetch('http://localhost:8080/cart/'+update.id,{
     method:"PATCH",
     body:JSON.stringify(update),
+    credentials: 'include', // ✅ this sends the jwt cookie
     headers:{
       'Content-Type': 'application/json'}
     })

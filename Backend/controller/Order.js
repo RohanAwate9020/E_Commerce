@@ -1,13 +1,23 @@
-const mongoose = require('mongoose');
-const model = require('../model/Order');
+const mongoose = require("mongoose");
+const model = require("../model/Order");
+const { User } = require("../model/User");
+const { sendEmail, invoiceTemplate } = require("../services/common");
 const Order = model.Order;
+
 
 exports.createNewOrder = async (req, res) => {
   const order = new Order(req.body);
   try {
     const doc = await order.save();
-    // const result = await doc.populate("product");
-    res.status(201).json( doc );
+    const user = await User.findById(order.user)
+    sendEmail({
+      to: user.email,
+      subject: "Order Confirmation",
+      text: `Order has been successfully placed.\n\nThank you for shopping with us!`,
+      html: invoiceTemplate(order),
+    })
+
+    res.status(201).json(doc);
   } catch (err) {
     res.status(500).json({
       message: "Error adding product in cart",
@@ -30,12 +40,11 @@ exports.fetchOrdersByUserId = async (req, res) => {
   }
 };
 
-
 exports.deleteOrder = async (req, res) => {
   const id = req.params.id;
   try {
     const result = await Order.findByIdAndDelete(id).exec();
-    res.status(201).json( result );
+    res.status(201).json(result);
   } catch (err) {
     res.status(500).json({
       message: "Error removing product in cart",
@@ -44,15 +53,12 @@ exports.deleteOrder = async (req, res) => {
   }
 };
 
-
 exports.updateOrder = async (req, res) => {
   const orderId = req.params.id;
   try {
-    const doc = await Order.findByIdAndUpdate(
-      orderId,
-      req.body,
-      { new: true }
-    ).exec();
+    const doc = await Order.findByIdAndUpdate(orderId, req.body, {
+      new: true,
+    }).exec();
     res.status(200).json(doc);
   } catch (err) {
     res.status(500).json({
@@ -62,10 +68,9 @@ exports.updateOrder = async (req, res) => {
   }
 };
 
-
 exports.fetchOrdersAdmin = async (req, res) => {
-  let query = Order.find({deleted: {$ne:true}}); // Assuming you want to exclude deleted products
-  let totalOrdersQuery = Order.find({deleted: {$ne:true}}); // Same for total count
+  let query = Order.find({ deleted: { $ne: true } }); // Assuming you want to exclude deleted products
+  let totalOrdersQuery = Order.find({ deleted: { $ne: true } }); // Same for total count
 
   if (req.query._sort && req.query._order) {
     query = query.sort({ [req.query._sort]: req.query._order });
