@@ -3,7 +3,7 @@ const model = require("../model/Cart");
 const Cart = model.Cart;
 
 exports.fetchCartByUserId = async (req, res) => {
-  const {id} = req.user;
+  const { id } = req.user;
   try {
     const cartItems = await Cart.find({ user: id })
       .populate("user")
@@ -19,8 +19,8 @@ exports.fetchCartByUserId = async (req, res) => {
 };
 
 exports.addToCart = async (req, res) => {
-  const {id}=req.user;
-  const cart = new Cart({...req.body,user:id});
+  const { id } = req.user;
+  const cart = new Cart({ ...req.body, user: id });
   try {
     const doc = await cart.save();
     const result = await doc.populate("product");
@@ -35,12 +35,19 @@ exports.addToCart = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
   const cartId = req.params.id;
+  const { id, ...updateFields } = req.body; // destructure id, rest goes to updateFields
+
+  console.log("Updating cart item", id, updateFields);
   try {
+    const updateField = req.body;
     const cart = await Cart.findByIdAndUpdate(
       cartId,
-      {"quantity":req.body.quantity},
+      // {"quantity":req.body.quantity},
+      updateField,
       { new: true }
-    ).populate("product") .exec();
+    )
+      .populate("product")
+      .exec();
 
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });

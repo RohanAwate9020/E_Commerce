@@ -7,7 +7,6 @@ import AdminProductDetail from '../features/Admin/component/AdminProductDetail'
 function AdminProductDetailPage() {
   return (
     <div>
-        <Navbar/>
       <AdminProductDetail/>
     </div>
   )

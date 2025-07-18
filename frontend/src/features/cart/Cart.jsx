@@ -14,6 +14,7 @@ import DeleteModal from "../common/DeleteModal";
 
 export default function Cart() {
   const products = useSelector(selectItems);
+  console.log("Cart items", products);
   let Subtotal = 0;
   let TotalItems = 0;
   const dispatch = useDispatch();
@@ -25,8 +26,50 @@ export default function Cart() {
   // }
 
   const handleQuantity = (e, item) => {
-    dispatch(UpdateCartAsync({ id:item.id, quantity: +e.target.value }));
+    dispatch(UpdateCartAsync({ id: item.id, quantity: +e.target.value }));
   };
+
+  const handleColor = (e, item) => {
+    const selectedColorId = e.target.value;
+    const selectedColor = colors.find((c) => c.id === selectedColorId);
+    dispatch(UpdateCartAsync({ id: item.id, colors: selectedColor }));
+  };
+
+  const handleSize = (e, item) => {
+    const selectedSizeId = e.target.value;
+    const selectedSize = sizes.find((s) => s.id === selectedSizeId);
+    dispatch(UpdateCartAsync({ id: item.id, size: selectedSize }));
+  };
+  const colors = [
+    {
+      name: "White",
+      class: "bg-white",
+      selectedClass: "ring-gray-400",
+      id: "white",
+    },
+    {
+      name: "Gray",
+      class: "bg-gray-200",
+      selectedClass: "ring-gray-400",
+      id: "gray",
+    },
+    {
+      name: "Black",
+      class: "bg-gray-900",
+      selectedClass: "ring-gray-900",
+      id: "black",
+    },
+  ];
+  const sizes = [
+    { name: "XXS", inStock: false, id: "xxs" },
+    { name: "XS", inStock: true, id: "xs" },
+    { name: "S", inStock: true, id: "s" },
+    { name: "M", inStock: true, id: "m" },
+    { name: "L", inStock: true, id: "l" },
+    { name: "XL", inStock: true, id: "xl" },
+    { name: "2XL", inStock: true, id: "2xl" },
+    { name: "3XL", inStock: true, id: "3xl" },
+  ];
 
   // const handleDelete = (id) => {
   //   console.log(id);
@@ -75,39 +118,94 @@ export default function Cart() {
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
-
                       <div className="ml-4 flex flex-1 flex-col">
                         <div>
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>
                               <Link to="#">{item?.product?.title}</Link>
                             </h3>
-                            <p className="ml-4">$ {discountPrice(item?.product)}</p>
+                            <p className="ml-4">
+                              $ {discountPrice(item?.product)}
+                            </p>
                           </div>
                           <p className="mt-1 text-sm text-gray-500">
                             {item?.product?.category}
                           </p>
                         </div>
                         <div className="flex flex-1 items-end justify-between text-sm">
-                          <div className="text-gray-500">
-                            <label
-                              htmlFor="quantity"
-                              className="inline mr-5 text-sm font-medium leading-6 text-gray-900"
-                            >
-                              Qty
-                            </label>
-                            <select
-                              className="p-2"
-                              onChange={(e) => handleQuantity(e, item)}
-                            >
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                            </select>
+                          <div className="flex gap-6">
+                            <span className="text-gray-500">
+                              <label
+                                htmlFor="quantity"
+                                className="inline mr-5 text-sm font-medium leading-6 text-gray-900"
+                              >
+                                Qty
+                              </label>
+                              <select
+                                className="p-2"
+                                onChange={(e) => handleQuantity(e, item)}
+                                value={item?.quantity}
+                              >
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                              </select>
+                            </span>
+
+                            {console.log(item?.product?.colors)}
+                            {(item?.product?.colors).length !== 0 && (
+                              <span className="text-gray-500">
+                                <label
+                                  htmlFor="quantity"
+                                  className="inline mr-5 text-sm font-medium leading-6 text-gray-900"
+                                >
+                                  Color
+                                </label>
+                                <select
+                                  className="p-2"
+                                  onChange={(e) => handleColor(e, item)}
+                                  value={item?.color?.id}
+                                >
+                                  {colors.map((color) => (
+                                    (item?.product?.colors).some((p) => p.id === color.id) && (
+                                    <option value={color.id}>
+                                      {color.name}{" "}
+                                    </option>
+                                  )
+                                  ))}
+                                </select>
+                              </span>
+                            )}
+
+                            {(item?.product?.sizes).length !== 0 && (
+                              <span className="text-gray-500">
+                                <label
+                                  htmlFor="quantity"
+                                  className="inline mr-5 text-sm font-medium leading-6 text-gray-900"
+                                >
+                                  Size
+                                </label>
+                                <select
+                                  className="p-2"
+                                  onChange={(e) => handleSize(e, item)}
+                                  value={item?.size?.id}
+                                >
+                                  {sizes.map((size) =>
+                                     (item?.product?.sizes).some((p) => p.id === size.id) && (
+                                        <option value={size.id}>
+                                          {" "}
+                                          {size.name}
+                                        </option>
+                                      )
+                                  )}
+                                </select>
+                              </span>
+                            )}
                           </div>
-                          <div className="flex">
+
+                          <div>
                             {/* <DeleteModal
                               title={`Delete ${item.title} from Cart`}
                               message="Are you sure you want to delete this cart item ?"

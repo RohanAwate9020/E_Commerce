@@ -79,7 +79,7 @@ function Checkout() {
   };
   return (
     <>
-      {!products.length && <Navigate to="/" replace="true" />}
+      {!products.length && <Navigate to="/home" replace="true" />}
       {currentOrder && (
         <Navigate to={`/order-success/${currentOrder.id}`} replace="true" />
       )}
@@ -330,7 +330,7 @@ function Checkout() {
                       <div className="mt-6 space-y-6">
                         <div className="flex items-center gap-x-3">
                           <input
-                            defaultChecked
+                            
                             id="card"
                             name="payment"
                             type="radio"

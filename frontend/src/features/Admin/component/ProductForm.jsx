@@ -2,9 +2,44 @@ import React, { useState } from "react";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { createProductAsync, selectBrands, selectCategories } from "../../product/productSlice";
-import { set, useForm } from "react-hook-form";
-import { Navigate, useNavigate } from 'react-router-dom';
+import {
+  createProductAsync,
+  selectBrands,
+  selectCategories,
+} from "../../product/productSlice";
+import { useForm } from "react-hook-form";
+import { Navigate, useNavigate } from "react-router-dom";
+
+const colors = [
+  {
+    name: "White",
+    class: "bg-white",
+    selectedClass: "ring-gray-400",
+    id: "white",
+  },
+  {
+    name: "Gray",
+    class: "bg-gray-200",
+    selectedClass: "ring-gray-400",
+    id: "gray",
+  },
+  {
+    name: "Black",
+    class: "bg-gray-900",
+    selectedClass: "ring-gray-900",
+    id: "black",
+  },
+];
+const sizes = [
+  { name: "XXS", inStock: false, id: "xxs" },
+  { name: "XS", inStock: true, id: "xs" },
+  { name: "S", inStock: true, id: "s" },
+  { name: "M", inStock: true, id: "m" },
+  { name: "L", inStock: true, id: "l" },
+  { name: "XL", inStock: true, id: "xl" },
+  { name: "2XL", inStock: true, id: "2xl" },
+  { name: "3XL", inStock: true, id: "3xl" },
+];
 
 export default function ProductForm() {
   const categories = useSelector(selectCategories);
@@ -42,15 +77,17 @@ export default function ProductForm() {
   //   }
   // };
 
-  const handleCancel =()=>{
+  const handleCancel = () => {
     reset();
     setInputs([""]); // Reset inputs to one empty field
     setImages([]); // Reset images to an empty array
     navigate("/admin/home"); // Redirect to the products page
-  }
+  };
 
   const [inputs, setInputs] = useState([""]); // Start with one input
   const [images, setImages] = useState([]);
+  const [highlightInputs, setHighlightInputs] = useState([""]);
+  const [highlights, setHighlights] = useState([]);
 
   const handleInputChange = (index, value) => {
     const newInputs = [...inputs];
@@ -68,6 +105,20 @@ export default function ProductForm() {
     }
   };
 
+  const handleHighlightInputChange = (index, value) => {
+    const newInputs = [...highlightInputs];
+    newInputs[index] = value;
+    setHighlightInputs(newInputs);
+  };
+
+  const handleAddHighlight = (index) => {
+    const text = highlightInputs[index].trim();
+    if (text !== "") {
+      setHighlights((prev) => [...prev, text]);
+      setHighlightInputs((prev) => [...prev, ""]); // Add next empty input
+    }
+  };
+
   return (
     <div className="mx-auto mt-12 bg-white max-w-7xl p-12 sm:px-6 lg:px-8">
       <form
@@ -76,20 +127,30 @@ export default function ProductForm() {
           const product = {
             ...data,
             images: [...images],
+            highlights: [...highlights],
             rating: 0,
             reviews: [],
           };
-          product.discountPercentage=+product.discountPercentage,
-          product.stock=+product.stock,
-          product.price=+product.price,
-          product.minimumOrderQuantity=+product.minimumOrderQuantity,
+          product.discountPercentage = +product.discountPercentage;
+          product.stock = +product.stock;
+          product.price = +product.price;
+          product.minimumOrderQuantity = +product.minimumOrderQuantity;
+          product.colors = product.colors.map((color) =>
+            colors.find((clr) => clr.id === color)
+          );
+          product.sizes = product.sizes.map((size) =>
+            sizes.find((sz) => sz.id === size)
+          );
 
-            dispatch(createProductAsync(product));
-            reset();
-            setInputs([""]); // Reset inputs to one empty field
-            setImages([]); // Reset images to an empty array
-            console.error("Product created successfully");
-            
+          console.log(product);
+          dispatch(createProductAsync(product));
+          reset();
+          setInputs([""]); // Reset inputs to one empty field
+          setImages([]); 
+          setHighlightInputs([])// Reset images to an empty array
+          setHighlights([])// Reset images to an empty array
+          console.error("Product created successfully");
+
           // checkUserAsync({ email: data.email, password: data.password })
         })}
       >
@@ -163,6 +224,50 @@ export default function ProductForm() {
                   />
                 </div>
               </div>
+
+              <div className="col-span-full">
+                <label
+                  htmlFor="colors"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Colors
+                </label>
+                <div className="mt-2">
+                  {colors.map((color) => (
+                    <>
+                      <input
+                        type="checkbox"
+                        {...register("colors", {})}
+                        key={color.id}
+                        value={color.id}
+                      />{" "}
+                      {color.name}{" "}
+                    </>
+                  ))}
+                </div>
+              </div>
+              <div className="col-span-full">
+                <label
+                  htmlFor="Size"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Size
+                </label>
+                <div className="mt-2">
+                  {sizes.map((size) => (
+                    <>
+                      <input
+                        type="checkbox"
+                        {...register("sizes", {})}
+                        key={size.id}
+                        value={size.id}
+                      />{" "}
+                      {size.name}{" "}
+                    </>
+                  ))}
+                </div>
+              </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="category"
@@ -321,6 +426,34 @@ export default function ProductForm() {
                     type="text"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
+                </div>
+              </div>
+
+              <div className="sm:col-span-full">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Highlights
+                </label>
+                <div className="space-y-2">
+                  {highlightInputs.map((input, index) => (
+                    <div key={index} className="flex gap-2">
+                      <input
+                        type="text"
+                        value={input}
+                        onChange={(e) =>
+                          handleHighlightInputChange(index, e.target.value)
+                        }
+                        className="flex-1 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+                        placeholder={`Highlight ${index + 1}`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleAddHighlight(index)}
+                        className="px-3 py-1 bg-indigo-600 text-white rounded"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
 

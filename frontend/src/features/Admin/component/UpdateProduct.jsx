@@ -4,16 +4,48 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   clearSelectedProduct,
   createProductAsync,
+  fetchCategoriesAsync,
   fetchProductsByIDAsync,
   selectBrands,
   selectCategories,
   selectProductById,
   updateProductAsync,
 } from "../../product/productSlice";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteModal from "../../common/DeleteModal";
 import { InfinitySpin } from "react-loader-spinner";
+
+const colors = [
+  {
+    name: "White",
+    class: "bg-white",
+    selectedClass: "ring-gray-400",
+    id: "white",
+  },
+  {
+    name: "Gray",
+    class: "bg-gray-200",
+    selectedClass: "ring-gray-400",
+    id: "gray",
+  },
+  {
+    name: "Black",
+    class: "bg-gray-900",
+    selectedClass: "ring-gray-900",
+    id: "black",
+  },
+];
+const sizes = [
+  { name: "XXS", inStock: false, id: "xxs" },
+  { name: "XS", inStock: true, id: "xs" },
+  { name: "S", inStock: true, id: "s" },
+  { name: "M", inStock: true, id: "m" },
+  { name: "L", inStock: true, id: "l" },
+  { name: "XL", inStock: true, id: "xl" },
+  { name: "2XL", inStock: true, id: "2xl" },
+  { name: "3XL", inStock: true, id: "3xl" },
+];
 
 export default function UpdateProduct() {
   const categories = useSelector(selectCategories);
@@ -30,11 +62,12 @@ export default function UpdateProduct() {
   const status = useSelector((state) => state.product.status);
   const [openremoveModalId, setopenremoveModalId] = useState(null);
   const [openrelistModalId, setopenrelistModalId] = useState(null);
-  
+
   useEffect(() => {
     dispatch(fetchProductsByIDAsync(id));
+    dispatch(fetchCategoriesAsync())
   }, [id]);
-  
+
   console.log("Product to update:", product);
   const {
     register,
@@ -44,6 +77,8 @@ export default function UpdateProduct() {
     setValue,
     formState: { errors },
   } = useForm();
+  const watchedColors = watch("colors") || [];
+  const watchedSizes = watch("sizes") || [];
 
   useEffect(() => {
     if (product) {
@@ -59,10 +94,13 @@ export default function UpdateProduct() {
       setValue("warrantyInformation", product.warrantyInformation);
       setValue("shippingInformation", product.shippingInformation);
       setValue("returnPolicy", product.returnPolicy);
+      setValue("highlights", product.highlights || []);
       setValue("thumbnail", product.thumbnail);
       setValue("images", product.images || []);
       setValue("rating", product.rating || 0);
       setValue("reviews", product.reviews || []);
+      setValue("colors", product.colors.map((color) => color.id) || []);
+      setValue("sizes", product.sizes.map((size) => size.id) || []);
     }
   }, [product, setValue]);
 
@@ -138,7 +176,12 @@ export default function UpdateProduct() {
             (product.stock = +product.stock),
             (product.price = +product.price),
             (product.minimumOrderQuantity = +product.minimumOrderQuantity);
-
+          product.colors = product.colors.map((color) =>
+            colors.find((clr) => clr.id === color)
+          );
+          product.sizes = product.sizes.map((size) =>
+            sizes.find((sz) => sz.id === size)
+          );
           const resultAction = await dispatch(updateProductAsync(product));
           if (updateProductAsync.fulfilled.match(resultAction)) {
             setShowSuccess(true); // Show success alert
@@ -247,6 +290,51 @@ export default function UpdateProduct() {
                   />
                 </div>
               </div>
+
+              <div className="col-span-full">
+                <label
+                  htmlFor="colors"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Colors
+                </label>
+                <div className="mt-2">
+                  {colors.map((color, index) => (
+                    <>
+                      <input
+                        type="checkbox"
+                        {...register("colors", {})}
+                        key={index}
+                        value={color.id}
+                      />{" "}
+                      {color.name}{" "}
+                    </>
+                  ))}
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <label
+                  htmlFor="Size"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Size
+                </label>
+                <div className="mt-2">
+                  {sizes.map((size) => (
+                    <>
+                      <input
+                        type="checkbox"
+                        {...register("sizes", {})}
+                        key={size.id}
+                        value={size.id}
+                      />{" "}
+                      {size.name}
+                    </>
+                  ))}
+                </div>
+              </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="category"
@@ -405,6 +493,38 @@ export default function UpdateProduct() {
                     type="text"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
+                </div>
+              </div>
+
+              <div className="sm:col-span-full">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Highlights
+                </label>
+                <div className="space-y-2">
+                  {product?.highlights.map((field, index) => (
+                    <div key={field.id} className="flex gap-2">
+                      <input
+                        type="text"
+                        {...register(`highlights.${index}`)}
+                        className="flex-1 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+                        placeholder={`Highlight ${index + 1}`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => remove(index)}
+                        className="text-red-500"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => append("")}
+                    className="mt-2 text-sm text-blue-600"
+                  >
+                    + Add Highlight
+                  </button>
                 </div>
               </div>
 

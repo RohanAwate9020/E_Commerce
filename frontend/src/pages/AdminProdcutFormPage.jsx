@@ -5,7 +5,7 @@ import ProductForm from "../features/Admin/component/ProductForm";
 function AdminProdcutFormPage() {
   return (
     <div>
-      <Navbar />
+
       <ProductForm />
     </div>
   );

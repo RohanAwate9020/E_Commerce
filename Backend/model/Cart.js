@@ -6,6 +6,8 @@ const cartSchema = new Schema({
   quantity: { type: Number, default: 1 },
   user:{ type:Schema.Types.ObjectId,ref:"User", required: true },
   product: {type:Schema.Types.ObjectId,ref:"Product", required: true},
+  color: {type:Schema.Types.Mixed, },
+  size: {type:Schema.Types.Mixed, },
 });
 
 const virtual = cartSchema.virtual("id");
