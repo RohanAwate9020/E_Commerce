@@ -179,9 +179,12 @@ export default function UpdateProduct() {
           product.colors = product.colors.map((color) =>
             colors.find((clr) => clr.id === color)
           );
-          product.sizes = product.sizes.map((size) =>
+
+            product.sizes = product.sizes.map((size) =>
             sizes.find((sz) => sz.id === size)
           );
+          
+          
           const resultAction = await dispatch(updateProductAsync(product));
           if (updateProductAsync.fulfilled.match(resultAction)) {
             setShowSuccess(true); // Show success alert

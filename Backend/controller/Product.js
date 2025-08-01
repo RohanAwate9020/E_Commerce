@@ -39,15 +39,15 @@ const Product = model.Product;
 exports.fetchallProducts = async (req, res) => {
   let query = Product.find({deleted: {$ne:true}}); // Assuming you want to exclude deleted products
   let totalProductsQuery = Product.find({deleted: {$ne:true}}); // Same for total count
-
+console.log(req.query.category);
   if (req.query.category) {
-    query = query.find({ category: req.query.category });
-    totalProductsQuery = totalProductsQuery.find({ category: req.query.category });
+    query = query.find({ category: {$in:req.query.category.split(',')} });
+    totalProductsQuery = totalProductsQuery.find({category: {$in:req.query.category.split(',')}});
   }
 
   if (req.query.brand) {
-    query = query.find({ brand: req.query.brand });
-    totalProductsQuery = totalProductsQuery.find({ brand: req.query.brand });
+    query = query.find({ brand: {$in:req.query.brand.split(',')} });
+    totalProductsQuery = totalProductsQuery.find({ brand: {$in:req.query.brand.split(',')} });
   }
 
   if (req.query._sort && req.query._order) {
@@ -82,13 +82,13 @@ exports.fetchallProductsAdmin = async (req, res) => {
   let totalProductsQuery = Product.find(); // Same for total count
 
   if (req.query.category) {
-    query = query.find({ category: req.query.category });
-    totalProductsQuery = totalProductsQuery.find({ category: req.query.category });
+    query = query.find({ category: {$in:req.query.category.split(',')} });
+    totalProductsQuery = totalProductsQuery.find({ category: {$in:req.query.category.split(',')}  });
   }
 
   if (req.query.brand) {
-    query = query.find({ brand: req.query.brand });
-    totalProductsQuery = totalProductsQuery.find({ brand: req.query.brand });
+    query = query.find({ brand: {$in:req.query.brand.split(',')}  });
+    totalProductsQuery = totalProductsQuery.find({ brand: {$in:req.query.brand.split(',')}  });
   }
 
   if (req.query._sort && req.query._order) {
@@ -122,6 +122,7 @@ exports.fetchallProductsAdmin = async (req, res) => {
 
 exports.createProduct = async (req, res) => {
   const product = new Product(req.body);
+  product.discountPrice =Math.round(product.price * (1 -  product.discountPercentage / 100))
   product
     .save()
     .then((result) => {
@@ -154,7 +155,9 @@ exports.updateProduct= async (req,res)=>{
   const productId =req.params.id;
   try{
     const product= await Product.findByIdAndUpdate(productId, req.body, { new: true }).exec();
-    res.status(200).json(product);
+      product.discountPrice =Math.round(product.price * (1 -  product.discountPercentage / 100))
+    const updatedProduct=await product.save();
+    res.status(200).json(updatedProduct);
   }catch(err){
     res.status(500).json({
       message: "Error fetching product",

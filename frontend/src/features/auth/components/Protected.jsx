@@ -54,8 +54,12 @@ function Protected({ children }) {
   if (!userInfo) return <div>Loading...</div>;
 
   // ❗ Only allow "user" role here
-  if (userInfo?.role !== "user") {
+  if (userInfo?.role === "admin") {
     return <Navigate to="/admin/home" replace />;
+  }else if (userInfo?.role === "seller") {
+    return <Navigate to="/seller/home" replace />;  
+  } else if (userInfo?.role === "superadmin") {
+    return <Navigate to="/superadmin/home" replace />; 
   }
 
   return children;

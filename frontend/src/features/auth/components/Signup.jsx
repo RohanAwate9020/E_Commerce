@@ -43,6 +43,7 @@ function Signup() {
                   addresses: [],
                   role: "user",
                 })
+                
               );
             })}
             className="space-y-6"

@@ -13,6 +13,9 @@ export default defineConfig({
         "[auto,auto,1fr]": "auto auto 1fr",
       },
     },
+    fontFamily: {
+    roboto: ['Roboto', 'sans-serif'],
+  },
   },
 
   build: {

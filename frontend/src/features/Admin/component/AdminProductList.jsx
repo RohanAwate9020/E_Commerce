@@ -45,8 +45,8 @@ import { set } from "react-hook-form";
 //Category data
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
-  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
-  { name: "Price: High to Low", sort: "price", order: "desc", current: false },
+  { name: "Price: Low to High", sort: "discountPrice", order: "asc", current: false },
+  { name: "Price: High to Low", sort: "discountPrice", order: "desc", current: false },
 ];
 
 function classNames(...classes) {
@@ -98,8 +98,9 @@ export default function AdminProductList() {
     setFilter(newFilter);
   };
 
-  const handleSort = (e, option) => {
-    const newSort = { _sort: option.sort, _order: option.order };// Update state
+   const handleSort = (e, option) => {
+    const newSort = { _sort: option.sort, _order: option.order };
+    setSort(newSort); // Update state
   };
 
   const handlePage = (page) => {
@@ -123,7 +124,7 @@ export default function AdminProductList() {
   useEffect(() => {
     dispatch(fetchBrandsAsync());
     dispatch(fetchCategoriesAsync());
-    dispatch(fetchAllProductsAdminAsync());
+    // dispatch(fetchAllProductsAdminAsync());
   }, []);
 
   useEffect(() => {

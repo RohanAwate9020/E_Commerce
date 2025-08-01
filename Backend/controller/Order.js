@@ -2,11 +2,15 @@ const mongoose = require("mongoose");
 const model = require("../model/Order");
 const { User } = require("../model/User");
 const { sendEmail, invoiceTemplate } = require("../services/common");
+const { Product } = require("../model/Product");
 const Order = model.Order;
 
 
 exports.createNewOrder = async (req, res) => {
-  const order = new Order(req.body);
+  const order = new Order(req.body); 
+  for (let item of order.products){
+    await Product.findByIdAndUpdate(item.product.id, {$inc: { stock: -1 * item.quantity }})
+  }
   try {
     const doc = await order.save();
     const user = await User.findById(order.user)

@@ -1,17 +1,30 @@
 export function createUser(userData) {
-  return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(userData),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    resolve({ data });
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(userData),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Reject with backend error message
+        return reject(data.error || "Signup failed");
+      }
+
+      resolve({ data });
+    } catch (err) {
+      console.error("createUser error:", err);
+      reject("Network or server error");
+    }
   });
 }
+
 
 // export function loginUser(loginInfo) {
 //   return new Promise(async (resolve, reject) => {

@@ -159,6 +159,8 @@ const options = {
 //   },
 // ]);
 import Layout from "./Layout";
+import ProtectedSuperAdmin from "./features/auth/components/ProtectedSuperAdmin";
+import SuperAdminHome from "./features/superAdmin/SuperAdminHome";
 
 // Alert options
 const alertOptions = {
@@ -266,6 +268,14 @@ const router = createBrowserRouter([
           <ProtectedAdmin>
             <AdminUpdateProduct />
           </ProtectedAdmin>
+        ),
+      },
+      {
+        path: "superadmin/home",
+        element: (
+          <ProtectedSuperAdmin>
+            <SuperAdminHome />
+          </ProtectedSuperAdmin>
         ),
       },
     ],

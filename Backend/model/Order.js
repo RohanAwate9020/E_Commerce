@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 const Schema= mongoose.Schema;
 
-
+const paymentMethod = {
+    values:["card","COD"],
+    message: "{VALUE} is not a valid payment method"
+}
 const orderSchema= new Schema({
     products:[{type:Schema.Types.Mixed, required:true}],
     totalAmount:{type:Number, required:true},
     totalItems:{type:Number, required:true},
     user:{type:Schema.Types.ObjectId, ref:'User', required:true},
-    paymentMethod:{type:String, required:true},
+    paymentMethod:{type:String, required:true,enum:paymentMethod},
     paymentStatus:{type:String, required:true,default:'Pending'},
     status:{type:String, default:'Pending'},
     selectedAddress:{type:Schema.Types.Mixed, required:true},

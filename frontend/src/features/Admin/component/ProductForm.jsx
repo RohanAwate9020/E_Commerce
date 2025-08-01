@@ -135,15 +135,20 @@ export default function ProductForm() {
           product.stock = +product.stock;
           product.price = +product.price;
           product.minimumOrderQuantity = +product.minimumOrderQuantity;
+          if (product.colors) {
+            // Map color IDs to actual color objects
           product.colors = product.colors.map((color) =>
             colors.find((clr) => clr.id === color)
           );
-          product.sizes = product.sizes.map((size) =>
+        }
+           if (product.sizes) {
+            product.sizes = product.sizes.map((size) =>
             sizes.find((sz) => sz.id === size)
           );
+          }
 
           console.log(product);
-          dispatch(createProductAsync(product));
+          // dispatch(createProductAsync(product));
           reset();
           setInputs([""]); // Reset inputs to one empty field
           setImages([]); 

@@ -66,8 +66,8 @@ export function fetchProductsByFilters(filter, sort, pagination, productName) {
   for (let key in filter) {
     const categoryValues = filter[key];
     if (categoryValues.length > 0) {
-      const lastCategoryValue = categoryValues[categoryValues.length - 1];
-      querystring += `${key}=${lastCategoryValue}&`;
+
+      querystring += `${key}=${categoryValues}&`;
       // categoryValues.forEach((value) => {
       //   querystring += `${key}=${value}&`;
       // });
@@ -101,8 +101,7 @@ export function fetchProductsByFiltersAdmin(filter, sort, pagination,productName
   for (let key in filter) {
     const categoryValues = filter[key];
     if (categoryValues.length > 0) {
-      const lastCategoryValue = categoryValues[categoryValues.length - 1];
-      querystring += `${key}=${lastCategoryValue}&`;
+      querystring += `${key}=${categoryValues}&`;
       // categoryValues.forEach((value) => {
       //   querystring += `${key}=${value}&`;
       // });

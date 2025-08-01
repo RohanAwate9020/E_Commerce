@@ -272,7 +272,7 @@ function ProductDetail() {
 
                 <form className="mt-10">
                   {/* Colors */}
-                  {product.colors !== null && (
+                  {product.colors.length !== 0 && (
                     <div>
                       <h3 className="text-sm font-medium text-gray-900">
                         Color

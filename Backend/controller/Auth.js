@@ -43,7 +43,6 @@ exports.createUser = async (req, res) => {
         });
       }
     );
-    z;
   } catch (err) {
     res.status(500).json({
       message: "Error creating user",
