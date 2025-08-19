@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLoggedInUser } from '../authSlice';
 import { fetchLoggedInUserAsync, selectUserInfo } from '../../user/userSlice';
+import { Navigate } from 'react-router-dom';
 
 function ProtectedSuperAdmin({children}) {
   const dispatch = useDispatch();

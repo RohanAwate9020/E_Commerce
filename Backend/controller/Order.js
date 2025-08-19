@@ -35,6 +35,7 @@ exports.fetchOrdersByUserId = async (req, res) => {
   console.log("User ID", userId);
   try {
     const order = await Order.find({ user: userId }).exec();
+    console.log("Orders for user:", order);
     res.status(200).json(order);
   } catch (err) {
     res.status(400).json({

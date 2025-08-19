@@ -38,6 +38,8 @@ function Signup() {
             onSubmit={handleSubmit((data) => {
               dispatch(
                 createUserAsync({
+                  name: data.name,
+                  mobileno: data.mobileno,
                   email: data.email,
                   password: data.password,
                   addresses: [],
@@ -48,6 +50,24 @@ function Signup() {
             })}
             className="space-y-6"
           >
+            <div className="sm:col-span-4">
+                      <label
+                        htmlFor="full-name"
+                        className="block text-sm/6 font-medium text-gray-900"
+                      >
+                        Full name
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="full-name"
+                          {...register("name", {
+                            required: "Name is required.",
+                          })}
+                          type="text"
+                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        />
+                      </div>
+                    </div>
             <div>
               <label
                 htmlFor="email"
@@ -73,6 +93,38 @@ function Signup() {
                 )}
               </div>
             </div>
+             <div className="sm:col-span-4">
+                      <label
+                        htmlFor="mobileNumber"
+                        className="block text-sm/6 font-medium text-gray-900"
+                      >
+                        Mobile Number
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="text"
+                          id="mobileNumber"
+                          maxLength={10}
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          {...register("mobileNumber", {
+                            required: "Mobile Number is required.",
+                            pattern: {
+                              value: /^[0-9]{10}$/,
+                              message:
+                                "Mobile number must be exactly 10 digits.",
+                            },
+                          })}
+                          onInput={(e) => {
+                            e.target.value = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                          }}
+                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        />
+                      </div>
+                    </div>
 
             <div>
               <div className="flex items-center justify-between">

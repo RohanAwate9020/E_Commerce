@@ -25,48 +25,6 @@ import { Pagination } from "../common/Pagination";
 import { ITEMS_PER_PAGE } from "../../app/constant";
 import { EyeIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
-const cardContent = [
-  {
-    icon: faShoppingCart,
-    title: "Today's Orders",
-    count: 20,
-  },
-  {
-    icon: faUser,
-    title: "Total Users",
-    count: 100,
-  },
-  {
-    icon: faUserTie,
-    title: "Total Admins",
-    count: 5,
-  },
-  {
-    icon: faCartShopping,
-    title: "Total Sellers",
-    count: 10,
-  },
-  {
-    icon: faUsers,
-    title: "Courier Partners",
-    count: 10,
-  },
-  {
-    icon: faBoxOpen,
-    title: "Total Categories",
-    count: 10,
-  },
-  {
-    icon: faBoxArchive,
-    title: "Total Brands",
-    count: 10,
-  },
-  {
-    icon: faShoppingCart,
-    title: "Total Products",
-    count: 10,
-  },
-];
 function SuperAdminHome() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
@@ -125,101 +83,57 @@ function SuperAdminHome() {
     }
   };
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-    console.log("Sidebar toggled:", sidebarOpen);
-  };
+  const cardContent = [
+    {
+      icon: faShoppingCart,
+      title: "Today's Orders",
+      count: 20,
+    },
+    {
+      icon: faUser,
+      title: "Total Users",
+      count: 100,
+    },
+    {
+      icon: faUserTie,
+      title: "Total Admins",
+      count: 5,
+    },
+    {
+      icon: faCartShopping,
+      title: "Total Sellers",
+      count: 10,
+    },
+    {
+      icon: faUsers,
+      title: "Courier Partners",
+      count: 10,
+    },
+    {
+      icon: faBoxOpen,
+      title: "Total Categories",
+      count: 10,
+    },
+    {
+      icon: faBoxArchive,
+      title: "Total Brands",
+      count: 10,
+    },
+    {
+      icon: faShoppingCart,
+      title: "Total Products",
+      count: 10,
+    },
+  ];
 
+  
   return (
-    <div className="relative">
-      <div className="sidebar fixed  ">
-        {sidebarOpen === true ? (
-          <div className="flex h-screen w-[400px]">
-            <div className="bg-[#f8fafc] border-r border-gray-200 text-gray-800 ">
-              <span>
-                <button
-                  className="text-indigo-500 px-6 py-2 mr-2 ml-2 pt-5 rounded-md cursor-pointer tranform hover:scale-110 transition duration-400"
-                  onClick={toggleSidebar}
-                >
-                  <FontAwesomeIcon icon={faBars} />
-                </button>
-              </span>
-
-              <ul>
-                <li className=" text-indigo-500 pr-10 mr-2 ml-2 px-6 py-2 rounded-md cursor-pointer pt-2 pb-2 tranform hover:scale-105 hover:bg-indigo-500 hover:text-white     transition duration-400">
-                  <FontAwesomeIcon icon={faHome} className="" /> Home
-                </li>
-                <li className=" text-indigo-500 pr-10 mr-2 ml-2 px-6 py-2 rounded-md cursor-pointer pt-2 pb-2 tranform hover:scale-105 hover:bg-indigo-500 hover:text-white     transition duration-400">
-                  <FontAwesomeIcon icon={faUsers} /> User
-                </li>
-                <li className=" text-indigo-500 pr-10 mr-2 ml-2 px-6 py-2 rounded-md cursor-pointer pt-2 pb-2 tranform hover:scale-105 hover:bg-indigo-500 hover:text-white     transition duration-400">
-                  <FontAwesomeIcon icon={faUserTie} /> Admins
-                </li>
-                <li className=" text-indigo-500 pr-10 mr-2 ml-2 px-6 py-2 rounded-md cursor-pointer pt-2 pb-2 tranform hover:scale-105 hover:bg-indigo-500 hover:text-white     transition duration-400">
-                  <FontAwesomeIcon icon={faCartShopping} /> Sellers
-                </li>
-                <li className=" text-indigo-500 pr-10 mr-2 ml-2 px-6 py-2 rounded-md cursor-pointer pt-2 pb-2 tranform hover:scale-105 hover:bg-indigo-500 hover:text-white     transition duration-400">
-                  <FontAwesomeIcon icon={faBoxOpen} /> Products
-                </li>
-                <li className=" text-indigo-500 pr-10 mr-2 ml-2 px-6 py-2 rounded-md cursor-pointer pt-2 pb-2 tranform hover:scale-105 hover:bg-indigo-500 hover:text-white     transition duration-400">
-                  <FontAwesomeIcon icon={faGear} /> Settings
-                </li>
-                <li className=" text-indigo-500 pr-10 mr-2 ml-2 px-6 py-2 rounded-md cursor-pointer pt-2 pb-2 tranform hover:scale-105 hover:bg-indigo-500 hover:text-white     transition duration-400">
-                  <FontAwesomeIcon
-                    icon={faArrowUpFromBracket}
-                    className="transform rotate-270"
-                  />{" "}
-                  Logout
-                </li>
-              </ul>
-            </div>
-            {/* <div className='bg-black-900'></div> */}
-          </div>
-        ) : (
-          <div className="flex h-screen bg-[#f8fafc] ">
-            <span>
-              <button
-                className="text-indigo-500 px-6 py-2 mr-2 ml-2 pt-5 rounded-md cursor-pointer tranform hover:scale-110 transition duration-400"
-                onClick={toggleSidebar}
-              >
-                <FontAwesomeIcon icon={faBars} />
-              </button>
-              <ul>
-                <li className="text-indigo-500 text-lg px-6 py-2 mr-2 ml-2 rounded-md cursor-pointer hover:bg-indigo-500 hover:text-white tranform hover:scale-110 transition duration-400">
-                  <FontAwesomeIcon icon={faHome} className=" " />
-                </li>
-                <li className="text-indigo-500 px-6 py-2 mr-2 ml-2 rounded-md cursor-pointer hover:bg-indigo-500 hover:text-white tranform hover:scale-110 transition duration-400">
-                  <FontAwesomeIcon icon={faUsers} />
-                </li>
-                <li className="text-indigo-500 px-6 py-2 mr-2 ml-2 rounded-md cursor-pointer hover:bg-indigo-500 hover:text-white tranform hover:scale-110 transition duration-400">
-                  <FontAwesomeIcon icon={faUserTie} />
-                </li>
-                <li className="text-indigo-500 px-6 py-2 mr-2 ml-2 rounded-md cursor-pointer hover:bg-indigo-500 hover:text-white tranform hover:scale-110 transition duration-400">
-                  <FontAwesomeIcon icon={faCartShopping} />
-                </li>
-                <li className="text-indigo-500 px-6 py-2 mr-2 ml-2 rounded-md cursor-pointer hover:bg-indigo-500 hover:text-white tranform hover:scale-110 transition duration-400">
-                  <FontAwesomeIcon icon={faBoxOpen} />
-                </li>
-                <li className="text-indigo-500 px-6 py-2 mr-2 ml-2 rounded-md cursor-pointer hover:bg-indigo-500 hover:text-white tranform hover:scale-110 transition duration-400">
-                  <FontAwesomeIcon icon={faGear} />
-                </li>
-                <li className="text-indigo-500 px-6 py-2 mr-2 ml-2 rounded-md cursor-pointer hover:bg-indigo-500 hover:text-white tranform hover:scale-110 transition duration-400">
-                  <FontAwesomeIcon
-                    icon={faArrowUpFromBracket}
-                    className="transform rotate-270"
-                  />
-                </li>
-              </ul>
-            </span>
-          </div>
-        )}
-      </div>
-
+    <div className=" flex gap-10 max-w-7xl mx-auto justify-around">
+      
       <div
-        className={`transition-all duration-300  flex justify-center  ${sidebarOpen ? "ml-[240px]" : "ml-40"}`}
+        className={`transition-all duration-300  flex justify-center `}
       >
-        <div className="maincontent bg-white  max-w-7xl px-4 sm:px-6 lg:px-8 min-h-full overflow-x-auto">
+        <div className="maincontent bg-white   px-4 sm:px-6 lg:px-8 min-h-full overflow-x-auto">
           <h2 className="text-2xl font-semibold text-gray-800 pt-10">
             Dashboard
           </h2>
@@ -228,7 +142,7 @@ function SuperAdminHome() {
               <div className="cards w-fit">
                 <a
                   href="#"
-                  className="flex flex-row items-center gap-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 p-4"
+                  className="flex flex-row items-center gap-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 p-4 transform hover:scale-105 transition duration-300"
                 >
                   <div className="text-white bg-indigo-500 p-4 ">
                     <FontAwesomeIcon icon={card.icon} className="text-xl" />

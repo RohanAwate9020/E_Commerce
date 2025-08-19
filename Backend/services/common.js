@@ -44,6 +44,17 @@ exports.sendEmail = async ({to, subject, text,html}) => {
     return info;
   
 };
+exports.sendEmailtoUser = async ({to, subject, text}) => {
+
+    const info = await transporter.sendMail({
+      from: "Quickcart  <test@gmail.com>",
+      to: to,
+      subject: subject,
+      text: text,
+    });
+    return info;
+  
+};
 
 exports.invoiceTemplate = function (order) {
   return `

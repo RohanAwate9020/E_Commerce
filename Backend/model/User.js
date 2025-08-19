@@ -8,6 +8,7 @@ const userSchema = new Schema ({
     addresses:{type:[Schema.Types.Mixed]},
     role: {type:String, default:"user",required:true},
     name: {type:String},
+    mobileNumber: {type:String},
     orders: {type:[Schema.Types.Mixed]},
     salt: {type:Buffer},
     resetPasswordToken: {type:String, default:""},

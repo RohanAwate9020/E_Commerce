@@ -1,11 +1,13 @@
 const express = require("express");
 
-const {   fetchUserById, updateUser } = require("../controller/User");
+const {   fetchUserById, updateUser, fetchUsers, emailAdminToUser } = require("../controller/User");
 const router= express.Router();
 
 
 router
 .get('/own', fetchUserById)
+.get('/users', fetchUsers)
+.post('/email', emailAdminToUser)
 .patch('/update', updateUser)
 
 

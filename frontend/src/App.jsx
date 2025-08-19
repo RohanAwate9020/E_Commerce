@@ -161,6 +161,7 @@ const options = {
 import Layout from "./Layout";
 import ProtectedSuperAdmin from "./features/auth/components/ProtectedSuperAdmin";
 import SuperAdminHome from "./features/superAdmin/SuperAdminHome";
+import Users from "./features/superAdmin/Users";
 
 // Alert options
 const alertOptions = {
@@ -272,6 +273,46 @@ const router = createBrowserRouter([
       },
       {
         path: "superadmin/home",
+        element: (
+          <ProtectedSuperAdmin>
+            <SuperAdminHome />
+          </ProtectedSuperAdmin>
+        ),
+      },
+      {
+        path: "superadmin/users",
+        element: (
+          <ProtectedSuperAdmin>
+            <Users />
+          </ProtectedSuperAdmin>
+        ),
+      },
+      {
+        path: "superadmin/admin",
+        element: (
+          <ProtectedSuperAdmin>
+            <SuperAdminHome />
+          </ProtectedSuperAdmin>
+        ),
+      },
+      {
+        path: "superadmin/seller",
+        element: (
+          <ProtectedSuperAdmin>
+            <SuperAdminHome />
+          </ProtectedSuperAdmin>
+        ),
+      },
+      {
+        path: "superadmin/products",
+        element: (
+          <ProtectedSuperAdmin>
+            <SuperAdminHome />
+          </ProtectedSuperAdmin>
+        ),
+      },
+      {
+        path: "superadmin/settings",
         element: (
           <ProtectedSuperAdmin>
             <SuperAdminHome />

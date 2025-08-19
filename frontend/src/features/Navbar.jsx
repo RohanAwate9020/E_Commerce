@@ -95,11 +95,11 @@ export default function Navbar({ children }) {
               <Link to="/cart">
                 <button
                   type="button"
-                  className="relative rounded-full p-1 text-gray-400 hover:text-white focus:ring-1 focus:ring-white"
+                  className="relative rounded-full p-1 text-gray-300 hover:text-white focus:ring-1 focus:ring-white"
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
-                  <ShoppingCartIcon aria-hidden="true" className="size-6" />
+                  <ShoppingCartIcon aria-hidden="true" className="size-6 " />
                 </button>
               </Link>
               <Link to="/cart">
